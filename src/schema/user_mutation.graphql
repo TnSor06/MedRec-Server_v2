@@ -1,0 +1,55 @@
+type Mutation {
+  login(data:LoginInput!):AuthPayload!
+  registerMedicalPractitioner(data:MedicalPractitionerInput!):String!
+  registerPatient(data:PatientInput!):String!
+}
+input LoginInput {
+  email:String!
+  password:String!
+}
+input MedicalPractitionerInput {
+  firstName: String!
+  middleName:String!
+  lastName:String!
+  dob: String!
+  email:String!
+  sex: Gender!
+  password:String!
+  address: String!
+  clinicAddress: String!
+  degree: String!
+  field: String!
+  hospital: String!
+}
+input PatientInput {
+  firstName: String!
+  middleName:String!
+  lastName:String!
+  dob: String!
+  email:String!
+  sex: Gender!
+  password:String!
+  bloodGroup: String!
+  religion: String!
+  maritalStatus: MaritalStatus!
+  primaryLanguage: String!
+  birthPlace: String!
+  address: String!
+  pincode: String!
+  country: String!
+  occupation: String!
+  contact1: String!
+  contact2: String!
+  socioEcoStatus: String!
+  immunizationHistory: String!  
+  allergyStatus: Boolean
+  organDonorStatus: Boolean
+  PMH: String!
+  DHx: String!
+  Ca: Boolean
+  IDDM: Boolean
+  NIDDM: Boolean
+  COPD: Boolean
+  MI: Boolean
+  AF: Boolean
+}

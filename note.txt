@@ -1,0 +1,7 @@
+pass data to server
+a. while registering medical practioner
+    Only hospitalid of hospital in string
+    dob in YYYY-MM-DD in string
+    sex not in string but plain enum
+
+// Only medicalPractitioner created the case has access to each record
