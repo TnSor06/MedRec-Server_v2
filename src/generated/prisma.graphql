@@ -1,5 +1,5 @@
 # source: http://localhost:4466
-# timestamp: Mon Oct 28 2019 20:26:07 GMT+0530 (IST)
+# timestamp: Tue Dec 17 2019 04:23:33 GMT+0530 (IST)
 
 type AggregateCareProvider {
   count: Int!
@@ -704,6 +704,7 @@ type DatabaseAdmin implements Node {
   contact: String!
   address: String!
   country: Country!
+  registeredAt: DateTime!
 }
 
 """A connection to a list of items."""
@@ -740,12 +741,15 @@ enum DatabaseAdminOrderByInput {
   contact_DESC
   address_ASC
   address_DESC
+  registeredAt_ASC
+  registeredAt_DESC
 }
 
 type DatabaseAdminPreviousValues {
   id: ID!
   contact: String!
   address: String!
+  registeredAt: DateTime!
 }
 
 type DatabaseAdminSubscriptionPayload {
@@ -914,6 +918,28 @@ input DatabaseAdminWhereInput {
 
   """All values not ending with the given string."""
   address_not_ends_with: String
+  registeredAt: DateTime
+
+  """All values that are not equal to given value."""
+  registeredAt_not: DateTime
+
+  """All values that are contained in given list."""
+  registeredAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  registeredAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  registeredAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  registeredAt_lte: DateTime
+
+  """All values greater than the given value."""
+  registeredAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  registeredAt_gte: DateTime
   user: UserWhereInput
   country: CountryWhereInput
 }
@@ -2811,91 +2837,91 @@ type Mutation {
   createDatabaseAdmin(data: DatabaseAdminCreateInput!): DatabaseAdmin!
   createCareProvider(data: CareProviderCreateInput!): CareProvider!
   createInsurance(data: InsuranceCreateInput!): Insurance!
+  createPatientCase(data: PatientCaseCreateInput!): PatientCase!
+  createPatientRecord(data: PatientRecordCreateInput!): PatientRecord!
   createSharedCase(data: SharedCaseCreateInput!): SharedCase!
   createSharedRecord(data: SharedRecordCreateInput!): SharedRecord!
-  createPatientCase(data: PatientCaseCreateInput!): PatientCase!
   createHospital(data: HospitalCreateInput!): Hospital!
   createPatient(data: PatientCreateInput!): Patient!
-  createMedicalPractitioner(data: MedicalPractitionerCreateInput!): MedicalPractitioner!
-  createPatientRecord(data: PatientRecordCreateInput!): PatientRecord!
   createUser(data: UserCreateInput!): User!
   createCountry(data: CountryCreateInput!): Country!
   createICDSubCode(data: ICDSubCodeCreateInput!): ICDSubCode!
   createRegion(data: RegionCreateInput!): Region!
+  createMedicalPractitioner(data: MedicalPractitionerCreateInput!): MedicalPractitioner!
   createICDCode(data: ICDCodeCreateInput!): ICDCode!
   updateDatabaseAdmin(data: DatabaseAdminUpdateInput!, where: DatabaseAdminWhereUniqueInput!): DatabaseAdmin
   updateCareProvider(data: CareProviderUpdateInput!, where: CareProviderWhereUniqueInput!): CareProvider
   updateInsurance(data: InsuranceUpdateInput!, where: InsuranceWhereUniqueInput!): Insurance
+  updatePatientCase(data: PatientCaseUpdateInput!, where: PatientCaseWhereUniqueInput!): PatientCase
+  updatePatientRecord(data: PatientRecordUpdateInput!, where: PatientRecordWhereUniqueInput!): PatientRecord
   updateSharedCase(data: SharedCaseUpdateInput!, where: SharedCaseWhereUniqueInput!): SharedCase
   updateSharedRecord(data: SharedRecordUpdateInput!, where: SharedRecordWhereUniqueInput!): SharedRecord
-  updatePatientCase(data: PatientCaseUpdateInput!, where: PatientCaseWhereUniqueInput!): PatientCase
   updateHospital(data: HospitalUpdateInput!, where: HospitalWhereUniqueInput!): Hospital
   updatePatient(data: PatientUpdateInput!, where: PatientWhereUniqueInput!): Patient
-  updateMedicalPractitioner(data: MedicalPractitionerUpdateInput!, where: MedicalPractitionerWhereUniqueInput!): MedicalPractitioner
-  updatePatientRecord(data: PatientRecordUpdateInput!, where: PatientRecordWhereUniqueInput!): PatientRecord
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateCountry(data: CountryUpdateInput!, where: CountryWhereUniqueInput!): Country
   updateICDSubCode(data: ICDSubCodeUpdateInput!, where: ICDSubCodeWhereUniqueInput!): ICDSubCode
   updateRegion(data: RegionUpdateInput!, where: RegionWhereUniqueInput!): Region
+  updateMedicalPractitioner(data: MedicalPractitionerUpdateInput!, where: MedicalPractitionerWhereUniqueInput!): MedicalPractitioner
   updateICDCode(data: ICDCodeUpdateInput!, where: ICDCodeWhereUniqueInput!): ICDCode
   deleteDatabaseAdmin(where: DatabaseAdminWhereUniqueInput!): DatabaseAdmin
   deleteCareProvider(where: CareProviderWhereUniqueInput!): CareProvider
   deleteInsurance(where: InsuranceWhereUniqueInput!): Insurance
+  deletePatientCase(where: PatientCaseWhereUniqueInput!): PatientCase
+  deletePatientRecord(where: PatientRecordWhereUniqueInput!): PatientRecord
   deleteSharedCase(where: SharedCaseWhereUniqueInput!): SharedCase
   deleteSharedRecord(where: SharedRecordWhereUniqueInput!): SharedRecord
-  deletePatientCase(where: PatientCaseWhereUniqueInput!): PatientCase
   deleteHospital(where: HospitalWhereUniqueInput!): Hospital
   deletePatient(where: PatientWhereUniqueInput!): Patient
-  deleteMedicalPractitioner(where: MedicalPractitionerWhereUniqueInput!): MedicalPractitioner
-  deletePatientRecord(where: PatientRecordWhereUniqueInput!): PatientRecord
   deleteUser(where: UserWhereUniqueInput!): User
   deleteCountry(where: CountryWhereUniqueInput!): Country
   deleteICDSubCode(where: ICDSubCodeWhereUniqueInput!): ICDSubCode
   deleteRegion(where: RegionWhereUniqueInput!): Region
+  deleteMedicalPractitioner(where: MedicalPractitionerWhereUniqueInput!): MedicalPractitioner
   deleteICDCode(where: ICDCodeWhereUniqueInput!): ICDCode
   upsertDatabaseAdmin(where: DatabaseAdminWhereUniqueInput!, create: DatabaseAdminCreateInput!, update: DatabaseAdminUpdateInput!): DatabaseAdmin!
   upsertCareProvider(where: CareProviderWhereUniqueInput!, create: CareProviderCreateInput!, update: CareProviderUpdateInput!): CareProvider!
   upsertInsurance(where: InsuranceWhereUniqueInput!, create: InsuranceCreateInput!, update: InsuranceUpdateInput!): Insurance!
+  upsertPatientCase(where: PatientCaseWhereUniqueInput!, create: PatientCaseCreateInput!, update: PatientCaseUpdateInput!): PatientCase!
+  upsertPatientRecord(where: PatientRecordWhereUniqueInput!, create: PatientRecordCreateInput!, update: PatientRecordUpdateInput!): PatientRecord!
   upsertSharedCase(where: SharedCaseWhereUniqueInput!, create: SharedCaseCreateInput!, update: SharedCaseUpdateInput!): SharedCase!
   upsertSharedRecord(where: SharedRecordWhereUniqueInput!, create: SharedRecordCreateInput!, update: SharedRecordUpdateInput!): SharedRecord!
-  upsertPatientCase(where: PatientCaseWhereUniqueInput!, create: PatientCaseCreateInput!, update: PatientCaseUpdateInput!): PatientCase!
   upsertHospital(where: HospitalWhereUniqueInput!, create: HospitalCreateInput!, update: HospitalUpdateInput!): Hospital!
   upsertPatient(where: PatientWhereUniqueInput!, create: PatientCreateInput!, update: PatientUpdateInput!): Patient!
-  upsertMedicalPractitioner(where: MedicalPractitionerWhereUniqueInput!, create: MedicalPractitionerCreateInput!, update: MedicalPractitionerUpdateInput!): MedicalPractitioner!
-  upsertPatientRecord(where: PatientRecordWhereUniqueInput!, create: PatientRecordCreateInput!, update: PatientRecordUpdateInput!): PatientRecord!
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
   upsertCountry(where: CountryWhereUniqueInput!, create: CountryCreateInput!, update: CountryUpdateInput!): Country!
   upsertICDSubCode(where: ICDSubCodeWhereUniqueInput!, create: ICDSubCodeCreateInput!, update: ICDSubCodeUpdateInput!): ICDSubCode!
   upsertRegion(where: RegionWhereUniqueInput!, create: RegionCreateInput!, update: RegionUpdateInput!): Region!
+  upsertMedicalPractitioner(where: MedicalPractitionerWhereUniqueInput!, create: MedicalPractitionerCreateInput!, update: MedicalPractitionerUpdateInput!): MedicalPractitioner!
   upsertICDCode(where: ICDCodeWhereUniqueInput!, create: ICDCodeCreateInput!, update: ICDCodeUpdateInput!): ICDCode!
   updateManyDatabaseAdmins(data: DatabaseAdminUpdateManyMutationInput!, where: DatabaseAdminWhereInput): BatchPayload!
   updateManyCareProviders(data: CareProviderUpdateManyMutationInput!, where: CareProviderWhereInput): BatchPayload!
   updateManyInsurances(data: InsuranceUpdateManyMutationInput!, where: InsuranceWhereInput): BatchPayload!
-  updateManySharedCases(data: SharedCaseUpdateManyMutationInput!, where: SharedCaseWhereInput): BatchPayload!
   updateManyPatientCases(data: PatientCaseUpdateManyMutationInput!, where: PatientCaseWhereInput): BatchPayload!
+  updateManyPatientRecords(data: PatientRecordUpdateManyMutationInput!, where: PatientRecordWhereInput): BatchPayload!
+  updateManySharedCases(data: SharedCaseUpdateManyMutationInput!, where: SharedCaseWhereInput): BatchPayload!
   updateManyHospitals(data: HospitalUpdateManyMutationInput!, where: HospitalWhereInput): BatchPayload!
   updateManyPatients(data: PatientUpdateManyMutationInput!, where: PatientWhereInput): BatchPayload!
-  updateManyMedicalPractitioners(data: MedicalPractitionerUpdateManyMutationInput!, where: MedicalPractitionerWhereInput): BatchPayload!
-  updateManyPatientRecords(data: PatientRecordUpdateManyMutationInput!, where: PatientRecordWhereInput): BatchPayload!
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
   updateManyCountries(data: CountryUpdateManyMutationInput!, where: CountryWhereInput): BatchPayload!
   updateManyICDSubCodes(data: ICDSubCodeUpdateManyMutationInput!, where: ICDSubCodeWhereInput): BatchPayload!
   updateManyRegions(data: RegionUpdateManyMutationInput!, where: RegionWhereInput): BatchPayload!
+  updateManyMedicalPractitioners(data: MedicalPractitionerUpdateManyMutationInput!, where: MedicalPractitionerWhereInput): BatchPayload!
   updateManyICDCodes(data: ICDCodeUpdateManyMutationInput!, where: ICDCodeWhereInput): BatchPayload!
   deleteManyDatabaseAdmins(where: DatabaseAdminWhereInput): BatchPayload!
   deleteManyCareProviders(where: CareProviderWhereInput): BatchPayload!
   deleteManyInsurances(where: InsuranceWhereInput): BatchPayload!
+  deleteManyPatientCases(where: PatientCaseWhereInput): BatchPayload!
+  deleteManyPatientRecords(where: PatientRecordWhereInput): BatchPayload!
   deleteManySharedCases(where: SharedCaseWhereInput): BatchPayload!
   deleteManySharedRecords(where: SharedRecordWhereInput): BatchPayload!
-  deleteManyPatientCases(where: PatientCaseWhereInput): BatchPayload!
   deleteManyHospitals(where: HospitalWhereInput): BatchPayload!
   deleteManyPatients(where: PatientWhereInput): BatchPayload!
-  deleteManyMedicalPractitioners(where: MedicalPractitionerWhereInput): BatchPayload!
-  deleteManyPatientRecords(where: PatientRecordWhereInput): BatchPayload!
   deleteManyUsers(where: UserWhereInput): BatchPayload!
   deleteManyCountries(where: CountryWhereInput): BatchPayload!
   deleteManyICDSubCodes(where: ICDSubCodeWhereInput): BatchPayload!
   deleteManyRegions(where: RegionWhereInput): BatchPayload!
+  deleteManyMedicalPractitioners(where: MedicalPractitionerWhereInput): BatchPayload!
   deleteManyICDCodes(where: ICDCodeWhereInput): BatchPayload!
 }
 
@@ -2974,8 +3000,10 @@ type PatientCase implements Node {
   diagnosisType: DiagnosisType!
   currentClinicalStatus: Boolean!
   createdAt: DateTime!
+  updatedAt: DateTime!
   patientRecord(where: PatientRecordWhereInput, orderBy: PatientRecordOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [PatientRecord!]
   sharedCase(where: SharedCaseWhereInput, orderBy: SharedCaseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [SharedCase!]
+  sharedRecord(where: SharedRecordWhereInput, orderBy: SharedRecordOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [SharedRecord!]
 }
 
 """A connection to a list of items."""
@@ -3004,16 +3032,12 @@ input PatientCaseCreateInput {
   icdSubCode: ICDSubCodeCreateOneInput!
   patientRecord: PatientRecordCreateManyWithoutCaseInput
   sharedCase: SharedCaseCreateManyWithoutCaseInput
+  sharedRecord: SharedRecordCreateManyWithoutCaseInput
 }
 
 input PatientCaseCreateManyWithoutPatientInput {
   create: [PatientCaseCreateWithoutPatientInput!]
   connect: [PatientCaseWhereUniqueInput!]
-}
-
-input PatientCaseCreateOneInput {
-  create: PatientCaseCreateInput
-  connect: PatientCaseWhereUniqueInput
 }
 
 input PatientCaseCreateOneWithoutPatientRecordInput {
@@ -3023,6 +3047,11 @@ input PatientCaseCreateOneWithoutPatientRecordInput {
 
 input PatientCaseCreateOneWithoutSharedCaseInput {
   create: PatientCaseCreateWithoutSharedCaseInput
+  connect: PatientCaseWhereUniqueInput
+}
+
+input PatientCaseCreateOneWithoutSharedRecordInput {
+  create: PatientCaseCreateWithoutSharedRecordInput
   connect: PatientCaseWhereUniqueInput
 }
 
@@ -3041,6 +3070,7 @@ input PatientCaseCreateWithoutPatientInput {
   icdSubCode: ICDSubCodeCreateOneInput!
   patientRecord: PatientRecordCreateManyWithoutCaseInput
   sharedCase: SharedCaseCreateManyWithoutCaseInput
+  sharedRecord: SharedRecordCreateManyWithoutCaseInput
 }
 
 input PatientCaseCreateWithoutPatientRecordInput {
@@ -3058,6 +3088,7 @@ input PatientCaseCreateWithoutPatientRecordInput {
   icdCode: ICDCodeCreateOneInput!
   icdSubCode: ICDSubCodeCreateOneInput!
   sharedCase: SharedCaseCreateManyWithoutCaseInput
+  sharedRecord: SharedRecordCreateManyWithoutCaseInput
 }
 
 input PatientCaseCreateWithoutSharedCaseInput {
@@ -3075,6 +3106,25 @@ input PatientCaseCreateWithoutSharedCaseInput {
   icdCode: ICDCodeCreateOneInput!
   icdSubCode: ICDSubCodeCreateOneInput!
   patientRecord: PatientRecordCreateManyWithoutCaseInput
+  sharedRecord: SharedRecordCreateManyWithoutCaseInput
+}
+
+input PatientCaseCreateWithoutSharedRecordInput {
+  id: ID
+  caseId: String!
+  HPC: String!
+  MoI: String
+  DandV: String
+  clinicalNote: String!
+  noOfVisits: Int!
+  diagnosisType: DiagnosisType!
+  currentClinicalStatus: Boolean!
+  patient: PatientCreateOneWithoutPatientCaseInput!
+  medicalPractitioner: MedicalPractitionerCreateOneInput!
+  icdCode: ICDCodeCreateOneInput!
+  icdSubCode: ICDSubCodeCreateOneInput!
+  patientRecord: PatientRecordCreateManyWithoutCaseInput
+  sharedCase: SharedCaseCreateManyWithoutCaseInput
 }
 
 """An edge in a connection."""
@@ -3107,6 +3157,8 @@ enum PatientCaseOrderByInput {
   currentClinicalStatus_DESC
   createdAt_ASC
   createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
 }
 
 type PatientCasePreviousValues {
@@ -3120,6 +3172,7 @@ type PatientCasePreviousValues {
   diagnosisType: DiagnosisType!
   currentClinicalStatus: Boolean!
   createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 input PatientCaseScalarWhereInput {
@@ -3429,6 +3482,28 @@ input PatientCaseScalarWhereInput {
 
   """All values greater than or equal the given value."""
   createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
 }
 
 type PatientCaseSubscriptionPayload {
@@ -3462,23 +3537,6 @@ input PatientCaseSubscriptionWhereInput {
   node: PatientCaseWhereInput
 }
 
-input PatientCaseUpdateDataInput {
-  caseId: String
-  HPC: String
-  MoI: String
-  DandV: String
-  clinicalNote: String
-  noOfVisits: Int
-  diagnosisType: DiagnosisType
-  currentClinicalStatus: Boolean
-  patient: PatientUpdateOneRequiredWithoutPatientCaseInput
-  medicalPractitioner: MedicalPractitionerUpdateOneRequiredInput
-  icdCode: ICDCodeUpdateOneRequiredInput
-  icdSubCode: ICDSubCodeUpdateOneRequiredInput
-  patientRecord: PatientRecordUpdateManyWithoutCaseInput
-  sharedCase: SharedCaseUpdateManyWithoutCaseInput
-}
-
 input PatientCaseUpdateInput {
   caseId: String
   HPC: String
@@ -3494,6 +3552,7 @@ input PatientCaseUpdateInput {
   icdSubCode: ICDSubCodeUpdateOneRequiredInput
   patientRecord: PatientRecordUpdateManyWithoutCaseInput
   sharedCase: SharedCaseUpdateManyWithoutCaseInput
+  sharedRecord: SharedRecordUpdateManyWithoutCaseInput
 }
 
 input PatientCaseUpdateManyDataInput {
@@ -3535,13 +3594,6 @@ input PatientCaseUpdateManyWithWhereNestedInput {
   data: PatientCaseUpdateManyDataInput!
 }
 
-input PatientCaseUpdateOneRequiredInput {
-  create: PatientCaseCreateInput
-  connect: PatientCaseWhereUniqueInput
-  update: PatientCaseUpdateDataInput
-  upsert: PatientCaseUpsertNestedInput
-}
-
 input PatientCaseUpdateOneRequiredWithoutPatientRecordInput {
   create: PatientCaseCreateWithoutPatientRecordInput
   connect: PatientCaseWhereUniqueInput
@@ -3554,6 +3606,13 @@ input PatientCaseUpdateOneRequiredWithoutSharedCaseInput {
   connect: PatientCaseWhereUniqueInput
   update: PatientCaseUpdateWithoutSharedCaseDataInput
   upsert: PatientCaseUpsertWithoutSharedCaseInput
+}
+
+input PatientCaseUpdateOneRequiredWithoutSharedRecordInput {
+  create: PatientCaseCreateWithoutSharedRecordInput
+  connect: PatientCaseWhereUniqueInput
+  update: PatientCaseUpdateWithoutSharedRecordDataInput
+  upsert: PatientCaseUpsertWithoutSharedRecordInput
 }
 
 input PatientCaseUpdateWithoutPatientDataInput {
@@ -3570,6 +3629,7 @@ input PatientCaseUpdateWithoutPatientDataInput {
   icdSubCode: ICDSubCodeUpdateOneRequiredInput
   patientRecord: PatientRecordUpdateManyWithoutCaseInput
   sharedCase: SharedCaseUpdateManyWithoutCaseInput
+  sharedRecord: SharedRecordUpdateManyWithoutCaseInput
 }
 
 input PatientCaseUpdateWithoutPatientRecordDataInput {
@@ -3586,6 +3646,7 @@ input PatientCaseUpdateWithoutPatientRecordDataInput {
   icdCode: ICDCodeUpdateOneRequiredInput
   icdSubCode: ICDSubCodeUpdateOneRequiredInput
   sharedCase: SharedCaseUpdateManyWithoutCaseInput
+  sharedRecord: SharedRecordUpdateManyWithoutCaseInput
 }
 
 input PatientCaseUpdateWithoutSharedCaseDataInput {
@@ -3602,16 +3663,29 @@ input PatientCaseUpdateWithoutSharedCaseDataInput {
   icdCode: ICDCodeUpdateOneRequiredInput
   icdSubCode: ICDSubCodeUpdateOneRequiredInput
   patientRecord: PatientRecordUpdateManyWithoutCaseInput
+  sharedRecord: SharedRecordUpdateManyWithoutCaseInput
+}
+
+input PatientCaseUpdateWithoutSharedRecordDataInput {
+  caseId: String
+  HPC: String
+  MoI: String
+  DandV: String
+  clinicalNote: String
+  noOfVisits: Int
+  diagnosisType: DiagnosisType
+  currentClinicalStatus: Boolean
+  patient: PatientUpdateOneRequiredWithoutPatientCaseInput
+  medicalPractitioner: MedicalPractitionerUpdateOneRequiredInput
+  icdCode: ICDCodeUpdateOneRequiredInput
+  icdSubCode: ICDSubCodeUpdateOneRequiredInput
+  patientRecord: PatientRecordUpdateManyWithoutCaseInput
+  sharedCase: SharedCaseUpdateManyWithoutCaseInput
 }
 
 input PatientCaseUpdateWithWhereUniqueWithoutPatientInput {
   where: PatientCaseWhereUniqueInput!
   data: PatientCaseUpdateWithoutPatientDataInput!
-}
-
-input PatientCaseUpsertNestedInput {
-  update: PatientCaseUpdateDataInput!
-  create: PatientCaseCreateInput!
 }
 
 input PatientCaseUpsertWithoutPatientRecordInput {
@@ -3622,6 +3696,11 @@ input PatientCaseUpsertWithoutPatientRecordInput {
 input PatientCaseUpsertWithoutSharedCaseInput {
   update: PatientCaseUpdateWithoutSharedCaseDataInput!
   create: PatientCaseCreateWithoutSharedCaseInput!
+}
+
+input PatientCaseUpsertWithoutSharedRecordInput {
+  update: PatientCaseUpdateWithoutSharedRecordDataInput!
+  create: PatientCaseCreateWithoutSharedRecordInput!
 }
 
 input PatientCaseUpsertWithWhereUniqueWithoutPatientInput {
@@ -3931,12 +4010,35 @@ input PatientCaseWhereInput {
 
   """All values greater than or equal the given value."""
   createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
   patient: PatientWhereInput
   medicalPractitioner: MedicalPractitionerWhereInput
   icdCode: ICDCodeWhereInput
   icdSubCode: ICDSubCodeWhereInput
   patientRecord_some: PatientRecordWhereInput
   sharedCase_some: SharedCaseWhereInput
+  sharedRecord_some: SharedRecordWhereInput
 }
 
 input PatientCaseWhereUniqueInput {
@@ -4191,6 +4293,7 @@ type PatientRecord implements Node {
   patient: Patient!
   case: PatientCase!
   recordId: String!
+  medicalPractitioner: MedicalPractitioner!
   visitNo: Int!
   onArrival: String!
   diagnosis: String!
@@ -4208,6 +4311,7 @@ type PatientRecord implements Node {
   query: String!
   followUpObservations: String!
   createdAt: DateTime!
+  sharedRecord(where: SharedRecordWhereInput, orderBy: SharedRecordOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [SharedRecord!]
 }
 
 """A connection to a list of items."""
@@ -4241,6 +4345,8 @@ input PatientRecordCreateInput {
   followUpObservations: String!
   patient: PatientCreateOneInput!
   case: PatientCaseCreateOneWithoutPatientRecordInput!
+  medicalPractitioner: MedicalPractitionerCreateOneInput!
+  sharedRecord: SharedRecordCreateManyWithoutRecordInput
 }
 
 input PatientRecordCreateManyWithoutCaseInput {
@@ -4248,8 +4354,8 @@ input PatientRecordCreateManyWithoutCaseInput {
   connect: [PatientRecordWhereUniqueInput!]
 }
 
-input PatientRecordCreateOneInput {
-  create: PatientRecordCreateInput
+input PatientRecordCreateOneWithoutSharedRecordInput {
+  create: PatientRecordCreateWithoutSharedRecordInput
   connect: PatientRecordWhereUniqueInput
 }
 
@@ -4273,6 +4379,32 @@ input PatientRecordCreateWithoutCaseInput {
   query: String!
   followUpObservations: String!
   patient: PatientCreateOneInput!
+  medicalPractitioner: MedicalPractitionerCreateOneInput!
+  sharedRecord: SharedRecordCreateManyWithoutRecordInput
+}
+
+input PatientRecordCreateWithoutSharedRecordInput {
+  id: ID
+  recordId: String!
+  visitNo: Int!
+  onArrival: String!
+  diagnosis: String!
+  Tx: String!
+  reportSuggestions: String
+  cevsSp: Int!
+  cevsDp: Int!
+  cePr: Int!
+  ceRr: Int!
+  ceHeight: Int!
+  ceWeight: Int!
+  diagnosisAfterReport: String
+  medication: String!
+  advice: String!
+  query: String!
+  followUpObservations: String!
+  patient: PatientCreateOneInput!
+  case: PatientCaseCreateOneWithoutPatientRecordInput!
+  medicalPractitioner: MedicalPractitionerCreateOneInput!
 }
 
 """An edge in a connection."""
@@ -5005,28 +5137,6 @@ input PatientRecordSubscriptionWhereInput {
   node: PatientRecordWhereInput
 }
 
-input PatientRecordUpdateDataInput {
-  recordId: String
-  visitNo: Int
-  onArrival: String
-  diagnosis: String
-  Tx: String
-  reportSuggestions: String
-  cevsSp: Int
-  cevsDp: Int
-  cePr: Int
-  ceRr: Int
-  ceHeight: Int
-  ceWeight: Int
-  diagnosisAfterReport: String
-  medication: String
-  advice: String
-  query: String
-  followUpObservations: String
-  patient: PatientUpdateOneRequiredInput
-  case: PatientCaseUpdateOneRequiredWithoutPatientRecordInput
-}
-
 input PatientRecordUpdateInput {
   recordId: String
   visitNo: Int
@@ -5047,6 +5157,8 @@ input PatientRecordUpdateInput {
   followUpObservations: String
   patient: PatientUpdateOneRequiredInput
   case: PatientCaseUpdateOneRequiredWithoutPatientRecordInput
+  medicalPractitioner: MedicalPractitionerUpdateOneRequiredInput
+  sharedRecord: SharedRecordUpdateManyWithoutRecordInput
 }
 
 input PatientRecordUpdateManyDataInput {
@@ -5106,11 +5218,11 @@ input PatientRecordUpdateManyWithWhereNestedInput {
   data: PatientRecordUpdateManyDataInput!
 }
 
-input PatientRecordUpdateOneRequiredInput {
-  create: PatientRecordCreateInput
+input PatientRecordUpdateOneRequiredWithoutSharedRecordInput {
+  create: PatientRecordCreateWithoutSharedRecordInput
   connect: PatientRecordWhereUniqueInput
-  update: PatientRecordUpdateDataInput
-  upsert: PatientRecordUpsertNestedInput
+  update: PatientRecordUpdateWithoutSharedRecordDataInput
+  upsert: PatientRecordUpsertWithoutSharedRecordInput
 }
 
 input PatientRecordUpdateWithoutCaseDataInput {
@@ -5132,6 +5244,31 @@ input PatientRecordUpdateWithoutCaseDataInput {
   query: String
   followUpObservations: String
   patient: PatientUpdateOneRequiredInput
+  medicalPractitioner: MedicalPractitionerUpdateOneRequiredInput
+  sharedRecord: SharedRecordUpdateManyWithoutRecordInput
+}
+
+input PatientRecordUpdateWithoutSharedRecordDataInput {
+  recordId: String
+  visitNo: Int
+  onArrival: String
+  diagnosis: String
+  Tx: String
+  reportSuggestions: String
+  cevsSp: Int
+  cevsDp: Int
+  cePr: Int
+  ceRr: Int
+  ceHeight: Int
+  ceWeight: Int
+  diagnosisAfterReport: String
+  medication: String
+  advice: String
+  query: String
+  followUpObservations: String
+  patient: PatientUpdateOneRequiredInput
+  case: PatientCaseUpdateOneRequiredWithoutPatientRecordInput
+  medicalPractitioner: MedicalPractitionerUpdateOneRequiredInput
 }
 
 input PatientRecordUpdateWithWhereUniqueWithoutCaseInput {
@@ -5139,9 +5276,9 @@ input PatientRecordUpdateWithWhereUniqueWithoutCaseInput {
   data: PatientRecordUpdateWithoutCaseDataInput!
 }
 
-input PatientRecordUpsertNestedInput {
-  update: PatientRecordUpdateDataInput!
-  create: PatientRecordCreateInput!
+input PatientRecordUpsertWithoutSharedRecordInput {
+  update: PatientRecordUpdateWithoutSharedRecordDataInput!
+  create: PatientRecordCreateWithoutSharedRecordInput!
 }
 
 input PatientRecordUpsertWithWhereUniqueWithoutCaseInput {
@@ -5771,6 +5908,8 @@ input PatientRecordWhereInput {
   createdAt_gte: DateTime
   patient: PatientWhereInput
   case: PatientCaseWhereInput
+  medicalPractitioner: MedicalPractitionerWhereInput
+  sharedRecord_some: SharedRecordWhereInput
 }
 
 input PatientRecordWhereUniqueInput {
@@ -6678,47 +6817,47 @@ type Query {
   databaseAdmins(where: DatabaseAdminWhereInput, orderBy: DatabaseAdminOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [DatabaseAdmin]!
   careProviders(where: CareProviderWhereInput, orderBy: CareProviderOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [CareProvider]!
   insurances(where: InsuranceWhereInput, orderBy: InsuranceOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Insurance]!
+  patientCases(where: PatientCaseWhereInput, orderBy: PatientCaseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [PatientCase]!
+  patientRecords(where: PatientRecordWhereInput, orderBy: PatientRecordOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [PatientRecord]!
   sharedCases(where: SharedCaseWhereInput, orderBy: SharedCaseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [SharedCase]!
   sharedRecords(where: SharedRecordWhereInput, orderBy: SharedRecordOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [SharedRecord]!
-  patientCases(where: PatientCaseWhereInput, orderBy: PatientCaseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [PatientCase]!
   hospitals(where: HospitalWhereInput, orderBy: HospitalOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Hospital]!
   patients(where: PatientWhereInput, orderBy: PatientOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Patient]!
-  medicalPractitioners(where: MedicalPractitionerWhereInput, orderBy: MedicalPractitionerOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [MedicalPractitioner]!
-  patientRecords(where: PatientRecordWhereInput, orderBy: PatientRecordOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [PatientRecord]!
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   countries(where: CountryWhereInput, orderBy: CountryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Country]!
   iCDSubCodes(where: ICDSubCodeWhereInput, orderBy: ICDSubCodeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ICDSubCode]!
   regions(where: RegionWhereInput, orderBy: RegionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Region]!
+  medicalPractitioners(where: MedicalPractitionerWhereInput, orderBy: MedicalPractitionerOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [MedicalPractitioner]!
   iCDCodes(where: ICDCodeWhereInput, orderBy: ICDCodeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ICDCode]!
   databaseAdmin(where: DatabaseAdminWhereUniqueInput!): DatabaseAdmin
   careProvider(where: CareProviderWhereUniqueInput!): CareProvider
   insurance(where: InsuranceWhereUniqueInput!): Insurance
+  patientCase(where: PatientCaseWhereUniqueInput!): PatientCase
+  patientRecord(where: PatientRecordWhereUniqueInput!): PatientRecord
   sharedCase(where: SharedCaseWhereUniqueInput!): SharedCase
   sharedRecord(where: SharedRecordWhereUniqueInput!): SharedRecord
-  patientCase(where: PatientCaseWhereUniqueInput!): PatientCase
   hospital(where: HospitalWhereUniqueInput!): Hospital
   patient(where: PatientWhereUniqueInput!): Patient
-  medicalPractitioner(where: MedicalPractitionerWhereUniqueInput!): MedicalPractitioner
-  patientRecord(where: PatientRecordWhereUniqueInput!): PatientRecord
   user(where: UserWhereUniqueInput!): User
   country(where: CountryWhereUniqueInput!): Country
   iCDSubCode(where: ICDSubCodeWhereUniqueInput!): ICDSubCode
   region(where: RegionWhereUniqueInput!): Region
+  medicalPractitioner(where: MedicalPractitionerWhereUniqueInput!): MedicalPractitioner
   iCDCode(where: ICDCodeWhereUniqueInput!): ICDCode
   databaseAdminsConnection(where: DatabaseAdminWhereInput, orderBy: DatabaseAdminOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): DatabaseAdminConnection!
   careProvidersConnection(where: CareProviderWhereInput, orderBy: CareProviderOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CareProviderConnection!
   insurancesConnection(where: InsuranceWhereInput, orderBy: InsuranceOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): InsuranceConnection!
+  patientCasesConnection(where: PatientCaseWhereInput, orderBy: PatientCaseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PatientCaseConnection!
+  patientRecordsConnection(where: PatientRecordWhereInput, orderBy: PatientRecordOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PatientRecordConnection!
   sharedCasesConnection(where: SharedCaseWhereInput, orderBy: SharedCaseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SharedCaseConnection!
   sharedRecordsConnection(where: SharedRecordWhereInput, orderBy: SharedRecordOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SharedRecordConnection!
-  patientCasesConnection(where: PatientCaseWhereInput, orderBy: PatientCaseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PatientCaseConnection!
   hospitalsConnection(where: HospitalWhereInput, orderBy: HospitalOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): HospitalConnection!
   patientsConnection(where: PatientWhereInput, orderBy: PatientOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PatientConnection!
-  medicalPractitionersConnection(where: MedicalPractitionerWhereInput, orderBy: MedicalPractitionerOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): MedicalPractitionerConnection!
-  patientRecordsConnection(where: PatientRecordWhereInput, orderBy: PatientRecordOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PatientRecordConnection!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
   countriesConnection(where: CountryWhereInput, orderBy: CountryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CountryConnection!
   iCDSubCodesConnection(where: ICDSubCodeWhereInput, orderBy: ICDSubCodeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ICDSubCodeConnection!
   regionsConnection(where: RegionWhereInput, orderBy: RegionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): RegionConnection!
+  medicalPractitionersConnection(where: MedicalPractitionerWhereInput, orderBy: MedicalPractitionerOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): MedicalPractitionerConnection!
   iCDCodesConnection(where: ICDCodeWhereInput, orderBy: ICDCodeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ICDCodeConnection!
 
   """Fetches an object given its ID"""
@@ -6955,7 +7094,6 @@ type SharedCase {
   sender: MedicalPractitioner!
   receiver: MedicalPractitioner!
   HL7: String!
-  sharedRecord(where: SharedRecordWhereInput, orderBy: SharedRecordOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [SharedRecord!]
   sharedAt: DateTime!
 }
 
@@ -6975,7 +7113,6 @@ input SharedCaseCreateInput {
   case: PatientCaseCreateOneWithoutSharedCaseInput!
   sender: MedicalPractitionerCreateOneInput!
   receiver: MedicalPractitionerCreateOneInput!
-  sharedRecord: SharedRecordCreateManyWithoutSharedCaseInput
 }
 
 input SharedCaseCreateManyWithoutCaseInput {
@@ -6983,23 +7120,9 @@ input SharedCaseCreateManyWithoutCaseInput {
   connect: [SharedCaseWhereUniqueInput!]
 }
 
-input SharedCaseCreateOneWithoutSharedRecordInput {
-  create: SharedCaseCreateWithoutSharedRecordInput
-  connect: SharedCaseWhereUniqueInput
-}
-
 input SharedCaseCreateWithoutCaseInput {
   sharedCaseId: ID
   HL7: String!
-  sender: MedicalPractitionerCreateOneInput!
-  receiver: MedicalPractitionerCreateOneInput!
-  sharedRecord: SharedRecordCreateManyWithoutSharedCaseInput
-}
-
-input SharedCaseCreateWithoutSharedRecordInput {
-  sharedCaseId: ID
-  HL7: String!
-  case: PatientCaseCreateOneWithoutSharedCaseInput!
   sender: MedicalPractitionerCreateOneInput!
   receiver: MedicalPractitionerCreateOneInput!
 }
@@ -7177,7 +7300,6 @@ input SharedCaseUpdateInput {
   case: PatientCaseUpdateOneRequiredWithoutSharedCaseInput
   sender: MedicalPractitionerUpdateOneRequiredInput
   receiver: MedicalPractitionerUpdateOneRequiredInput
-  sharedRecord: SharedRecordUpdateManyWithoutSharedCaseInput
 }
 
 input SharedCaseUpdateManyDataInput {
@@ -7205,23 +7327,8 @@ input SharedCaseUpdateManyWithWhereNestedInput {
   data: SharedCaseUpdateManyDataInput!
 }
 
-input SharedCaseUpdateOneRequiredWithoutSharedRecordInput {
-  create: SharedCaseCreateWithoutSharedRecordInput
-  connect: SharedCaseWhereUniqueInput
-  update: SharedCaseUpdateWithoutSharedRecordDataInput
-  upsert: SharedCaseUpsertWithoutSharedRecordInput
-}
-
 input SharedCaseUpdateWithoutCaseDataInput {
   HL7: String
-  sender: MedicalPractitionerUpdateOneRequiredInput
-  receiver: MedicalPractitionerUpdateOneRequiredInput
-  sharedRecord: SharedRecordUpdateManyWithoutSharedCaseInput
-}
-
-input SharedCaseUpdateWithoutSharedRecordDataInput {
-  HL7: String
-  case: PatientCaseUpdateOneRequiredWithoutSharedCaseInput
   sender: MedicalPractitionerUpdateOneRequiredInput
   receiver: MedicalPractitionerUpdateOneRequiredInput
 }
@@ -7229,11 +7336,6 @@ input SharedCaseUpdateWithoutSharedRecordDataInput {
 input SharedCaseUpdateWithWhereUniqueWithoutCaseInput {
   where: SharedCaseWhereUniqueInput!
   data: SharedCaseUpdateWithoutCaseDataInput!
-}
-
-input SharedCaseUpsertWithoutSharedRecordInput {
-  update: SharedCaseUpdateWithoutSharedRecordDataInput!
-  create: SharedCaseCreateWithoutSharedRecordInput!
 }
 
 input SharedCaseUpsertWithWhereUniqueWithoutCaseInput {
@@ -7350,7 +7452,6 @@ input SharedCaseWhereInput {
   case: PatientCaseWhereInput
   sender: MedicalPractitionerWhereInput
   receiver: MedicalPractitionerWhereInput
-  sharedRecord_some: SharedRecordWhereInput
 }
 
 input SharedCaseWhereUniqueInput {
@@ -7361,7 +7462,8 @@ type SharedRecord {
   sharedRecordId: ID!
   record: PatientRecord!
   case: PatientCase!
-  sharedCase: SharedCase!
+  sender: MedicalPractitioner!
+  receiver: MedicalPractitioner!
   sharedAt: DateTime!
 }
 
@@ -7377,20 +7479,34 @@ type SharedRecordConnection {
 
 input SharedRecordCreateInput {
   sharedRecordId: ID
-  record: PatientRecordCreateOneInput!
-  case: PatientCaseCreateOneInput!
-  sharedCase: SharedCaseCreateOneWithoutSharedRecordInput!
+  record: PatientRecordCreateOneWithoutSharedRecordInput!
+  case: PatientCaseCreateOneWithoutSharedRecordInput!
+  sender: MedicalPractitionerCreateOneInput!
+  receiver: MedicalPractitionerCreateOneInput!
 }
 
-input SharedRecordCreateManyWithoutSharedCaseInput {
-  create: [SharedRecordCreateWithoutSharedCaseInput!]
+input SharedRecordCreateManyWithoutCaseInput {
+  create: [SharedRecordCreateWithoutCaseInput!]
   connect: [SharedRecordWhereUniqueInput!]
 }
 
-input SharedRecordCreateWithoutSharedCaseInput {
+input SharedRecordCreateManyWithoutRecordInput {
+  create: [SharedRecordCreateWithoutRecordInput!]
+  connect: [SharedRecordWhereUniqueInput!]
+}
+
+input SharedRecordCreateWithoutCaseInput {
   sharedRecordId: ID
-  record: PatientRecordCreateOneInput!
-  case: PatientCaseCreateOneInput!
+  record: PatientRecordCreateOneWithoutSharedRecordInput!
+  sender: MedicalPractitionerCreateOneInput!
+  receiver: MedicalPractitionerCreateOneInput!
+}
+
+input SharedRecordCreateWithoutRecordInput {
+  sharedRecordId: ID
+  case: PatientCaseCreateOneWithoutSharedRecordInput!
+  sender: MedicalPractitionerCreateOneInput!
+  receiver: MedicalPractitionerCreateOneInput!
 }
 
 """An edge in a connection."""
@@ -7519,36 +7635,66 @@ input SharedRecordSubscriptionWhereInput {
 }
 
 input SharedRecordUpdateInput {
-  record: PatientRecordUpdateOneRequiredInput
-  case: PatientCaseUpdateOneRequiredInput
-  sharedCase: SharedCaseUpdateOneRequiredWithoutSharedRecordInput
+  record: PatientRecordUpdateOneRequiredWithoutSharedRecordInput
+  case: PatientCaseUpdateOneRequiredWithoutSharedRecordInput
+  sender: MedicalPractitionerUpdateOneRequiredInput
+  receiver: MedicalPractitionerUpdateOneRequiredInput
 }
 
-input SharedRecordUpdateManyWithoutSharedCaseInput {
-  create: [SharedRecordCreateWithoutSharedCaseInput!]
+input SharedRecordUpdateManyWithoutCaseInput {
+  create: [SharedRecordCreateWithoutCaseInput!]
   connect: [SharedRecordWhereUniqueInput!]
   set: [SharedRecordWhereUniqueInput!]
   disconnect: [SharedRecordWhereUniqueInput!]
   delete: [SharedRecordWhereUniqueInput!]
-  update: [SharedRecordUpdateWithWhereUniqueWithoutSharedCaseInput!]
+  update: [SharedRecordUpdateWithWhereUniqueWithoutCaseInput!]
   deleteMany: [SharedRecordScalarWhereInput!]
-  upsert: [SharedRecordUpsertWithWhereUniqueWithoutSharedCaseInput!]
+  upsert: [SharedRecordUpsertWithWhereUniqueWithoutCaseInput!]
 }
 
-input SharedRecordUpdateWithoutSharedCaseDataInput {
-  record: PatientRecordUpdateOneRequiredInput
-  case: PatientCaseUpdateOneRequiredInput
+input SharedRecordUpdateManyWithoutRecordInput {
+  create: [SharedRecordCreateWithoutRecordInput!]
+  connect: [SharedRecordWhereUniqueInput!]
+  set: [SharedRecordWhereUniqueInput!]
+  disconnect: [SharedRecordWhereUniqueInput!]
+  delete: [SharedRecordWhereUniqueInput!]
+  update: [SharedRecordUpdateWithWhereUniqueWithoutRecordInput!]
+  deleteMany: [SharedRecordScalarWhereInput!]
+  upsert: [SharedRecordUpsertWithWhereUniqueWithoutRecordInput!]
 }
 
-input SharedRecordUpdateWithWhereUniqueWithoutSharedCaseInput {
+input SharedRecordUpdateWithoutCaseDataInput {
+  record: PatientRecordUpdateOneRequiredWithoutSharedRecordInput
+  sender: MedicalPractitionerUpdateOneRequiredInput
+  receiver: MedicalPractitionerUpdateOneRequiredInput
+}
+
+input SharedRecordUpdateWithoutRecordDataInput {
+  case: PatientCaseUpdateOneRequiredWithoutSharedRecordInput
+  sender: MedicalPractitionerUpdateOneRequiredInput
+  receiver: MedicalPractitionerUpdateOneRequiredInput
+}
+
+input SharedRecordUpdateWithWhereUniqueWithoutCaseInput {
   where: SharedRecordWhereUniqueInput!
-  data: SharedRecordUpdateWithoutSharedCaseDataInput!
+  data: SharedRecordUpdateWithoutCaseDataInput!
 }
 
-input SharedRecordUpsertWithWhereUniqueWithoutSharedCaseInput {
+input SharedRecordUpdateWithWhereUniqueWithoutRecordInput {
   where: SharedRecordWhereUniqueInput!
-  update: SharedRecordUpdateWithoutSharedCaseDataInput!
-  create: SharedRecordCreateWithoutSharedCaseInput!
+  data: SharedRecordUpdateWithoutRecordDataInput!
+}
+
+input SharedRecordUpsertWithWhereUniqueWithoutCaseInput {
+  where: SharedRecordWhereUniqueInput!
+  update: SharedRecordUpdateWithoutCaseDataInput!
+  create: SharedRecordCreateWithoutCaseInput!
+}
+
+input SharedRecordUpsertWithWhereUniqueWithoutRecordInput {
+  where: SharedRecordWhereUniqueInput!
+  update: SharedRecordUpdateWithoutRecordDataInput!
+  create: SharedRecordCreateWithoutRecordInput!
 }
 
 input SharedRecordWhereInput {
@@ -7618,7 +7764,8 @@ input SharedRecordWhereInput {
   sharedAt_gte: DateTime
   record: PatientRecordWhereInput
   case: PatientCaseWhereInput
-  sharedCase: SharedCaseWhereInput
+  sender: MedicalPractitionerWhereInput
+  receiver: MedicalPractitionerWhereInput
 }
 
 input SharedRecordWhereUniqueInput {
@@ -7629,17 +7776,17 @@ type Subscription {
   databaseAdmin(where: DatabaseAdminSubscriptionWhereInput): DatabaseAdminSubscriptionPayload
   careProvider(where: CareProviderSubscriptionWhereInput): CareProviderSubscriptionPayload
   insurance(where: InsuranceSubscriptionWhereInput): InsuranceSubscriptionPayload
+  patientCase(where: PatientCaseSubscriptionWhereInput): PatientCaseSubscriptionPayload
+  patientRecord(where: PatientRecordSubscriptionWhereInput): PatientRecordSubscriptionPayload
   sharedCase(where: SharedCaseSubscriptionWhereInput): SharedCaseSubscriptionPayload
   sharedRecord(where: SharedRecordSubscriptionWhereInput): SharedRecordSubscriptionPayload
-  patientCase(where: PatientCaseSubscriptionWhereInput): PatientCaseSubscriptionPayload
   hospital(where: HospitalSubscriptionWhereInput): HospitalSubscriptionPayload
   patient(where: PatientSubscriptionWhereInput): PatientSubscriptionPayload
-  medicalPractitioner(where: MedicalPractitionerSubscriptionWhereInput): MedicalPractitionerSubscriptionPayload
-  patientRecord(where: PatientRecordSubscriptionWhereInput): PatientRecordSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
   country(where: CountrySubscriptionWhereInput): CountrySubscriptionPayload
   iCDSubCode(where: ICDSubCodeSubscriptionWhereInput): ICDSubCodeSubscriptionPayload
   region(where: RegionSubscriptionWhereInput): RegionSubscriptionPayload
+  medicalPractitioner(where: MedicalPractitionerSubscriptionWhereInput): MedicalPractitionerSubscriptionPayload
   iCDCode(where: ICDCodeSubscriptionWhereInput): ICDCodeSubscriptionPayload
 }
 

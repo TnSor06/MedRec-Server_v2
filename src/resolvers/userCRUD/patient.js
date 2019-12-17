@@ -184,7 +184,7 @@ async function registerPatient(parent, args, {
                     }
                 },
             }
-        }, info)
+        })
         return "Patient registered and will be verified within 2-3 business days."
     }
 }

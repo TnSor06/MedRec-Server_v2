@@ -38,14 +38,17 @@ type PatientCase {
   diagnosisType: DiagnosisType!
   currentClinicalStatus: Boolean!
   createdAt: String!
+  updatedAt: String!
   patientRecord: [PatientRecord]!
   sharedCase: [SharedCase]!
+  sharedRecord:[SharedRecord]!
 }
 type PatientRecord {
   id: ID!
   patient: Patient!
   case: PatientCase!
   recordId: String!
+  medicalPractitioner: MedicalPractitioner!
   visitNo: Int!
   onArrival: String!
   diagnosis: String!
@@ -63,6 +66,7 @@ type PatientRecord {
   query:String!
   followUpObservations:String!
   createdAt: String!
+  sharedRecord:[SharedRecord]!
 }
 type SharedCase {
   sharedCaseId: ID!
@@ -70,13 +74,13 @@ type SharedCase {
   sender: MedicalPractitioner!
   receiver: MedicalPractitioner!
   HL7: String!
-  sharedRecord: [SharedRecord!]!
   sharedAt: String!
 }
 type SharedRecord {
   sharedRecordId: ID!
   record: PatientRecord!
   case: PatientCase!
-  sharedCase: SharedCase!
+  sender: MedicalPractitioner!
+  receiver: MedicalPractitioner!
   sharedAt: String!
 }

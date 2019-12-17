@@ -76,9 +76,28 @@ async function createPatientRecord(parent, args, {
     if (!patientCase) {
         throw new Error("Invalid Patient")
     }
-    // Only medicalPractitioner created the case has access to each record
+    // Only medicalPractitioner created the case or shared to has access to created each record
     if (patientCase.medicalPractitioner.mpId !== medicalPractitioner[0].mpId) {
-        throw new Error("Access Denied")
+        // Check if patient case is shared to medical Practitioner
+        const receiverCheck = await prisma.query.sharedCases({
+            where: {
+                AND: [
+                    {
+                        case: {
+                            caseId: patientCase.caseId
+                        }
+                    }, {
+                        receiver: {
+                            mpId: medicalPractitioner[0].mpId
+                        }
+                    }
+                ]
+            }
+        }, `{ receiver {mpId} }`)
+
+        if (receiverCheck.length === 0) {
+            throw new Error("Access Denied")
+        }
     }
     // Previous Record Id
     const prevPatientRecords = await prisma.query.patientRecords({
@@ -95,7 +114,7 @@ async function createPatientRecord(parent, args, {
     } else {
         let recordNum = prevPatientRecords[0].recordId.substr(patientCase.caseId.length)
         recordNum = parseInt(recordNum, 10) + 1
-        recordId = `${patientCase.caseId}${pad(recordNum,4)}`
+        recordId = `${patientCase.caseId}${pad(recordNum, 4)}`
     }
 
     const visitNo = parseInt(prevPatientRecords.length, 10) + 1
@@ -131,6 +150,10 @@ async function createPatientRecord(parent, args, {
             patient: {
                 connect: {
                     patientId: patientCase.patient.patientId
+                }
+            }, medicalPractitioner: {
+                connect: {
+                    mpId: medicalPractitioner[0].mpId
                 }
             },
             case: {

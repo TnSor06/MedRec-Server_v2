@@ -120,7 +120,7 @@ async function registerMedicalPractitioner(parent, args, {
                     }
                 }
             }
-        }, info)
+        })
         return "Medical Practitioner registered and will be verified within 2-3 business days."
     }
 }

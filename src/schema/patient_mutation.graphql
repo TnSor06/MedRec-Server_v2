@@ -1,6 +1,8 @@
 type Mutation{
     createPatientCase(data:PatientCaseInput!): PatientCase!
     createPatientRecord(data:PatientRecordInput): PatientRecord!
+    createSharedCase(data:SharedCaseInput): SharedCase!
+    createSharedRecord(data:SharedRecordInput): SharedRecord!
 }
 input PatientCaseInput{
   patientId: String!
@@ -30,4 +32,12 @@ input PatientRecordInput {
   advice:String!
   query:String!
   followUpObservations:String!
+}
+input SharedCaseInput{
+  case:String!
+  receiver: String!
+}
+input SharedRecordInput{
+  record:String!
+  receiver: String!
 }

@@ -50,6 +50,7 @@ type DatabaseAdmin{
   contact: String!
   address: String!
   country: Country! @relation(link: INLINE,onDelete:SET_NULL)
+  registeredAt: DateTime! @createdAt
 }
 type MedicalPractitioner{
   id: ID! @id
@@ -129,14 +130,17 @@ type PatientCase {
   diagnosisType: DiagnosisType!
   currentClinicalStatus: Boolean!
   createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
   patientRecord: [PatientRecord]! @relation(link: INLINE,onDelete:SET_NULL)
   sharedCase: [SharedCase]! @relation(link: INLINE,onDelete:SET_NULL)
+  sharedRecord: [SharedRecord]! @relation(link: INLINE,onDelete:SET_NULL)
 }
 type PatientRecord {
   id: ID! @id
   patient: Patient! @relation(link: INLINE,onDelete:SET_NULL)
   case: PatientCase!
   recordId: String! @unique
+  medicalPractitioner: MedicalPractitioner! @relation(link: INLINE,onDelete:SET_NULL)
   visitNo: Int!
   onArrival: String!
   diagnosis: String!
@@ -154,21 +158,22 @@ type PatientRecord {
   query:String!
   followUpObservations:String!
   createdAt: DateTime! @createdAt
+  sharedRecord: [SharedRecord]! @relation(link: INLINE,onDelete:SET_NULL)
 }
 type SharedCase {
   sharedCaseId: ID! @id
   case: PatientCase!
-  sender: MedicalPractitioner! @relation(name:"SendRelation",link: INLINE,onDelete:SET_NULL)
-  receiver: MedicalPractitioner! @relation(name:"ReceiveRelation",link: INLINE,onDelete:SET_NULL)
+  sender: MedicalPractitioner! @relation(name:"SendCaseRelation",link: INLINE,onDelete:SET_NULL)
+  receiver: MedicalPractitioner! @relation(name:"ReceiveCaseRelation",link: INLINE,onDelete:SET_NULL)
   HL7: String!
-  sharedRecord: [SharedRecord!]! @relation(link: INLINE,onDelete:SET_NULL)
   sharedAt: DateTime! @createdAt
 }
 type SharedRecord {
   sharedRecordId: ID! @id
-  record: PatientRecord! @relation(link: INLINE,onDelete:SET_NULL)
-  case: PatientCase! @relation(link: INLINE,onDelete:SET_NULL)
-  sharedCase: SharedCase!
+  record: PatientRecord!
+  case: PatientCase!
+  sender: MedicalPractitioner! @relation(name:"SendRecordRelation",link: INLINE,onDelete:SET_NULL)
+  receiver: MedicalPractitioner! @relation(name:"ReceiveRecordRelation",link: INLINE,onDelete:SET_NULL)
   sharedAt: DateTime! @createdAt
 }
 type Country {

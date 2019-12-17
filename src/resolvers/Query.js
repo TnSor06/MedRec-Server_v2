@@ -12,17 +12,20 @@ import {
 
 import {
     meMedicalPractitioner
-} from './userCRUD/medicalPractioner'
+} from './userCRUD/medicalPractitioner'
 
 import {
     mePatient
 } from './userCRUD/patient'
 
+import { meDatabaseAdmin }
+    from './userCRUD/databaseAdmin'
 
 const Query = {
     me,
     meMedicalPractitioner,
     mePatient,
+    meDatabaseAdmin,
     icdcodes,
     icdsubcodes
 }

@@ -3,6 +3,7 @@ type Query {
   me: User!
   mePatient: Patient!
   meMedicalPractitioner:MedicalPractitioner!
+  meDatabaseAdmin: DatabaseAdmin!
 }
 enum MaritalStatus {
   Single
@@ -32,6 +33,14 @@ type User {
   role: UserType!
   isAdmin: Boolean!
   verified: Boolean!
+}
+type DatabaseAdmin{
+  id: ID!
+  user:User!
+  contact:String!
+  address: String!
+  country: Country!
+  registeredAt: String!
 }
 type MedicalPractitioner{
   id: ID!

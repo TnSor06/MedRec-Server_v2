@@ -2,10 +2,23 @@ type Mutation {
   login(data:LoginInput!):AuthPayload!
   registerMedicalPractitioner(data:MedicalPractitionerInput!):String!
   registerPatient(data:PatientInput!):String!
+  registerDatabaseAdmin(data:DatabaseAdminInput!):String!
 }
 input LoginInput {
   email:String!
   password:String!
+}
+input DatabaseAdminInput{
+  firstName: String!
+  middleName:String!
+  lastName:String!
+  dob: String!
+  email:String!
+  sex: Gender!
+  password:String!
+  contact:String!
+  country: String!
+  address: String!
 }
 input MedicalPractitionerInput {
   firstName: String!
