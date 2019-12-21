@@ -1,5 +1,5 @@
 # source: http://localhost:4466
-# timestamp: Tue Dec 17 2019 04:23:33 GMT+0530 (IST)
+# timestamp: Sun Dec 22 2019 02:08:52 GMT+0530 (IST)
 
 type AggregateCareProvider {
   count: Int!
@@ -704,6 +704,7 @@ type DatabaseAdmin implements Node {
   contact: String!
   address: String!
   country: Country!
+  hospital: Hospital!
   registeredAt: DateTime!
 }
 
@@ -723,6 +724,7 @@ input DatabaseAdminCreateInput {
   address: String!
   user: UserCreateOneInput!
   country: CountryCreateOneInput!
+  hospital: HospitalCreateOneInput!
 }
 
 """An edge in a connection."""
@@ -788,6 +790,7 @@ input DatabaseAdminUpdateInput {
   address: String
   user: UserUpdateOneRequiredInput
   country: CountryUpdateOneRequiredInput
+  hospital: HospitalUpdateOneRequiredInput
 }
 
 input DatabaseAdminUpdateManyMutationInput {
@@ -942,6 +945,7 @@ input DatabaseAdminWhereInput {
   registeredAt_gte: DateTime
   user: UserWhereInput
   country: CountryWhereInput
+  hospital: HospitalWhereInput
 }
 
 input DatabaseAdminWhereUniqueInput {
@@ -2841,13 +2845,13 @@ type Mutation {
   createPatientRecord(data: PatientRecordCreateInput!): PatientRecord!
   createSharedCase(data: SharedCaseCreateInput!): SharedCase!
   createSharedRecord(data: SharedRecordCreateInput!): SharedRecord!
-  createHospital(data: HospitalCreateInput!): Hospital!
   createPatient(data: PatientCreateInput!): Patient!
   createUser(data: UserCreateInput!): User!
   createCountry(data: CountryCreateInput!): Country!
   createICDSubCode(data: ICDSubCodeCreateInput!): ICDSubCode!
   createRegion(data: RegionCreateInput!): Region!
   createMedicalPractitioner(data: MedicalPractitionerCreateInput!): MedicalPractitioner!
+  createHospital(data: HospitalCreateInput!): Hospital!
   createICDCode(data: ICDCodeCreateInput!): ICDCode!
   updateDatabaseAdmin(data: DatabaseAdminUpdateInput!, where: DatabaseAdminWhereUniqueInput!): DatabaseAdmin
   updateCareProvider(data: CareProviderUpdateInput!, where: CareProviderWhereUniqueInput!): CareProvider
@@ -2856,13 +2860,13 @@ type Mutation {
   updatePatientRecord(data: PatientRecordUpdateInput!, where: PatientRecordWhereUniqueInput!): PatientRecord
   updateSharedCase(data: SharedCaseUpdateInput!, where: SharedCaseWhereUniqueInput!): SharedCase
   updateSharedRecord(data: SharedRecordUpdateInput!, where: SharedRecordWhereUniqueInput!): SharedRecord
-  updateHospital(data: HospitalUpdateInput!, where: HospitalWhereUniqueInput!): Hospital
   updatePatient(data: PatientUpdateInput!, where: PatientWhereUniqueInput!): Patient
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateCountry(data: CountryUpdateInput!, where: CountryWhereUniqueInput!): Country
   updateICDSubCode(data: ICDSubCodeUpdateInput!, where: ICDSubCodeWhereUniqueInput!): ICDSubCode
   updateRegion(data: RegionUpdateInput!, where: RegionWhereUniqueInput!): Region
   updateMedicalPractitioner(data: MedicalPractitionerUpdateInput!, where: MedicalPractitionerWhereUniqueInput!): MedicalPractitioner
+  updateHospital(data: HospitalUpdateInput!, where: HospitalWhereUniqueInput!): Hospital
   updateICDCode(data: ICDCodeUpdateInput!, where: ICDCodeWhereUniqueInput!): ICDCode
   deleteDatabaseAdmin(where: DatabaseAdminWhereUniqueInput!): DatabaseAdmin
   deleteCareProvider(where: CareProviderWhereUniqueInput!): CareProvider
@@ -2871,13 +2875,13 @@ type Mutation {
   deletePatientRecord(where: PatientRecordWhereUniqueInput!): PatientRecord
   deleteSharedCase(where: SharedCaseWhereUniqueInput!): SharedCase
   deleteSharedRecord(where: SharedRecordWhereUniqueInput!): SharedRecord
-  deleteHospital(where: HospitalWhereUniqueInput!): Hospital
   deletePatient(where: PatientWhereUniqueInput!): Patient
   deleteUser(where: UserWhereUniqueInput!): User
   deleteCountry(where: CountryWhereUniqueInput!): Country
   deleteICDSubCode(where: ICDSubCodeWhereUniqueInput!): ICDSubCode
   deleteRegion(where: RegionWhereUniqueInput!): Region
   deleteMedicalPractitioner(where: MedicalPractitionerWhereUniqueInput!): MedicalPractitioner
+  deleteHospital(where: HospitalWhereUniqueInput!): Hospital
   deleteICDCode(where: ICDCodeWhereUniqueInput!): ICDCode
   upsertDatabaseAdmin(where: DatabaseAdminWhereUniqueInput!, create: DatabaseAdminCreateInput!, update: DatabaseAdminUpdateInput!): DatabaseAdmin!
   upsertCareProvider(where: CareProviderWhereUniqueInput!, create: CareProviderCreateInput!, update: CareProviderUpdateInput!): CareProvider!
@@ -2886,13 +2890,13 @@ type Mutation {
   upsertPatientRecord(where: PatientRecordWhereUniqueInput!, create: PatientRecordCreateInput!, update: PatientRecordUpdateInput!): PatientRecord!
   upsertSharedCase(where: SharedCaseWhereUniqueInput!, create: SharedCaseCreateInput!, update: SharedCaseUpdateInput!): SharedCase!
   upsertSharedRecord(where: SharedRecordWhereUniqueInput!, create: SharedRecordCreateInput!, update: SharedRecordUpdateInput!): SharedRecord!
-  upsertHospital(where: HospitalWhereUniqueInput!, create: HospitalCreateInput!, update: HospitalUpdateInput!): Hospital!
   upsertPatient(where: PatientWhereUniqueInput!, create: PatientCreateInput!, update: PatientUpdateInput!): Patient!
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
   upsertCountry(where: CountryWhereUniqueInput!, create: CountryCreateInput!, update: CountryUpdateInput!): Country!
   upsertICDSubCode(where: ICDSubCodeWhereUniqueInput!, create: ICDSubCodeCreateInput!, update: ICDSubCodeUpdateInput!): ICDSubCode!
   upsertRegion(where: RegionWhereUniqueInput!, create: RegionCreateInput!, update: RegionUpdateInput!): Region!
   upsertMedicalPractitioner(where: MedicalPractitionerWhereUniqueInput!, create: MedicalPractitionerCreateInput!, update: MedicalPractitionerUpdateInput!): MedicalPractitioner!
+  upsertHospital(where: HospitalWhereUniqueInput!, create: HospitalCreateInput!, update: HospitalUpdateInput!): Hospital!
   upsertICDCode(where: ICDCodeWhereUniqueInput!, create: ICDCodeCreateInput!, update: ICDCodeUpdateInput!): ICDCode!
   updateManyDatabaseAdmins(data: DatabaseAdminUpdateManyMutationInput!, where: DatabaseAdminWhereInput): BatchPayload!
   updateManyCareProviders(data: CareProviderUpdateManyMutationInput!, where: CareProviderWhereInput): BatchPayload!
@@ -2900,13 +2904,13 @@ type Mutation {
   updateManyPatientCases(data: PatientCaseUpdateManyMutationInput!, where: PatientCaseWhereInput): BatchPayload!
   updateManyPatientRecords(data: PatientRecordUpdateManyMutationInput!, where: PatientRecordWhereInput): BatchPayload!
   updateManySharedCases(data: SharedCaseUpdateManyMutationInput!, where: SharedCaseWhereInput): BatchPayload!
-  updateManyHospitals(data: HospitalUpdateManyMutationInput!, where: HospitalWhereInput): BatchPayload!
   updateManyPatients(data: PatientUpdateManyMutationInput!, where: PatientWhereInput): BatchPayload!
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
   updateManyCountries(data: CountryUpdateManyMutationInput!, where: CountryWhereInput): BatchPayload!
   updateManyICDSubCodes(data: ICDSubCodeUpdateManyMutationInput!, where: ICDSubCodeWhereInput): BatchPayload!
   updateManyRegions(data: RegionUpdateManyMutationInput!, where: RegionWhereInput): BatchPayload!
   updateManyMedicalPractitioners(data: MedicalPractitionerUpdateManyMutationInput!, where: MedicalPractitionerWhereInput): BatchPayload!
+  updateManyHospitals(data: HospitalUpdateManyMutationInput!, where: HospitalWhereInput): BatchPayload!
   updateManyICDCodes(data: ICDCodeUpdateManyMutationInput!, where: ICDCodeWhereInput): BatchPayload!
   deleteManyDatabaseAdmins(where: DatabaseAdminWhereInput): BatchPayload!
   deleteManyCareProviders(where: CareProviderWhereInput): BatchPayload!
@@ -2915,13 +2919,13 @@ type Mutation {
   deleteManyPatientRecords(where: PatientRecordWhereInput): BatchPayload!
   deleteManySharedCases(where: SharedCaseWhereInput): BatchPayload!
   deleteManySharedRecords(where: SharedRecordWhereInput): BatchPayload!
-  deleteManyHospitals(where: HospitalWhereInput): BatchPayload!
   deleteManyPatients(where: PatientWhereInput): BatchPayload!
   deleteManyUsers(where: UserWhereInput): BatchPayload!
   deleteManyCountries(where: CountryWhereInput): BatchPayload!
   deleteManyICDSubCodes(where: ICDSubCodeWhereInput): BatchPayload!
   deleteManyRegions(where: RegionWhereInput): BatchPayload!
   deleteManyMedicalPractitioners(where: MedicalPractitionerWhereInput): BatchPayload!
+  deleteManyHospitals(where: HospitalWhereInput): BatchPayload!
   deleteManyICDCodes(where: ICDCodeWhereInput): BatchPayload!
 }
 
@@ -6821,13 +6825,13 @@ type Query {
   patientRecords(where: PatientRecordWhereInput, orderBy: PatientRecordOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [PatientRecord]!
   sharedCases(where: SharedCaseWhereInput, orderBy: SharedCaseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [SharedCase]!
   sharedRecords(where: SharedRecordWhereInput, orderBy: SharedRecordOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [SharedRecord]!
-  hospitals(where: HospitalWhereInput, orderBy: HospitalOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Hospital]!
   patients(where: PatientWhereInput, orderBy: PatientOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Patient]!
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   countries(where: CountryWhereInput, orderBy: CountryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Country]!
   iCDSubCodes(where: ICDSubCodeWhereInput, orderBy: ICDSubCodeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ICDSubCode]!
   regions(where: RegionWhereInput, orderBy: RegionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Region]!
   medicalPractitioners(where: MedicalPractitionerWhereInput, orderBy: MedicalPractitionerOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [MedicalPractitioner]!
+  hospitals(where: HospitalWhereInput, orderBy: HospitalOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Hospital]!
   iCDCodes(where: ICDCodeWhereInput, orderBy: ICDCodeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ICDCode]!
   databaseAdmin(where: DatabaseAdminWhereUniqueInput!): DatabaseAdmin
   careProvider(where: CareProviderWhereUniqueInput!): CareProvider
@@ -6836,13 +6840,13 @@ type Query {
   patientRecord(where: PatientRecordWhereUniqueInput!): PatientRecord
   sharedCase(where: SharedCaseWhereUniqueInput!): SharedCase
   sharedRecord(where: SharedRecordWhereUniqueInput!): SharedRecord
-  hospital(where: HospitalWhereUniqueInput!): Hospital
   patient(where: PatientWhereUniqueInput!): Patient
   user(where: UserWhereUniqueInput!): User
   country(where: CountryWhereUniqueInput!): Country
   iCDSubCode(where: ICDSubCodeWhereUniqueInput!): ICDSubCode
   region(where: RegionWhereUniqueInput!): Region
   medicalPractitioner(where: MedicalPractitionerWhereUniqueInput!): MedicalPractitioner
+  hospital(where: HospitalWhereUniqueInput!): Hospital
   iCDCode(where: ICDCodeWhereUniqueInput!): ICDCode
   databaseAdminsConnection(where: DatabaseAdminWhereInput, orderBy: DatabaseAdminOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): DatabaseAdminConnection!
   careProvidersConnection(where: CareProviderWhereInput, orderBy: CareProviderOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CareProviderConnection!
@@ -6851,13 +6855,13 @@ type Query {
   patientRecordsConnection(where: PatientRecordWhereInput, orderBy: PatientRecordOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PatientRecordConnection!
   sharedCasesConnection(where: SharedCaseWhereInput, orderBy: SharedCaseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SharedCaseConnection!
   sharedRecordsConnection(where: SharedRecordWhereInput, orderBy: SharedRecordOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SharedRecordConnection!
-  hospitalsConnection(where: HospitalWhereInput, orderBy: HospitalOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): HospitalConnection!
   patientsConnection(where: PatientWhereInput, orderBy: PatientOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PatientConnection!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
   countriesConnection(where: CountryWhereInput, orderBy: CountryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CountryConnection!
   iCDSubCodesConnection(where: ICDSubCodeWhereInput, orderBy: ICDSubCodeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ICDSubCodeConnection!
   regionsConnection(where: RegionWhereInput, orderBy: RegionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): RegionConnection!
   medicalPractitionersConnection(where: MedicalPractitionerWhereInput, orderBy: MedicalPractitionerOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): MedicalPractitionerConnection!
+  hospitalsConnection(where: HospitalWhereInput, orderBy: HospitalOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): HospitalConnection!
   iCDCodesConnection(where: ICDCodeWhereInput, orderBy: ICDCodeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ICDCodeConnection!
 
   """Fetches an object given its ID"""
@@ -7780,13 +7784,13 @@ type Subscription {
   patientRecord(where: PatientRecordSubscriptionWhereInput): PatientRecordSubscriptionPayload
   sharedCase(where: SharedCaseSubscriptionWhereInput): SharedCaseSubscriptionPayload
   sharedRecord(where: SharedRecordSubscriptionWhereInput): SharedRecordSubscriptionPayload
-  hospital(where: HospitalSubscriptionWhereInput): HospitalSubscriptionPayload
   patient(where: PatientSubscriptionWhereInput): PatientSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
   country(where: CountrySubscriptionWhereInput): CountrySubscriptionPayload
   iCDSubCode(where: ICDSubCodeSubscriptionWhereInput): ICDSubCodeSubscriptionPayload
   region(where: RegionSubscriptionWhereInput): RegionSubscriptionPayload
   medicalPractitioner(where: MedicalPractitionerSubscriptionWhereInput): MedicalPractitionerSubscriptionPayload
+  hospital(where: HospitalSubscriptionWhereInput): HospitalSubscriptionPayload
   iCDCode(where: ICDCodeSubscriptionWhereInput): ICDCodeSubscriptionPayload
 }
 

@@ -18,7 +18,11 @@ const registerMedicalPractitionerSchema = Joi.object().keys({
     email: Joi.string().email().required(),
     password: Joi.string().regex(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,32}$/).min(8).required()
 })
-
+const updateMedicalPractitionerSchema = Joi.object().keys({
+    password: Joi.string().regex(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,32}$/).min(8),
+    clinicAddress: Joi.string(),
+    address: Joi.string()
+})
 async function meMedicalPractitioner(parent, args, {
     prisma,
     request
@@ -124,8 +128,61 @@ async function registerMedicalPractitioner(parent, args, {
         return "Medical Practitioner registered and will be verified within 2-3 business days."
     }
 }
+async function updateMedicalPractitioner(parent, args, {
+    prisma,
+    request
+}, info) {
 
+    const userData = getUserData(request)
+
+    if (!(userData.verified)) {
+        throw new Error("Access Denied")
+    }
+
+    const result = await Joi.validate({
+        address: args.data.address,
+        clinicAddress: args.data.contact,
+        password: args.data.password
+    }, updateMedicalPractitionerSchema);
+
+    if (result.error) {
+        throw new Error("Invalid Data")
+    }
+
+    const medicalPractitioner = await prisma.query.medicalPractitioners({
+        where: {
+            user: {
+                id: userData.id
+            }
+        }
+    }, `{ id }`)
+
+    if (medicalPractitioner.length === 1) {
+        if (typeof args.data.password === 'string') {
+            args.data.password = await hashPassword(args.data.password)
+            const updatedUser = await prisma.mutation.updateUser({
+                where: {
+                    id: userData.id
+                },
+                data: {
+                    password: args.data.password
+                }
+            })
+            delete args.data.password
+        }
+        const updatedMedicalPractitioner = await prisma.mutation.updateMedicalPractitioner({
+            where: {
+                id: medicalPractitioner[0].id
+            },
+            data: args.data
+        })
+        return "Update Successful"
+    } else {
+        throw new Error("Invalid Request")
+    }
+}
 export {
     meMedicalPractitioner,
-    registerMedicalPractitioner
+    registerMedicalPractitioner,
+    updateMedicalPractitioner
 }

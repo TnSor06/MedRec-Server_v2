@@ -40,6 +40,7 @@ type DatabaseAdmin{
   contact:String!
   address: String!
   country: Country!
+  hospital: Hospital!
   registeredAt: String!
 }
 type MedicalPractitioner{

@@ -37,7 +37,30 @@ const registerPatientSchema = Joi.object().keys({
     MI: Joi.boolean(),
     AF: Joi.boolean()
 })
-
+const updatePatientSchema = Joi.object().keys({
+    password: Joi.string().regex(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,32}$/).min(8),
+    religion: Joi.string(),
+    maritalStatus: Joi.string().valid('Single', 'Married', 'Divorced', 'Widowed'),
+    primaryLanguage: Joi.string(),
+    address: Joi.string(),
+    pincode: Joi.string(),
+    country: Joi.string(),
+    occupation: Joi.string(),
+    contact1: Joi.string().regex(/^[+]\d{2,4}-\d{3}\d{3}\d{4}$/),
+    contact2: Joi.string().regex(/^[+]\d{2,4}-\d{3}\d{3}\d{4}$/),
+    socioEcoStatus: Joi.string(),
+    immunizationHistory: Joi.string(),
+    allergyStatus: Joi.boolean(),
+    organDonorStatus: Joi.boolean(),
+    PMH: Joi.string(),
+    DHx: Joi.string(),
+    Ca: Joi.boolean(),
+    IDDM: Joi.boolean(),
+    NIDDM: Joi.boolean(),
+    COPD: Joi.boolean(),
+    MI: Joi.boolean(),
+    AF: Joi.boolean(),
+})
 async function mePatient(parent, args, {
     prisma,
     request
@@ -189,7 +212,110 @@ async function registerPatient(parent, args, {
     }
 }
 
+async function updatePatient(parent, args, {
+    prisma,
+    request
+}, info) {
+
+    const userData = getUserData(request)
+
+    if (!(userData.verified)) {
+        throw new Error("Access Denied")
+    }
+
+    const result = await Joi.validate({
+        password: args.data.password,
+        address: args.data.address,
+        religion: args.data.religion,
+        maritalStatus: args.data.maritalStatus,
+        primaryLanguage: args.data.primaryLanguage,
+        occupation: args.data.occupation,
+        contact1: args.data.contact1,
+        contact2: args.data.contact2,
+        socioEcoStatus: args.data.socioEcoStatus,
+        immunizationHistory: args.data.immunizationHistory,
+        allergyStatus: args.data.allergyStatus,
+        organDonorStatus: args.data.organDonorStatus,
+        PMH: args.data.PMH,
+        DHx: args.data.DHx,
+        Ca: args.data.Ca,
+        IDDM: args.data.IDDM,
+        NIDDM: args.data.NIDDM,
+        COPD: args.data.COPD,
+        MI: args.data.MI,
+        AF: args.data.AF,
+        pincode: args.data.pincode,
+        country: args.data.country,
+    }, updatePatientSchema);
+
+    if (result.error) {
+        throw new Error("Invalid Data")
+    }
+
+    const patient = await prisma.query.patients({
+        where: {
+            user: {
+                id: userData.id
+            }
+        }
+    }, `{ id }`)
+
+    if (patient.length === 1) {
+        if (typeof args.data.password === 'string') {
+            args.data.password = await hashPassword(args.data.password)
+            const updatedUser = await prisma.mutation.updateUser({
+                where: {
+                    id: userData.id
+                },
+                data: {
+                    password: args.data.password
+                }
+            })
+            delete args.data.password
+        }
+
+        const data = { ...args.data }
+
+        if (typeof args.data.country === 'string') {
+            const patCountry = await prisma.query.country({
+                where: {
+                    countryCode: parseInt(args.data.country, 10)
+                }
+            }, `{ countryCode }`)
+            data["country"] = {
+                connect: {
+                    countryCode: patCountry.countryCode
+                }
+            }
+        }
+        if (typeof args.data.pincode === 'string') {
+            const patRegion = await prisma.query.region({
+                where: {
+                    pincode: parseInt(args.data.pincode, 10)
+                }
+            }, `{ pincode }`)
+
+            data.pincode = {
+                connect: {
+                    pincode: patRegion.pincode
+                }
+            }
+        }
+
+        const updatedPatient = await prisma.mutation.updatePatient({
+            where: {
+                id: patient[0].id
+            },
+            data: data
+        })
+        return "Update Successful"
+    } else {
+        throw new Error("Invalid Request")
+    }
+}
+
 export {
     mePatient,
-    registerPatient
+    registerPatient,
+    updatePatient
 }

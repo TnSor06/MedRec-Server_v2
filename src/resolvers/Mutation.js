@@ -3,14 +3,14 @@ import {
 } from './userCRUD/login'
 
 import {
-    registerMedicalPractitioner
+    registerMedicalPractitioner, updateMedicalPractitioner
 } from './userCRUD/medicalPractitioner'
 
 import {
-    registerPatient
+    registerPatient, updatePatient
 } from './userCRUD/patient'
 
-import { registerDatabaseAdmin }
+import { registerDatabaseAdmin, updateDatabaseAdmin, approvePatient, approveMedicalPractitioner }
     from './userCRUD/databaseAdmin'
 
 import {
@@ -34,6 +34,11 @@ const Mutation = {
     registerMedicalPractitioner,
     registerPatient,
     registerDatabaseAdmin,
+    updateDatabaseAdmin,
+    updateMedicalPractitioner,
+    updatePatient,
+    approveMedicalPractitioner,
+    approvePatient,
     createPatientCase,
     createPatientRecord,
     createSharedCase,

@@ -50,6 +50,7 @@ type DatabaseAdmin{
   contact: String!
   address: String!
   country: Country! @relation(link: INLINE,onDelete:SET_NULL)
+  hospital: Hospital! @relation(link: INLINE,onDelete:SET_NULL)
   registeredAt: DateTime! @createdAt
 }
 type MedicalPractitioner{
