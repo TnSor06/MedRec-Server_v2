@@ -209,5 +209,6 @@ async function updateMedicalPractitioner(parent, args, {
 export {
     meMedicalPractitioner,
     registerMedicalPractitioner,
-    updateMedicalPractitioner
+    updateMedicalPractitioner,
+    viewMedicalPractitioner
 }

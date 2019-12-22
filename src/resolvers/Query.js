@@ -11,11 +11,11 @@ import {
 } from './userCRUD/me'
 
 import {
-    meMedicalPractitioner
+    meMedicalPractitioner, viewMedicalPractitioner
 } from './userCRUD/medicalPractitioner'
 
 import {
-    mePatient
+    mePatient, viewPatient
 } from './userCRUD/patient'
 
 import { meDatabaseAdmin }
@@ -29,6 +29,8 @@ const Query = {
     meMedicalPractitioner,
     mePatient,
     meDatabaseAdmin,
+    viewPatient,
+    viewMedicalPractitioner,
     searchUser,
     icdcodes,
     icdsubcodes,

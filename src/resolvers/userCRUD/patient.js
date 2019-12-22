@@ -343,5 +343,6 @@ async function updatePatient(parent, args, {
 export {
     mePatient,
     registerPatient,
-    updatePatient
+    updatePatient,
+    viewPatient
 }
