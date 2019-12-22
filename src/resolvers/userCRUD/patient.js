@@ -3,6 +3,7 @@ import Joi from 'joi'
 
 import hashPassword from '../../utils/hashPassword'
 import getUserData from '../../utils/getUserData';
+import { capitalizeFirstLetter } from '../../utils/misc';
 
 const registerPatientSchema = Joi.object().keys({
     firstName: Joi.string().required(),
@@ -11,7 +12,7 @@ const registerPatientSchema = Joi.object().keys({
     dob: Joi.string().regex(/^([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))$/).required(),
     sex: Joi.string().valid('Male', 'Female', 'Transgender').required(),
     address: Joi.string().required(),
-    email: Joi.string().email().required(),
+    email: Joi.string().lowercase().email().required(),
     password: Joi.string().regex(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,32}$/).min(8).required(),
     bloodGroup: Joi.string().required(),
     religion: Joi.string().required(),
@@ -83,7 +84,32 @@ async function mePatient(parent, args, {
         throw new Error("Invalid Request")
     }
 }
+async function viewPatient(parent, args, {
+    prisma,
+    request
+}, info) {
+    const userData = getUserData(request)
 
+    if (!(userData.verified) && userData.role === "Patient") {
+        throw new Error("Access Denied")
+    }
+    const patient = await prisma.query.patients({
+        where: {
+            AND: [{
+                patientId: args.id
+            }, {
+                user: {
+                    verified: true
+                }
+            }]
+        }
+    }, info)
+    if (patient.length === 1) {
+        return patient[0]
+    } else {
+        throw new Error("Invalid Request")
+    }
+}
 async function registerPatient(parent, args, {
     prisma,
     request
@@ -94,7 +120,7 @@ async function registerPatient(parent, args, {
         lastName: args.data.lastName,
         dob: args.data.dob,
         sex: args.data.sex,
-        email: args.data.email,
+        email: args.data.email.toLowerCase(),
         password: args.data.password,
         address: args.data.address,
         bloodGroup: args.data.bloodGroup,
@@ -124,7 +150,7 @@ async function registerPatient(parent, args, {
         throw new Error("Invalid Data")
     }
     const emailTaken = await prisma.exists.User({
-        email: args.data.email
+        email: args.data.email.toLowerCase()
     })
     if (emailTaken) {
         throw new Error('Invalid User')
@@ -132,12 +158,12 @@ async function registerPatient(parent, args, {
         const hashedPassword = await hashPassword(args.data.password)
         const patUser = await prisma.mutation.createUser({
             data: {
-                firstName: args.data.firstName,
-                middleName: args.data.middleName,
-                lastName: args.data.lastName,
+                firstName: capitalizeFirstLetter(args.data.firstName),
+                middleName: capitalizeFirstLetter(args.data.middleName),
+                lastName: capitalizeFirstLetter(args.data.lastName),
                 dob: args.data.dob,
                 sex: args.data.sex,
-                email: args.data.email,
+                email: args.data.email.toLowerCase(),
                 role: "Patient",
                 isAdmin: false,
                 password: hashedPassword,

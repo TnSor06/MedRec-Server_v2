@@ -15,7 +15,7 @@ const registerMedicalPractitionerSchema = Joi.object().keys({
     degree: Joi.string().required(),
     field: Joi.string().required(),
     hospital: Joi.string().required().length(9),
-    email: Joi.string().email().required(),
+    email: Joi.string().lowercase().email().required(),
     password: Joi.string().regex(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,32}$/).min(8).required()
 })
 const updateMedicalPractitionerSchema = Joi.object().keys({
@@ -45,7 +45,32 @@ async function meMedicalPractitioner(parent, args, {
         throw new Error("Invalid Request")
     }
 }
+async function viewMedicalPractitioner(parent, args, {
+    prisma,
+    request
+}, info) {
+    const userData = getUserData(request)
 
+    if (!(userData.verified) && userData.role === "Patient") {
+        throw new Error("Access Denied")
+    }
+    const medicalPractitioner = await prisma.query.medicalPractitioners({
+        where: {
+            AND: [{
+                mpId: args.id
+            }, {
+                user: {
+                    verified: true
+                }
+            }]
+        }
+    }, info)
+    if (medicalPractitioner.length === 1) {
+        return medicalPractitioner[0]
+    } else {
+        throw new Error("Invalid Request")
+    }
+}
 async function registerMedicalPractitioner(parent, args, {
     prisma,
     request
@@ -61,14 +86,14 @@ async function registerMedicalPractitioner(parent, args, {
         degree: args.data.degree,
         field: args.data.field,
         hospital: args.data.hospital,
-        email: args.data.email,
+        email: args.data.email.toLowerCase(),
         password: args.data.password
     }, registerMedicalPractitionerSchema);
     if (result.error) {
         throw new Error("Invalid Data")
     }
     const emailTaken = await prisma.exists.User({
-        email: args.data.email
+        email: args.data.email.toLowerCase()
     })
     if (emailTaken) {
         throw new Error('Invalid User')
@@ -76,12 +101,12 @@ async function registerMedicalPractitioner(parent, args, {
         const hashedPassword = await hashPassword(args.data.password)
         const mpUser = await prisma.mutation.createUser({
             data: {
-                firstName: args.data.firstName,
-                middleName: args.data.middleName,
-                lastName: args.data.lastName,
+                firstName: capitalizeFirstLetter(args.data.firstName),
+                middleName: capitalizeFirstLetter(args.data.middleName),
+                lastName: capitalizeFirstLetter(args.data.lastName),
                 dob: args.data.dob,
                 sex: args.data.sex,
-                email: args.data.email,
+                email: args.data.email.toLowerCase(),
                 role: "MedicalPractitioner",
                 isAdmin: false,
                 password: hashedPassword,

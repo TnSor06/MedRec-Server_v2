@@ -3,6 +3,7 @@ import Joi from 'joi'
 
 import hashPassword from '../../utils/hashPassword'
 import getUserData from '../../utils/getUserData';
+import { capitalizeFirstLetter } from '../../utils/misc';
 
 const registerDatabaseAdminSchema = Joi.object().keys({
     firstName: Joi.string().required(),
@@ -14,7 +15,7 @@ const registerDatabaseAdminSchema = Joi.object().keys({
     country: Joi.string().required(),
     hospital: Joi.string().required().length(9),
     contact: Joi.string().regex(/^[+]\d{2,4}-\d{3}\d{3}\d{4}$/).required(),
-    email: Joi.string().email().required(),
+    email: Joi.string().lowercase().email().required(),
     password: Joi.string().regex(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,32}$/).min(8).required()
 })
 const updateDatabaseAdminSchema = Joi.object().keys({
@@ -125,7 +126,7 @@ async function registerDatabaseAdmin(parent, args, {
         address: args.data.address,
         contact: args.data.contact,
         country: args.data.country,
-        email: args.data.email,
+        email: args.data.email.toLowerCase(),
         password: args.data.password,
         hospital: args.data.hospital
     }, registerDatabaseAdminSchema);
@@ -133,7 +134,7 @@ async function registerDatabaseAdmin(parent, args, {
         throw new Error("Invalid Data")
     }
     const emailTaken = await prisma.exists.User({
-        email: args.data.email
+        email: args.data.email.toLowerCase()
     })
     if (emailTaken) {
         throw new Error('Invalid User')
@@ -141,12 +142,12 @@ async function registerDatabaseAdmin(parent, args, {
         const hashedPassword = await hashPassword(args.data.password)
         const daUser = await prisma.mutation.createUser({
             data: {
-                firstName: args.data.firstName,
-                middleName: args.data.middleName,
-                lastName: args.data.lastName,
+                firstName: capitalizeFirstLetter(args.data.firstName),
+                middleName: capitalizeFirstLetter(args.data.middleName),
+                lastName: capitalizeFirstLetter(args.data.lastName),
                 dob: args.data.dob,
                 sex: args.data.sex,
-                email: args.data.email,
+                email: args.data.email.toLowerCase(),
                 role: "DatabaseAdmin",
                 isAdmin: true,
                 password: hashedPassword,

@@ -21,13 +21,17 @@ import {
 import { meDatabaseAdmin }
     from './userCRUD/databaseAdmin'
 
+import { searchUser }
+    from './userCRUD/user'
+
 const Query = {
     me,
     meMedicalPractitioner,
     mePatient,
     meDatabaseAdmin,
+    searchUser,
     icdcodes,
-    icdsubcodes
+    icdsubcodes,
 }
 
 export default Query

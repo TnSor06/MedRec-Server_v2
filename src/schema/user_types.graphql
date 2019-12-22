@@ -1,9 +1,11 @@
 type Query {
-  users: [User]!
-  me: User!
+  me:User
   mePatient: Patient!
   meMedicalPractitioner:MedicalPractitioner!
   meDatabaseAdmin: DatabaseAdmin!
+  searchUser(data: SearchUserInput!):[User]!
+  viewPatient(id:String!):Patient!
+  viewMedicalPractitioner(id:String!):MedicalPractitioner!
 }
 enum MaritalStatus {
   Single
@@ -16,10 +18,19 @@ enum UserType {
   MedicalPractitioner
   Patient
 }
+enum UserType_ {
+  MedicalPractitioner
+  Patient
+}
 enum Gender {
   Male
   Female
   Transgender
+}
+input SearchUserInput{
+  name:String,
+  email:String,
+  type: UserType_
 }
 type User {
   id: ID!
