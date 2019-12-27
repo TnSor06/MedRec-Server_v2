@@ -115,6 +115,7 @@ async function createSharedRecord(parent, args, {
 
     const sharedRecord = await prisma.mutation.createSharedRecord({
         data: {
+            HL7: "Some data",
             record: {
                 connect: {
                     recordId: patientRecord.recordId

@@ -82,5 +82,6 @@ type SharedRecord {
   case: PatientCase!
   sender: MedicalPractitioner!
   receiver: MedicalPractitioner!
+  HL7: String!
   sharedAt: String!
 }

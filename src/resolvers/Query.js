@@ -24,6 +24,9 @@ import { meDatabaseAdmin }
 import { searchUser }
     from './userCRUD/user'
 
+import { getCountry, getRegion }
+    from './userCRUD/CountryRegion'
+
 const Query = {
     me,
     meMedicalPractitioner,
@@ -34,6 +37,8 @@ const Query = {
     searchUser,
     icdcodes,
     icdsubcodes,
+    getCountry,
+    getRegion
 }
 
 export default Query

@@ -1,5 +1,5 @@
 # source: http://localhost:4466
-# timestamp: Sun Dec 22 2019 02:08:52 GMT+0530 (IST)
+# timestamp: Mon Dec 23 2019 19:30:07 GMT+0530 (IST)
 
 type AggregateCareProvider {
   count: Int!
@@ -2904,6 +2904,7 @@ type Mutation {
   updateManyPatientCases(data: PatientCaseUpdateManyMutationInput!, where: PatientCaseWhereInput): BatchPayload!
   updateManyPatientRecords(data: PatientRecordUpdateManyMutationInput!, where: PatientRecordWhereInput): BatchPayload!
   updateManySharedCases(data: SharedCaseUpdateManyMutationInput!, where: SharedCaseWhereInput): BatchPayload!
+  updateManySharedRecords(data: SharedRecordUpdateManyMutationInput!, where: SharedRecordWhereInput): BatchPayload!
   updateManyPatients(data: PatientUpdateManyMutationInput!, where: PatientWhereInput): BatchPayload!
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
   updateManyCountries(data: CountryUpdateManyMutationInput!, where: CountryWhereInput): BatchPayload!
@@ -7468,6 +7469,7 @@ type SharedRecord {
   case: PatientCase!
   sender: MedicalPractitioner!
   receiver: MedicalPractitioner!
+  HL7: String!
   sharedAt: DateTime!
 }
 
@@ -7483,6 +7485,7 @@ type SharedRecordConnection {
 
 input SharedRecordCreateInput {
   sharedRecordId: ID
+  HL7: String!
   record: PatientRecordCreateOneWithoutSharedRecordInput!
   case: PatientCaseCreateOneWithoutSharedRecordInput!
   sender: MedicalPractitionerCreateOneInput!
@@ -7501,6 +7504,7 @@ input SharedRecordCreateManyWithoutRecordInput {
 
 input SharedRecordCreateWithoutCaseInput {
   sharedRecordId: ID
+  HL7: String!
   record: PatientRecordCreateOneWithoutSharedRecordInput!
   sender: MedicalPractitionerCreateOneInput!
   receiver: MedicalPractitionerCreateOneInput!
@@ -7508,6 +7512,7 @@ input SharedRecordCreateWithoutCaseInput {
 
 input SharedRecordCreateWithoutRecordInput {
   sharedRecordId: ID
+  HL7: String!
   case: PatientCaseCreateOneWithoutSharedRecordInput!
   sender: MedicalPractitionerCreateOneInput!
   receiver: MedicalPractitionerCreateOneInput!
@@ -7525,12 +7530,15 @@ type SharedRecordEdge {
 enum SharedRecordOrderByInput {
   sharedRecordId_ASC
   sharedRecordId_DESC
+  HL7_ASC
+  HL7_DESC
   sharedAt_ASC
   sharedAt_DESC
 }
 
 type SharedRecordPreviousValues {
   sharedRecordId: ID!
+  HL7: String!
   sharedAt: DateTime!
 }
 
@@ -7583,6 +7591,46 @@ input SharedRecordScalarWhereInput {
 
   """All values not ending with the given string."""
   sharedRecordId_not_ends_with: ID
+  HL7: String
+
+  """All values that are not equal to given value."""
+  HL7_not: String
+
+  """All values that are contained in given list."""
+  HL7_in: [String!]
+
+  """All values that are not contained in given list."""
+  HL7_not_in: [String!]
+
+  """All values less than the given value."""
+  HL7_lt: String
+
+  """All values less than or equal the given value."""
+  HL7_lte: String
+
+  """All values greater than the given value."""
+  HL7_gt: String
+
+  """All values greater than or equal the given value."""
+  HL7_gte: String
+
+  """All values containing the given string."""
+  HL7_contains: String
+
+  """All values not containing the given string."""
+  HL7_not_contains: String
+
+  """All values starting with the given string."""
+  HL7_starts_with: String
+
+  """All values not starting with the given string."""
+  HL7_not_starts_with: String
+
+  """All values ending with the given string."""
+  HL7_ends_with: String
+
+  """All values not ending with the given string."""
+  HL7_not_ends_with: String
   sharedAt: DateTime
 
   """All values that are not equal to given value."""
@@ -7639,10 +7687,19 @@ input SharedRecordSubscriptionWhereInput {
 }
 
 input SharedRecordUpdateInput {
+  HL7: String
   record: PatientRecordUpdateOneRequiredWithoutSharedRecordInput
   case: PatientCaseUpdateOneRequiredWithoutSharedRecordInput
   sender: MedicalPractitionerUpdateOneRequiredInput
   receiver: MedicalPractitionerUpdateOneRequiredInput
+}
+
+input SharedRecordUpdateManyDataInput {
+  HL7: String
+}
+
+input SharedRecordUpdateManyMutationInput {
+  HL7: String
 }
 
 input SharedRecordUpdateManyWithoutCaseInput {
@@ -7652,6 +7709,7 @@ input SharedRecordUpdateManyWithoutCaseInput {
   disconnect: [SharedRecordWhereUniqueInput!]
   delete: [SharedRecordWhereUniqueInput!]
   update: [SharedRecordUpdateWithWhereUniqueWithoutCaseInput!]
+  updateMany: [SharedRecordUpdateManyWithWhereNestedInput!]
   deleteMany: [SharedRecordScalarWhereInput!]
   upsert: [SharedRecordUpsertWithWhereUniqueWithoutCaseInput!]
 }
@@ -7663,17 +7721,25 @@ input SharedRecordUpdateManyWithoutRecordInput {
   disconnect: [SharedRecordWhereUniqueInput!]
   delete: [SharedRecordWhereUniqueInput!]
   update: [SharedRecordUpdateWithWhereUniqueWithoutRecordInput!]
+  updateMany: [SharedRecordUpdateManyWithWhereNestedInput!]
   deleteMany: [SharedRecordScalarWhereInput!]
   upsert: [SharedRecordUpsertWithWhereUniqueWithoutRecordInput!]
 }
 
+input SharedRecordUpdateManyWithWhereNestedInput {
+  where: SharedRecordScalarWhereInput!
+  data: SharedRecordUpdateManyDataInput!
+}
+
 input SharedRecordUpdateWithoutCaseDataInput {
+  HL7: String
   record: PatientRecordUpdateOneRequiredWithoutSharedRecordInput
   sender: MedicalPractitionerUpdateOneRequiredInput
   receiver: MedicalPractitionerUpdateOneRequiredInput
 }
 
 input SharedRecordUpdateWithoutRecordDataInput {
+  HL7: String
   case: PatientCaseUpdateOneRequiredWithoutSharedRecordInput
   sender: MedicalPractitionerUpdateOneRequiredInput
   receiver: MedicalPractitionerUpdateOneRequiredInput
@@ -7744,6 +7810,46 @@ input SharedRecordWhereInput {
 
   """All values not ending with the given string."""
   sharedRecordId_not_ends_with: ID
+  HL7: String
+
+  """All values that are not equal to given value."""
+  HL7_not: String
+
+  """All values that are contained in given list."""
+  HL7_in: [String!]
+
+  """All values that are not contained in given list."""
+  HL7_not_in: [String!]
+
+  """All values less than the given value."""
+  HL7_lt: String
+
+  """All values less than or equal the given value."""
+  HL7_lte: String
+
+  """All values greater than the given value."""
+  HL7_gt: String
+
+  """All values greater than or equal the given value."""
+  HL7_gte: String
+
+  """All values containing the given string."""
+  HL7_contains: String
+
+  """All values not containing the given string."""
+  HL7_not_contains: String
+
+  """All values starting with the given string."""
+  HL7_starts_with: String
+
+  """All values not starting with the given string."""
+  HL7_not_starts_with: String
+
+  """All values ending with the given string."""
+  HL7_ends_with: String
+
+  """All values not ending with the given string."""
+  HL7_not_ends_with: String
   sharedAt: DateTime
 
   """All values that are not equal to given value."""

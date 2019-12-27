@@ -175,6 +175,7 @@ type SharedRecord {
   case: PatientCase!
   sender: MedicalPractitioner! @relation(name:"SendRecordRelation",link: INLINE,onDelete:SET_NULL)
   receiver: MedicalPractitioner! @relation(name:"ReceiveRecordRelation",link: INLINE,onDelete:SET_NULL)
+  HL7: String!
   sharedAt: DateTime! @createdAt
 }
 type Country {
