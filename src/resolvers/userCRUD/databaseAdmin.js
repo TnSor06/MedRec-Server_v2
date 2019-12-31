@@ -184,7 +184,7 @@ async function registerDatabaseAdmin(parent, args, {
                     }
                 }
             })
-            return "Database Admin registered and will be verified within 2-3 business days."
+            return `Database Admin registered with id ${daUser.id} and will be verified within 2-3 business days.`
         } else {
             throw new Error("Invalid Data")
         }

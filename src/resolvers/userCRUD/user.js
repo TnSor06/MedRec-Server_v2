@@ -41,7 +41,7 @@ async function searchUser(parent, args, {
                             role: args.data.type
                         }
                     ]
-                }, orderBy: "firstName_ASC"
+                }, orderBy: "firstName_ASC", first: 10
             }, info)
             return users
         } else {
@@ -56,7 +56,7 @@ async function searchUser(parent, args, {
                             role_not: "DatabaseAdmin"
                         }
                     ]
-                }, orderBy: "firstName_ASC"
+                }, orderBy: "firstName_ASC", first: 10
             }, info)
             return users
         }
@@ -75,7 +75,7 @@ async function searchUser(parent, args, {
                             role: args.data.type
                         }
                     ]
-                }, orderBy: "firstName_ASC"
+                }, orderBy: "firstName_ASC", first: 10
             }, info)
             const users2 = await prisma.query.users({
                 where: {
@@ -88,7 +88,7 @@ async function searchUser(parent, args, {
                             role: args.data.type
                         }
                     ]
-                }, orderBy: "firstName_ASC"
+                }, orderBy: "firstName_ASC", first: 10
             }, info)
             const users = [...users1, ...users2]
             return users
@@ -104,7 +104,7 @@ async function searchUser(parent, args, {
                             role_not: "DatabaseAdmin"
                         }
                     ]
-                }, orderBy: "firstName_ASC"
+                }, orderBy: "firstName_ASC", first: 10
             }, info)
             const users2 = await prisma.query.users({
                 where: {
@@ -117,7 +117,7 @@ async function searchUser(parent, args, {
                             role_not: "DatabaseAdmin"
                         }
                     ]
-                }, orderBy: "firstName_ASC"
+                }, orderBy: "firstName_ASC", first: 10
             }, info)
             const users = [...users1, ...users2]
             return users

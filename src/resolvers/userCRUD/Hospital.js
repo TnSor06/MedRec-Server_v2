@@ -29,6 +29,5 @@ async function getHospital(parent, args, {
 }
 
 export {
-    getCountry,
-    getRegion
+    getHospital
 }

@@ -6,8 +6,9 @@ type Query {
   searchUser(data: SearchUserInput!):[User]!
   viewPatient(id:String!):Patient!
   viewMedicalPractitioner(id:String!):MedicalPractitioner!
-  getCountry(name:String!):[Country!]
-  getRegion(name:String!):[Region!]
+  getCountry(name:String!,skip:Int!):[Country!]
+  getRegion(name:String!,skip:Int!):[Region!]
+  getHospital(name:String!,skip:Int!):[Hospital!]
 }
 enum MaritalStatus {
   Single

@@ -27,6 +27,9 @@ import { searchUser }
 import { getCountry, getRegion }
     from './userCRUD/CountryRegion'
 
+import { getHospital }
+    from './userCRUD/Hospital'
+
 const Query = {
     me,
     meMedicalPractitioner,
@@ -38,7 +41,8 @@ const Query = {
     icdcodes,
     icdsubcodes,
     getCountry,
-    getRegion
+    getRegion,
+    getHospital
 }
 
 export default Query

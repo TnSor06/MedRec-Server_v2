@@ -3,6 +3,7 @@ import Joi from 'joi'
 
 import hashPassword from '../../utils/hashPassword'
 import getUserData from '../../utils/getUserData';
+import { capitalizeFirstLetter } from '../../utils/misc';
 
 const registerMedicalPractitionerSchema = Joi.object().keys({
     firstName: Joi.string().required(),
@@ -54,17 +55,52 @@ async function viewMedicalPractitioner(parent, args, {
     if (!(userData.verified) && userData.role === "Patient") {
         throw new Error("Access Denied")
     }
-    const medicalPractitioner = await prisma.query.medicalPractitioners({
-        where: {
-            AND: [{
-                mpId: args.id
-            }, {
-                user: {
-                    verified: true
+    let medicalPractitioner = null
+    if (userData.verified && userData.role === "MedicalPractitioner") {
+        if (args.id.length === 12) {
+            medicalPractitioner = await prisma.query.medicalPractitioners({
+                where: {
+                    AND: [{
+                        mpId: args.id
+                    }, {
+                        user: {
+                            verified: true
+                        }
+                    }]
                 }
-            }]
+            }, info)
+        } else {
+            medicalPractitioner = await prisma.query.medicalPractitioners({
+                where: {
+                    user: {
+                        AND: [{
+                            id: args.id
+                        }, {
+                            verified: true
+                        }]
+                    }
+                }
+            }, info)
         }
-    }, info)
+    }
+    if (userData.verified && userData.role === "DatabaseAdmin") {
+        if (args.id.length === 12) {
+            medicalPractitioner = await prisma.query.medicalPractitioners({
+                where: {
+                    mpId: args.id
+                }
+            }, info)
+        } else {
+            medicalPractitioner = await prisma.query.medicalPractitioners({
+                where: {
+                    user: {
+                        id: args.id
+                    }
+                }
+            }, info)
+        }
+    }
+
     if (medicalPractitioner.length === 1) {
         return medicalPractitioner[0]
     } else {
@@ -150,7 +186,7 @@ async function registerMedicalPractitioner(parent, args, {
                 }
             }
         })
-        return "Medical Practitioner registered and will be verified within 2-3 business days."
+        return `Medical Practitioner registered with id ${mpId} and will be verified within 2-3 business days.`
     }
 }
 async function updateMedicalPractitioner(parent, args, {

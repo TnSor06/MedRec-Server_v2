@@ -90,20 +90,58 @@ async function viewPatient(parent, args, {
 }, info) {
     const userData = getUserData(request)
 
-    if (!(userData.verified) && userData.role === "Patient") {
+    if (!(userData.verified) || userData.role === "Patient") {
         throw new Error("Access Denied")
     }
-    const patient = await prisma.query.patients({
-        where: {
-            AND: [{
-                patientId: args.id
-            }, {
-                user: {
-                    verified: true
+    let patient = null
+    if (userData.verified && userData.role === "MedicalPractitioner") {
+        if (args.id.length === 16) {
+            patient = await prisma.query.patients({
+                where: {
+                    AND: [{
+                        patientId: args.id
+                    }, {
+                        user: {
+                            verified: true
+                        }
+                    }]
                 }
-            }]
+            }, info)
+        } else {
+            patient = await prisma.query.patients({
+                where: {
+                    user: {
+                        AND: [
+                            {
+                                id: args.id
+                            },
+                            {
+                                verified: true
+                            }
+                        ]
+                    }
+                }
+            }, info)
         }
-    }, info)
+    }
+    if (userData.verified && userData.role === "DatabaseAdmin") {
+        if (args.id.length === 16) {
+            patient = await prisma.query.patients({
+                where: {
+                    patientId: args.id
+                }
+            }, info)
+        } else {
+            patient = await prisma.query.patients({
+                where: {
+                    user: {
+                        id: args.id
+                    }
+                }
+            }, info)
+        }
+    }
+
     if (patient.length === 1) {
         return patient[0]
     } else {
@@ -234,7 +272,7 @@ async function registerPatient(parent, args, {
                 },
             }
         })
-        return "Patient registered and will be verified within 2-3 business days."
+        return `Patient registered with id ${patientId} and will be verified within 2-3 business days.`
     }
 }
 
