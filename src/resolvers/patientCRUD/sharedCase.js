@@ -134,6 +134,120 @@ async function createSharedCase(parent, args, {
 
 }
 
+async function viewSharedCase(parent, args, {
+    prisma,
+    request
+}, info) {
+    const userData = getUserData(request)
+    if (!userData.verified) {
+        throw new Error("Access Denied")
+    }
+    const patientId = args.patientId
+    if (userData.role === "Patient") {
+        const where = {
+            AND: [
+                {
+                    case: {
+                        patient: {
+                            user: {
+                                id: userData.id
+                            }
+                        }
+                    }
+                },
+                ...(args.caseId && { case: { caseId: args.caseId } }),
+                ...(args.FromDate && { sharedAt_gte: args.FromDate }),
+                ...(args.ToDate && { sharedAt_lte: args.ToDate })
+            ]
+        }
+        const cases = await prisma.query.sharedCases({
+            where: where,
+            orderBy: "createdAt_DESC"
+        }, info)
+        return cases
+    }
+    if (userData.role === "DatabaseAdmin") {
+        let patient = {}
+        if (args.patientId.length === 16) {
+            patient = {
+                patientId
+            }
+        } else {
+            patient = {
+                id: patientId
+            }
+        }
+        const where = {
+            AND: [
+                {
+                    case: {
+                        patient: patient
+                    }
+                },
+                ...(args.caseId && { case: { caseId: args.caseId } }),
+                ...(args.FromDate && { sharedAt_gte: args.FromDate }),
+                ...(args.ToDate && { sharedAt_lte: args.ToDate })
+            ]
+        }
+        const cases = await prisma.query.sharedCases({
+            where: where,
+            orderBy: "createdAt_DESC"
+        }, info)
+        return cases
+    }
+
+    if (userData.role === "MedicalPractitioner") {
+        const cases = []
+        const mp = await prisma.query.medicalPractitioners({
+            where: {
+                user: {
+                    id: userData.id
+                }
+            }
+        }, `{mpId hospital {hospitalId}}`)
+        let patient = {}
+        if (args.patientId.length === 16) {
+            patient = {
+                patientId
+            }
+        } else {
+            patient = {
+                id: patientId
+            }
+        }
+        const where = {
+            ...(args.caseId && { case: { caseId: args.caseId } }),
+            ...(args.FromDate && { sharedAt_gte: args.FromDate }),
+            ...(args.ToDate && { sharedAt_lte: args.ToDate })
+        }
+        const caseOwn = await prisma.query.sharedCases({
+            where: {
+                AND: [
+                    {
+                        case: {
+                            patient: patient
+                        }
+                    },
+                    {
+                        case: {
+                            medicalPractitioner: {
+                                user: {
+                                    id: userData.id
+                                }
+                            }
+                        }
+                    },
+                    ...where
+                ]
+            },
+            orderBy: "createdAt_DESC"
+        }, info)
+        cases.push(...caseOwn)
+        return cases
+    }
+}
+
 export {
-    createSharedCase
+    createSharedCase,
+    viewSharedCase
 }

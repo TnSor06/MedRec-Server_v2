@@ -5,6 +5,18 @@ import hashPassword from '../../utils/hashPassword'
 import getUserData from '../../utils/getUserData';
 import { capitalizeFirstLetter } from '../../utils/misc';
 
+const MedicalPractitioner = {
+    // user: {
+    //     fragment: "fragment mpUserId on MedicalPractitioner{ user{ id } }",
+    //     resolve(parent, args, {
+    //         prisma,
+    //         request
+    //     }, info) {
+    //         return parent.user
+    //     }
+    // }
+}
+
 const registerMedicalPractitionerSchema = Joi.object().keys({
     firstName: Joi.string().required(),
     middleName: Joi.string().required(),
@@ -246,5 +258,6 @@ export {
     meMedicalPractitioner,
     registerMedicalPractitioner,
     updateMedicalPractitioner,
-    viewMedicalPractitioner
+    viewMedicalPractitioner,
+    MedicalPractitioner
 }

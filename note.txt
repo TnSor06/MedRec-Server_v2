@@ -8,4 +8,6 @@ a. while registering medical practioner
 
 // Only medicalPractitioner created the case has access to each record
 
-// Hl7 to be passed to sharedCase.js
+// Hl7 to be passed to sharedCase.js, sharedRecords
+
+// sharedCase and Sharedrecords needs to also pass info about doctors as reciever

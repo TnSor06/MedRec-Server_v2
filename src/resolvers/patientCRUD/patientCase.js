@@ -5,6 +5,12 @@ import {
     pad
 } from '../../utils/misc';
 
+const PatientCase = {
+    patientRecord: {
+        fragment: "fragment case on PatientCase{ caseId }",
+    }
+}
+
 const createPatientCaseSchema = Joi.object().keys({
     patientId: Joi.string().required(),
     icdCode: Joi.string().required(),
@@ -102,7 +108,7 @@ async function createPatientCase(parent, args, {
     } else {
         let caseNum = prevPatientCases[0].caseId.substr(patient.patientId.length)
         caseNum = parseInt(caseNum, 10) + 1
-        caseId = `${patient.patientId}${pad(caseNum,4)}`
+        caseId = `${patient.patientId}${pad(caseNum, 4)}`
     }
 
     const patientCase = await prisma.mutation.createPatientCase({
@@ -141,6 +147,129 @@ async function createPatientCase(parent, args, {
     return patientCase
 }
 
+async function viewPatientCase(parent, args, {
+    prisma,
+    request
+}, info) {
+    const userData = getUserData(request)
+    if (!userData.verified) {
+        throw new Error("Access Denied")
+    }
+    const patientId = args.patientId
+    if (userData.role === "Patient") {
+        const where = {
+            AND: [
+                {
+                    patient: {
+                        user: {
+                            id: userData.id
+                        }
+                    }
+                },
+                ...(args.caseId && { caseId: args.caseId }),
+                ...(args.FromDate && { createdAt_gte: args.FromDate }),
+                ...(args.ToDate && { createdAt_lte: args.ToDate })
+            ]
+        }
+        const cases = await prisma.query.patientCases({
+            where: where,
+            orderBy: "createdAt_DESC"
+        }, info)
+        return cases
+    }
+    if (userData.role === "DatabaseAdmin") {
+        let patient = {}
+        if (args.patientId.length === 16) {
+            patient = {
+                patientId
+            }
+        } else {
+            patient = {
+                id: patientId
+            }
+        }
+        const where = {
+            AND: [
+                { patient: patient },
+                ...(args.caseId && { caseId: args.caseId }),
+                ...(args.FromDate && { createdAt_gte: args.FromDate }),
+                ...(args.ToDate && { createdAt_lte: args.ToDate })
+            ]
+        }
+        const cases = await prisma.query.patientCases({
+            where: where,
+            orderBy: "createdAt_DESC"
+        }, info)
+        return cases
+    }
+
+    if (userData.role === "MedicalPractitioner") {
+        const cases = []
+        const mp = await prisma.query.medicalPractitioners({
+            where: {
+                user: {
+                    id: userData.id
+                }
+            }
+        }, `{mpId hospital {hospitalId}}`)
+        let patient = {}
+        if (args.patientId.length === 16) {
+            patient = {
+                patientId
+            }
+        } else {
+            patient = {
+                id: patientId
+            }
+        }
+        const where = {
+            ...(args.caseId && { caseId: args.caseId }),
+            ...(args.FromDate && { createdAt_gte: args.FromDate }),
+            ...(args.ToDate && { createdAt_lte: args.ToDate })
+        }
+        const caseOwn = await prisma.query.patientCases({
+            where: {
+                AND: [
+                    {
+                        patient: patient
+                    },
+                    {
+                        medicalPractitioner: {
+                            user: {
+                                id: userData.id
+                            }
+                        }
+                    },
+                    ...where
+                ],
+            },
+            orderBy: "createdAt_DESC"
+        }, info)
+        const sameHospital = await prisma.query.patientCases({
+            where: {
+                AND: [
+                    {
+                        patient: patient
+                    },
+                    {
+                        medicalPractitioner: {
+                            hospital: {
+                                hospitalId: mp[0].hospital.hospitalId
+                            }
+                        }
+                    },
+                    ...where
+                ]
+            },
+            orderBy: "createdAt_DESC"
+        }, info)
+        cases.push(...caseOwn, ...sameHospital)
+        return cases
+    }
+}
+
 export {
-    createPatientCase
+    createPatientCase,
+    viewPatientCase,
+    PatientCase
 }

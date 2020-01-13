@@ -1,9 +1,117 @@
-import bcrypt from 'bcrypt'
 import Joi from 'joi'
 
 import hashPassword from '../../utils/hashPassword'
 import getUserData from '../../utils/getUserData';
 import { capitalizeFirstLetter } from '../../utils/misc';
+
+const Patient = {
+    patientCase: {
+        fragment: "fragment patientId on Patient{ id patientId }",
+        async resolve(parent, args, {
+            prisma,
+            request
+        }, info) {
+            const userData = getUserData(request)
+            if (userData.role === "DatabaseAdmin") {
+                return parent.patientCase
+            }
+            if (userData.role === "Patient") {
+                const cases = await prisma.query.patientCases({
+                    where: {
+                        patient: {
+                            id: parent.id
+                        }
+                    }
+                }, info)
+                return cases
+            }
+            if (userData.role === "MedicalPractitioner") {
+                const cases = []
+                const mp = await prisma.query.medicalPractitioners({
+                    where: {
+                        user: {
+                            id: userData.id
+                        }
+                    }
+                }, `{mpId hospital {hospitalId}}`)
+                const caseOwn = await prisma.query.patientCases({
+                    where: {
+                        AND: [
+                            {
+                                patient: {
+                                    id: parent.id
+                                }
+                            },
+                            {
+                                medicalPractitioner: {
+                                    user: {
+                                        id: userData.id
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }, info)
+                const caseShared = await prisma.query.patientCases({
+                    where: {
+                        AND: [
+                            {
+                                patient: {
+                                    id: parent.id
+                                }
+                            },
+                            {
+                                sharedCase_some: {
+                                    receiver: {
+                                        user: {
+                                            id: userData.id
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                medicalPractitioner: {
+                                    hospital: {
+                                        hospitalId_not: mp[0].hospital.hospitalId
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }, info)
+                const sameHospital = await prisma.query.patientCases({
+                    where: {
+                        AND: [
+                            {
+                                patient: {
+                                    id: parent.id
+                                }
+                            },
+                            {
+                                sharedCase_some: {
+                                    receiver: {
+                                        hospital: {
+                                            hospitalId_not: mp[0].hospital.hospitalId
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                medicalPractitioner: {
+                                    hospital: {
+                                        hospitalId: mp[0].hospital.hospitalId
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }, info)
+                cases.push(...caseOwn, ...caseShared, ...sameHospital)
+                return cases
+            }
+        }
+    }
+}
 
 const registerPatientSchema = Joi.object().keys({
     firstName: Joi.string().required(),
@@ -382,5 +490,6 @@ export {
     mePatient,
     registerPatient,
     updatePatient,
-    viewPatient
+    viewPatient,
+    Patient
 }

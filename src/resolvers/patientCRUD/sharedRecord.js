@@ -141,7 +141,133 @@ async function createSharedRecord(parent, args, {
     return sharedRecord
 
 }
+async function viewSharedRecord(parent, args, {
+    prisma,
+    request
+}, info) {
+    const userData = getUserData(request)
+    if (!userData.verified) {
+        throw new Error("Access Denied")
+    }
+    const patientId = args.patientId
+    if (userData.role === "Patient") {
+        const where = {
+            AND: [
+                {
+                    case: {
+                        patient: {
+                            user: {
+                                id: userData.id
+                            }
+                        }
+                    }
+                }, {
+                    case: {
+                        caseId: args.caseId
+                    }
+                },
+                ...(args.recordId && { record: { recordId: args.recordId } }),
+                ...(args.FromDate && { sharedAt_gte: args.FromDate }),
+                ...(args.ToDate && { sharedAt_lte: args.ToDate })
+            ]
+        }
+        const records = await prisma.query.sharedRecords({
+            where: where,
+            orderBy: "createdAt_DESC"
+        }, info)
+        return records
+    }
+    if (userData.role === "DatabaseAdmin") {
+        let patient = {}
+        if (args.patientId.length === 16) {
+            patient = {
+                patientId
+            }
+        } else {
+            patient = {
+                id: patientId
+            }
+        }
+        const where = {
+            AND: [
+                {
+                    case: {
+                        patient: patient
+                    }
+                }, {
+                    case: {
+                        caseId: args.caseId
+                    }
+                },
+                ...(args.recordId && { record: { recordId: args.recordId } }),
+                ...(args.FromDate && { sharedAt_gte: args.FromDate }),
+                ...(args.ToDate && { sharedAt_lte: args.ToDate })
+            ]
+        }
+        const records = await prisma.query.sharedRecords({
+            where: where,
+            orderBy: "createdAt_DESC"
+        }, info)
+        return records
+    }
+
+    if (userData.role === "MedicalPractitioner") {
+        const records = []
+        const mp = await prisma.query.medicalPractitioners({
+            where: {
+                user: {
+                    id: userData.id
+                }
+            }
+        }, `{mpId hospital {hospitalId}}`)
+        let patient = {}
+        if (args.patientId.length === 16) {
+            patient = {
+                patientId
+            }
+        } else {
+            patient = {
+                id: patientId
+            }
+        }
+        const where = {
+            ...(args.recordId && { record: { recordId: args.recordId } }),
+            ...(args.FromDate && { sharedAt_gte: args.FromDate }),
+            ...(args.ToDate && { sharedAt_lte: args.ToDate })
+        }
+        const recordsOwn = await prisma.query.sharedRecords({
+            where: {
+                AND: [
+                    {
+                        case: {
+                            patient: patient
+                        }
+                    },
+                    {
+                        case: {
+                            medicalPractitioner: {
+                                user: {
+                                    id: userData.id
+                                }
+                            }
+                        }
+                    },
+                    {
+                        case: {
+                            caseId: args.caseId
+                        }
+                    },
+                    ...where
+                ]
+            },
+            orderBy: "createdAt_DESC"
+        }, info)
+        records.push(...recordsOwn)
+        return records
+    }
+}
 
 export {
-    createSharedRecord
+    createSharedRecord,
+    viewSharedRecord
 }

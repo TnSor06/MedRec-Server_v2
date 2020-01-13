@@ -166,6 +166,172 @@ async function createPatientRecord(parent, args, {
     return patientRecord
 }
 
+async function viewPatientRecord(parent, args, {
+    prisma,
+    request
+}, info) {
+    const userData = getUserData(request)
+    if (!userData.verified) {
+        throw new Error("Access Denied")
+    }
+
+    if (userData.role === "Patient") {
+        let caseId = null
+        if (args.caseId.length === 20) {
+            caseId = {
+                caseId: args.caseId
+            }
+        } else {
+            caseId = {
+                id: args.caseId
+            }
+        }
+        const where = {
+            AND: [
+                {
+                    case: {
+                        ...caseId,
+                    }
+                }, {
+                    patient: {
+                        user: {
+                            id: userData.id
+                        }
+                    }
+                },
+                ...(args.recordId && { recordId: args.recordId }),
+                ...(args.FromDate && { createdAt_gte: args.FromDate }),
+                ...(args.ToDate && { createdAt_lte: args.ToDate })
+            ]
+        }
+        const records = await prisma.query.patientRecords({
+            where: where,
+            orderBy: "createdAt_DESC"
+        }, info)
+        return records
+    }
+    if (userData.role === "DatabaseAdmin") {
+        let caseId = null
+        if (args.caseId.length === 20) {
+            caseId = {
+                caseId: args.caseId
+            }
+        } else {
+            caseId = {
+                id: args.caseId
+            }
+        }
+        const where = {
+            AND: [
+                {
+                    case: {
+                        ...caseId
+                    }
+                },
+                ...(args.recordId && { recordId: args.recordId }),
+                ...(args.FromDate && { createdAt_gte: args.FromDate }),
+                ...(args.ToDate && { createdAt_lte: args.ToDate })
+            ]
+
+        }
+        const records = await prisma.query.patientRecords({
+            where: where,
+            orderBy: "createdAt_DESC"
+        }, info)
+        return records
+    }
+    if (userData.role === "MedicalPractitioner") {
+        const mp = await prisma.query.medicalPractitioners({
+            where: {
+                user: {
+                    id: userData.id
+                }
+            }
+        }, `{mpId hospital {hospitalId}}`)
+        let caseId = {}
+        if (args.caseId.length === 20) {
+            caseId = {
+                caseId: args.caseId
+            }
+        } else {
+            caseId = {
+                id: args.caseId
+            }
+        }
+        const where = {
+            ...(args.caseId && { caseId: args.caseId }),
+            ...(args.FromDate && { createdAt_gte: args.FromDate }),
+            ...(args.ToDate && { createdAt_lte: args.ToDate })
+        }
+        const casesOwn = await prisma.query.patientRecords({
+            where: {
+                AND: [
+                    {
+                        case: caseId
+                    },
+                    {
+                        case: {
+                            medicalPractitioner: {
+                                user: {
+                                    id: userData.id
+                                }
+                            }
+                        }
+                    }, {
+                        medicalPractitioner: {
+                            user: {
+                                id_not: userData.id
+                            }
+                        }
+                    }
+                    , ...where
+                ]
+            },
+            orderBy: "createdAt_DESC"
+        }, info)
+        const recordsOwn = await prisma.query.patientRecords({
+            where: {
+                AND: [
+                    {
+                        case: caseId
+                    },
+                    {
+                        medicalPractitioner: {
+                            user: {
+                                id: userData.id
+                            }
+                        }
+                    },
+                    ...where
+                ]
+            },
+            orderBy: "createdAt_DESC"
+        }, info)
+        const sameHospital = await prisma.query.patientRecords({
+            where: {
+                AND: [
+                    {
+                        case: caseId
+                    },
+                    {
+                        medicalPractitioner: {
+                            hospital: {
+                                hospitalId: mp[0].hospital.hospitalId
+                            }
+                        }
+                    },
+                    ...where
+                ]
+            },
+            orderBy: "createdAt_DESC"
+        }, info)
+        const records = []
+        records.push(...caseOwn, ...recordsOwn, ...sameHospital)
+        return records
+    }
+}
+
 export {
-    createPatientRecord
+    createPatientRecord,
+    viewPatientRecord
 }

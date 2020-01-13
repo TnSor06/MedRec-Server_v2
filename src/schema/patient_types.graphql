@@ -1,3 +1,9 @@
+type Query {
+  viewPatientCase(patientId:String!,caseId:String,ToDate:String,FromDate:String):[PatientCase!]
+  viewPatientRecord(caseId:String!,recordId:String,ToDate:String,FromDate:String):[PatientRecord!]
+  viewSharedCase(patientId:String!,caseId:String,ToDate:String,FromDate:String):[SharedCase!]
+  viewSharedRecord(caseId:String!,recordId:String,ToDate:String,FromDate:String):[SharedRecord!]
+}
 enum DiagnosisType {
   Provisional
   Final

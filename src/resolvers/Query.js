@@ -30,6 +30,22 @@ import { getCountry, getRegion }
 import { getHospital }
     from './userCRUD/Hospital'
 
+import {
+    viewPatientCase
+} from './patientCRUD/patientCase'
+
+import {
+    viewPatientRecord
+} from './patientCRUD/patientRecord'
+
+import {
+    viewSharedCase
+} from './patientCRUD/sharedCase'
+
+import {
+    viewSharedRecord
+} from './patientCRUD/sharedRecord'
+
 const Query = {
     me,
     meMedicalPractitioner,
@@ -42,7 +58,11 @@ const Query = {
     icdsubcodes,
     getCountry,
     getRegion,
-    getHospital
+    getHospital,
+    viewPatientCase,
+    viewPatientRecord,
+    viewSharedCase,
+    viewSharedRecord
 }
 
 export default Query

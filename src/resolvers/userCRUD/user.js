@@ -2,6 +2,18 @@ import Joi from 'joi'
 import getUserData from '../../utils/getUserData';
 import { capitalizeFirstLetter } from '../../utils/misc';
 
+const User = {
+    password: {
+        fragment: "fragment userId on User { id }",
+        resolve(parent, args, {
+            prisma,
+            request
+        }, info) {
+            return 'abcdefgh'
+        }
+    }
+}
+
 const searchUserSchema = Joi.object().keys({
     type: Joi.string().valid('Patient', 'MedicalPractitioner'),
     email: Joi.string().lowercase(),
@@ -128,5 +140,5 @@ async function searchUser(parent, args, {
 }
 
 export {
-    searchUser
+    searchUser, User
 }
