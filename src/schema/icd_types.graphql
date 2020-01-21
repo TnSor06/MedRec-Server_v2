@@ -1,6 +1,6 @@
 type Query {
-  icdcodes: [ICDCode]!
-  icdsubcodes: [ICDSubCode]!
+  icdcodes(commonName:String!): [ICDCode]!
+  icdsubcodes(commonName:String!,scientificName:String): [ICDSubCode]!
 }
 type ICDCode {
   id: ID!

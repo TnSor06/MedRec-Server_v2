@@ -1,8 +1,40 @@
 type Mutation{
     createPatientCase(data:PatientCaseInput!): PatientCase!
-    createPatientRecord(data:PatientRecordInput): PatientRecord!
-    createSharedCase(data:SharedCaseInput): SharedCase!
-    createSharedRecord(data:SharedRecordInput): SharedRecord!
+    createPatientRecord(data:PatientRecordInput!): PatientRecord!
+    createSharedCase(data:SharedCaseInput!): SharedCase!
+    createSharedRecord(data:SharedRecordInput!): SharedRecord!
+    addInsurance(data:InsuranceCreateInput!):Insurance!
+    updateInsurance(data:InsuranceUpdateInput!):Insurance!
+    addCareProvider(data:CareProviderCreateInput!):CareProvider!
+    updateCareProvider(data:CareProviderUpdateInput!):CareProvider!
+}
+input CareProviderCreateInput {
+  cpaddress: String!
+  city: String!
+  pincode: String!
+  country: String!
+  contact: String!
+  email: String!
+}
+input CareProviderUpdateInput {
+  cpaddress: String
+  city: String
+  pincode: String
+  country: String
+  contact: String
+  email: String
+}
+input InsuranceCreateInput {
+  insuranceStatus: String!
+  insuranceCompany1: String!
+  insuranceCompany2: String!
+  sponsorerDetails: String!
+}
+input InsuranceUpdateInput {
+  insuranceStatus: String
+  insuranceCompany1: String
+  insuranceCompany2: String
+  sponsorerDetails: String
 }
 input PatientCaseInput{
   patientId: String!

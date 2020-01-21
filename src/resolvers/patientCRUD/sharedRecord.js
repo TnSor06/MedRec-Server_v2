@@ -262,6 +262,38 @@ async function viewSharedRecord(parent, args, {
             },
             orderBy: "createdAt_DESC"
         }, info)
+        const recordsRecieve = await prisma.query.sharedRecords({
+            where: {
+                AND: [
+                    {
+                        case: {
+                            patient: patient
+                        }
+                    },
+                    {
+                        case: {
+                            medicalPractitioner: {
+                                user: {
+                                    id_not: userData.id
+                                }
+                            }
+                        }
+                    },
+                    {
+                        case: {
+                            caseId: args.caseId
+                        }
+                    },
+                    {
+                        receiver: {
+                            mpId: mp.mpId
+                        }
+                    },
+                    ...where
+                ]
+            },
+            orderBy: "createdAt_DESC"
+        }, info)
         records.push(...recordsOwn)
         return records
     }

@@ -242,7 +242,34 @@ async function viewSharedCase(parent, args, {
             },
             orderBy: "createdAt_DESC"
         }, info)
-        cases.push(...caseOwn)
+        const caseRecieve = await prisma.query.sharedCases({
+            where: {
+                AND: [
+                    {
+                        case: {
+                            patient: patient
+                        }
+                    },
+                    {
+                        case: {
+                            medicalPractitioner: {
+                                user: {
+                                    id_not: userData.id
+                                }
+                            }
+                        }
+                    },
+                    {
+                        receiver: {
+                            mpId: mp.mpId
+                        }
+                    },
+                    ...where
+                ]
+            },
+            orderBy: "createdAt_DESC"
+        }, info)
+        cases.push(...caseOwn, ...caseRecieve)
         return cases
     }
 }

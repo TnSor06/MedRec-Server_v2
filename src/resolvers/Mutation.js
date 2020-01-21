@@ -29,6 +29,14 @@ import {
     createSharedRecord
 } from './patientCRUD/sharedRecord'
 
+import {
+    addInsurance, updateInsurance
+} from './patientCRUD/Insurance'
+
+import {
+    addCareProvider, updateCareProvider
+} from './patientCRUD/CareProvider'
+
 const Mutation = {
     login,
     registerMedicalPractitioner,
@@ -42,7 +50,11 @@ const Mutation = {
     createPatientCase,
     createPatientRecord,
     createSharedCase,
-    createSharedRecord
+    createSharedRecord,
+    addInsurance,
+    updateInsurance,
+    addCareProvider,
+    updateCareProvider
 }
 
 export default Mutation

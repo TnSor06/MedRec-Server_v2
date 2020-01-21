@@ -158,21 +158,23 @@ async function viewPatientCase(parent, args, {
     const patientId = args.patientId
     if (userData.role === "Patient") {
         const where = {
-            AND: [
-                {
-                    patient: {
-                        user: {
-                            id: userData.id
-                        }
-                    }
-                },
-                ...(args.caseId && { caseId: args.caseId }),
-                ...(args.FromDate && { createdAt_gte: args.FromDate }),
-                ...(args.ToDate && { createdAt_lte: args.ToDate })
-            ]
+            ...(args.caseId && { caseId: args.caseId }),
+            ...(args.FromDate && { createdAt_gte: args.FromDate }),
+            ...(args.ToDate && { createdAt_lte: args.ToDate })
         }
         const cases = await prisma.query.patientCases({
-            where: where,
+            where: {
+                AND: [
+                    {
+                        patient: {
+                            user: {
+                                id: userData.id
+                            }
+                        }
+                    },
+                    ...where
+                ]
+            },
             orderBy: "createdAt_DESC"
         }, info)
         return cases
@@ -185,19 +187,23 @@ async function viewPatientCase(parent, args, {
             }
         } else {
             patient = {
-                id: patientId
+                user: {
+                    id: patientId
+                }
             }
         }
         const where = {
-            AND: [
-                { patient: patient },
-                ...(args.caseId && { caseId: args.caseId }),
-                ...(args.FromDate && { createdAt_gte: args.FromDate }),
-                ...(args.ToDate && { createdAt_lte: args.ToDate })
-            ]
+            ...(args.caseId && { caseId: args.caseId }),
+            ...(args.FromDate && { createdAt_gte: args.FromDate }),
+            ...(args.ToDate && { createdAt_lte: args.ToDate })
         }
         const cases = await prisma.query.patientCases({
-            where: where,
+            where: {
+                AND: [
+                    { patient: patient },
+                    ...where
+                ]
+            },
             orderBy: "createdAt_DESC"
         }, info)
         return cases
@@ -219,7 +225,9 @@ async function viewPatientCase(parent, args, {
             }
         } else {
             patient = {
-                id: patientId
+                user: {
+                    id: patientId
+                }
             }
         }
         const where = {
@@ -256,6 +264,10 @@ async function viewPatientCase(parent, args, {
                             hospital: {
                                 hospitalId: mp[0].hospital.hospitalId
                             }
+                        }
+                    }, {
+                        medicalPractitioner: {
+                            id_not: userData.id
                         }
                     },
                     ...where

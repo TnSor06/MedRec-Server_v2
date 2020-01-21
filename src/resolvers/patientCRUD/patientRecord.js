@@ -187,25 +187,27 @@ async function viewPatientRecord(parent, args, {
             }
         }
         const where = {
-            AND: [
-                {
-                    case: {
-                        ...caseId,
-                    }
-                }, {
-                    patient: {
-                        user: {
-                            id: userData.id
-                        }
-                    }
-                },
-                ...(args.recordId && { recordId: args.recordId }),
-                ...(args.FromDate && { createdAt_gte: args.FromDate }),
-                ...(args.ToDate && { createdAt_lte: args.ToDate })
-            ]
+            ...(args.recordId && { recordId: args.recordId }),
+            ...(args.FromDate && { createdAt_gte: args.FromDate }),
+            ...(args.ToDate && { createdAt_lte: args.ToDate })
         }
         const records = await prisma.query.patientRecords({
-            where: where,
+            where: {
+                AND: [
+                    {
+                        case: {
+                            ...caseId,
+                        }
+                    }, {
+                        patient: {
+                            user: {
+                                id: userData.id
+                            }
+                        }
+                    },
+                    ...where
+                ]
+            },
             orderBy: "createdAt_DESC"
         }, info)
         return records
@@ -222,20 +224,22 @@ async function viewPatientRecord(parent, args, {
             }
         }
         const where = {
-            AND: [
-                {
-                    case: {
-                        ...caseId
-                    }
-                },
-                ...(args.recordId && { recordId: args.recordId }),
-                ...(args.FromDate && { createdAt_gte: args.FromDate }),
-                ...(args.ToDate && { createdAt_lte: args.ToDate })
-            ]
-
+            ...(args.recordId && { recordId: args.recordId }),
+            ...(args.FromDate && { createdAt_gte: args.FromDate }),
+            ...(args.ToDate && { createdAt_lte: args.ToDate })
         }
         const records = await prisma.query.patientRecords({
-            where: where,
+            where: {
+                AND: [
+                    {
+                        case: {
+                            ...caseId
+                        }
+                    },
+                    ...where
+                ]
+
+            },
             orderBy: "createdAt_DESC"
         }, info)
         return records
@@ -263,6 +267,32 @@ async function viewPatientRecord(parent, args, {
             ...(args.FromDate && { createdAt_gte: args.FromDate }),
             ...(args.ToDate && { createdAt_lte: args.ToDate })
         }
+        const casesRecordsOwn = await prisma.query.patientRecords({
+            where: {
+                AND: [
+                    {
+                        case: caseId
+                    },
+                    {
+                        case: {
+                            medicalPractitioner: {
+                                user: {
+                                    id: userData.id
+                                }
+                            }
+                        }
+                    }, {
+                        medicalPractitioner: {
+                            user: {
+                                id: userData.id
+                            }
+                        }
+                    }
+                    , ...where
+                ]
+            },
+            orderBy: "createdAt_DESC"
+        }, info)
         const casesOwn = await prisma.query.patientRecords({
             where: {
                 AND: [
@@ -296,6 +326,15 @@ async function viewPatientRecord(parent, args, {
                         case: caseId
                     },
                     {
+                        case: {
+                            medicalPractitioner: {
+                                user: {
+                                    id_not: userData.id
+                                }
+                            }
+                        }
+                    },
+                    {
                         medicalPractitioner: {
                             user: {
                                 id: userData.id
@@ -320,13 +359,29 @@ async function viewPatientRecord(parent, args, {
                             }
                         }
                     },
+                    {
+                        case: {
+                            medicalPractitioner: {
+                                user: {
+                                    id_not: userData.id
+                                }
+                            }
+                        }
+                    },
+                    {
+                        medicalPractitioner: {
+                            user: {
+                                id_not: userData.id
+                            }
+                        }
+                    },
                     ...where
                 ]
             },
             orderBy: "createdAt_DESC"
         }, info)
         const records = []
-        records.push(...caseOwn, ...recordsOwn, ...sameHospital)
+        records.push(...caseOwn, ...recordsOwn, ...sameHospital, ...casesRecordsOwn)
         return records
     }
 }
