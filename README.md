@@ -1,7 +1,7 @@
 # MedRec-Server_v2
 Medrec server using graphql
 
-1. Install all packages : npm install --unsafe-perm -- allow-root
+1. Install all packages : npm install --unsafe-perm --allow-root
 2. npm start
 3. sampleQuery.txt contains all queries which can be executed
 4. Open localhost:4000 and you can visit docs and also execute queries
