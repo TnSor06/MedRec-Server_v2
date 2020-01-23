@@ -1,0 +1,227 @@
+****************************
+register patient 
+mutation{
+        registerPatient(data:{
+            firstName: "Anish",
+            middleName: "Ashok",
+            lastName: "Chhabaria",
+            dob: "1998-06-08",
+            sex: Male,
+            email: "anishc@gmail.com",
+            password: "test@123",
+            address: "Chembur",
+            bloodGroup: "O+",
+            religion: "Hindu",
+            maritalStatus: Single,
+            primaryLanguage: "Hindi",
+            birthPlace: "jodhpur",
+            pincode: "736",
+            country: "356",
+            occupation: "Student",
+            contact1: "+91-7506550511",
+            contact2: "+91-9988625345",
+            socioEcoStatus: "Student",
+            immunizationHistory: "None",
+            PMH: "No",
+            DHx: "No",
+        })
+    }
+****************************
+registerMedicalPractitioner
+mutation{
+        registerMedicalPractitioner(data:{
+            firstName: "Pramod",
+            middleName: "Dinesh",
+            lastName: "Choudhary",
+            dob: "1998-05-06",
+            sex: Male,
+            email: "pramodc@gmail.com",
+            password: "test@123",
+            address: "Chembur",
+            clinicAddress: "Kurla",
+            degree: "MBBS",
+            field: "Cardiologist",
+            hospital:"422002005",
+        })
+    }
+
+mutation{
+        registerMedicalPractitioner(data:{
+            firstName: "Manoj",
+            middleName: "Anish",
+            lastName: "Ochaney",
+            dob: "1998-05-06",
+            sex: Male,
+            email: "manojo@gmail.com",
+            password: "test@123",
+            address: "Chembur",
+            clinicAddress: "Kurla",
+            degree: "MBBS",
+            field: "Cardiologist",
+            hospital:"422002005",
+        })
+    }
+
+mutation{
+        registerMedicalPractitioner(data:{
+            firstName: "Sarevsh",
+            middleName: "Rohit",
+            lastName: "Relekar",
+            dob: "1998-05-06",
+            sex: Male,
+            email: "sarveshr@gmail.com",
+            password: "test@123",
+            address: "Chembur",
+            clinicAddress: "Kurla",
+            degree: "MBBS",
+            field: "Cardiologist",
+            hospital:"422002005",
+        })
+    }
+
+*************************/
+
+register DatabaseAdmin
+
+mutation{
+        registerDatabaseAdmin(data:{
+            firstName: "Jatin",
+            middleName: "Bhagirath",
+            lastName: "Achrya",
+            dob: "1998-12-08",
+            sex: Male,
+            email: "jatina@gmail.com",
+            password: "test@123",
+            address: "Kurla",
+            country: "356",
+            contact: "+91-7897897896",
+            hospital:"422002005",
+        })
+    }
+
+******************************
+
+Login
+
+mutation{
+  login(data:{
+    email: "jatina@gmail.com",
+    password: "test@123"
+  }){
+    token
+    user{
+      id
+      role
+    }
+  }
+}
+
+Token taken from here should be passed in HTTP Headers part in bottom left in format:
+
+{
+    "Authorization": "Bearer token_data"
+}
+
+********************/
+
+approve patient  : Only token of Database admin i.e. login database admin can do it
+
+mutation{
+  approvePatient(data:{
+    id:"3567360000000002"
+  })
+}
+
+*******************************
+
+approve MedicalPractitioner: Only token of Database admin i.e. login database admin can do it
+
+mutation{
+  approveMedicalPractitioner(data:{
+    id:"356422000002"}
+  )
+}
+
+******************************
+
+createPatientCase : Only token of MedicalPractitioner i.e. login MedicalPractitioner can do it
+
+mutation{
+  createPatientCase(data:{
+    patientId:"3567360000000002"
+    icdCode: "A00"
+    icdSubCode:"A000"
+    HPC:"ABC"
+    MoI:"ABC"
+    DandV:"ABC"
+    clinicalNote:"ABC"
+    diagnosisType:Final
+    currentClinicalStatus:true
+  }){
+    id
+    caseId
+  }
+}
+
+
+*************************/
+
+createPatientRecord : Only token of MedicalPractitioner i.e. login MedicalPractitioner can do it
+
+mutation{
+  createPatientRecord(
+    data:{
+      case:"35673600000000020001"
+      onArrival:"ABC"
+      diagnosis:"ABC"
+      Tx:"ABC"
+      cevsSp:7
+      cevsDp:7
+      cePr:7
+      ceRr:7
+      ceHeight:7
+      ceWeight:7
+      medication:"ABC"
+      advice:"ABC"
+      query:"ABC"
+      followUpObservations:"String"
+  }){
+    id
+    recordId
+  }
+}
+*******************/
+
+createSharedCase :Only token of MedicalPractitioner i.e. login MedicalPractitioner can do it
+mutation{
+  createSharedCase(data:{
+    case:"35673600000000020001"
+    receiver:"356422000001"
+  }){	
+    sharedCaseId
+    HL7
+  }
+}
+*****************************/
+
+createSharedRecord: Only token of MedicalPractitioner i.e. login MedicalPractitioner can do it
+
+mutation{
+  createSharedRecord(data:{
+    record:"276744000000000200150002"
+    receiver:"356422000002"
+  }){
+    HL7
+  }
+}
+
+**********************************
+
+updateMedicalPractitioner: Only token of MedicalPractitioner i.e. login MedicalPractitioner can do it
+
+mutation{
+  updateMedicalPractitioner(data:{
+    address:"ABC"
+    password:"test@1234"
+  })
+}
