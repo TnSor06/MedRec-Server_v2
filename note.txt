@@ -10,6 +10,4 @@ a. while registering medical practioner
 
 // Hl7 to be passed to sharedCase.js, sharedRecords
 
-// sharedCase and Sharedrecords needs to also pass info about doctors as reciever
-
 // add keywords in each schema for search
