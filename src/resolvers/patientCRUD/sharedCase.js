@@ -211,6 +211,7 @@ async function createSharedCase(parent, args, {
   }`)
     // Get HL7 all details stored in "patientCase" variable
     const HL7 = await genHL7(JSON.stringify(patientCase))
+    console.log("HL7",HL7)
     // Receiver MedicalPractitioner
     let receiverMedicalPractitioner = await prisma.query.medicalPractitioner({
         where: {
