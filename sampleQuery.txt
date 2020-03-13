@@ -8,7 +8,40 @@ mutation{
             dob: "1998-06-08",
             sex: Male,
             email: "anishc@gmail.com",
+            principleLanguage:"English",
+    motherName:"Asha",
+    aadharNo:"123456780",
             password: "test@123",
+            address: "Chembur",
+            bloodGroup: "O+",
+            religion: "Hindu",
+            maritalStatus: Single,
+            primaryLanguage: "Hindi",
+            birthPlace: "jodhpur",
+            pincode: "736",
+            country: "356",
+            occupation: "Student",
+            contact1: "+91-7506550511",
+            contact2: "+91-9988625345",
+            socioEcoStatus: "Student",
+            immunizationHistory: "None",
+            PMH: "No",
+            DHx: "No",
+        })
+    }
+# Write your query or mutation here
+mutation{
+  registerPatient(data:{
+      firstName: "Rohit",
+      middleName: "Suresh",
+      lastName: "Bhagtani",
+      dob: "1998-06-08",
+      sex: Male,
+      email: "rohitb@gmail.com",
+    principleLanguage:"English",
+    motherName:"Asha",
+    aadharNo:"123456789",
+      password: "test@123",
             address: "Chembur",
             bloodGroup: "O+",
             religion: "Hindu",
@@ -224,4 +257,34 @@ mutation{
     address:"ABC"
     password:"test@1234"
   })
+}
+
+*****************************
+Add Insurance
+mutation{
+  addInsurance(data:{
+    insuranceStatus:"BAC",
+    insuranceCompany1:"ABC",
+    insuranceCompany2:"Abc",
+    sponsorerDetails:"BAC"
+  }){
+    id
+    insuranceId
+  }
+}
+
+mutation{
+  addCareProvider(data:{
+    cpaddress:"Dombivli",
+    city:"Kalyan",
+    pincode:"736",
+    country:"356",
+    contact:"+91-7606606110",
+    email:"sarveshr@gmail.com",
+    cpPatientRelation:"Brother"
+  }){
+    id
+    cpId
+    cpPatientRelation
+  }
 }

@@ -11,3 +11,6 @@ a. while registering medical practioner
 // Hl7 to be passed to sharedCase.js, sharedRecords
 
 // add keywords in each schema for search
+
+Steps: docker-compose up -d -> prisma deploy
+        python3 postReq.py

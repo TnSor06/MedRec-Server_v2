@@ -69,6 +69,9 @@ type Patient{
   user:User! @relation(link: INLINE,onDelete:SET_NULL)
   patientId: String! @unique
   bloodGroup: String!
+  principleLanguage: String!
+  motherName:String!
+  aadharNo: String! @unique
   religion: String!
   maritalStatus: MaritalStatus!
   primaryLanguage: String!
@@ -106,6 +109,7 @@ type CareProvider {
   country: Country! @relation(link: INLINE,onDelete:SET_NULL)
   contact: String!
   email: String! @unique
+  cpPatientRelation:String!
 }
 type Insurance {
   id: ID! @id

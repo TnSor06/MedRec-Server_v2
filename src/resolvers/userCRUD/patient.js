@@ -122,6 +122,9 @@ const registerPatientSchema = Joi.object().keys({
     address: Joi.string().required(),
     email: Joi.string().lowercase().email().required(),
     password: Joi.string().regex(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,32}$/).min(8).required(),
+    principleLanguage: Joi.string().required(),
+    motherName: Joi.string().required(),
+    aadharNo: Joi.string().required(),
     bloodGroup: Joi.string().required(),
     religion: Joi.string().required(),
     maritalStatus: Joi.string().required().valid('Single', 'Married', 'Divorced', 'Widowed'),
@@ -148,6 +151,9 @@ const registerPatientSchema = Joi.object().keys({
 })
 const updatePatientSchema = Joi.object().keys({
     password: Joi.string().regex(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,32}$/).min(8),
+    principleLanguage: Joi.string(),
+    motherName: Joi.string(),
+    aadharNo: Joi.string(),
     religion: Joi.string(),
     maritalStatus: Joi.string().valid('Single', 'Married', 'Divorced', 'Widowed'),
     primaryLanguage: Joi.string(),
@@ -269,6 +275,9 @@ async function registerPatient(parent, args, {
         email: args.data.email.toLowerCase(),
         password: args.data.password,
         address: args.data.address,
+        principleLanguage: args.data.primaryLanguage,
+        motherName: args.data.motherName,
+        aadharNo: args.data.aadharNo,
         bloodGroup: args.data.bloodGroup,
         religion: args.data.religion,
         maritalStatus: args.data.maritalStatus,
@@ -302,25 +311,21 @@ async function registerPatient(parent, args, {
         throw new Error('Invalid User')
     } else {
         const hashedPassword = await hashPassword(args.data.password)
-        const patUser = await prisma.mutation.createUser({
-            data: {
-                firstName: capitalizeFirstLetter(args.data.firstName),
-                middleName: capitalizeFirstLetter(args.data.middleName),
-                lastName: capitalizeFirstLetter(args.data.lastName),
-                dob: args.data.dob,
-                sex: args.data.sex,
-                email: args.data.email.toLowerCase(),
-                role: "Patient",
-                isAdmin: false,
-                password: hashedPassword,
-                verified: false
-            }
-        })
         const patCountry = await prisma.query.country({
             where: {
                 countryCode: parseInt(args.data.country, 10)
             }
         }, `{ countryCode }`)
+
+        // Checking aadhar is unique or not
+        const patAadhar = await prisma.query.patients({
+            where: {
+                aadharNo: args.data.aadharNo
+            }
+        }, `{ patientId }`)
+        if(patAadhar.length !== 0){
+            throw new Error('Invalid Aadhar Number')
+        }
         const patRegion = await prisma.query.region({
             where: {
                 pincode: parseInt(args.data.pincode, 10)
@@ -339,11 +344,28 @@ async function registerPatient(parent, args, {
             patientId = parseInt(prevPatient[0].patientId, 10) + 1
             patientId = patientId.toString()
         }
+        const patUser = await prisma.mutation.createUser({
+            data: {
+                firstName: capitalizeFirstLetter(args.data.firstName),
+                middleName: capitalizeFirstLetter(args.data.middleName),
+                lastName: capitalizeFirstLetter(args.data.lastName),
+                dob: args.data.dob,
+                sex: args.data.sex,
+                email: args.data.email.toLowerCase(),
+                role: "Patient",
+                isAdmin: false,
+                password: hashedPassword,
+                verified: false
+            }
+        })
         const patient = await prisma.mutation.createPatient({
             data: {
                 patientId: patientId,
                 address: args.data.address,
                 bloodGroup: args.data.bloodGroup,
+                principleLanguage: args.data.primaryLanguage,
+                motherName: args.data.motherName,
+                aadharNo: args.data.aadharNo,
                 religion: args.data.religion,
                 maritalStatus: args.data.maritalStatus,
                 primaryLanguage: args.data.primaryLanguage,

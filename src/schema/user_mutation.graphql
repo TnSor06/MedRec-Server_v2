@@ -54,6 +54,9 @@ input PatientInput {
   email:String!
   sex: Gender!
   password:String!
+  principleLanguage:String!
+  motherName: String!
+  aadharNo: String!
   bloodGroup: String!
   religion: String!
   maritalStatus: MaritalStatus!

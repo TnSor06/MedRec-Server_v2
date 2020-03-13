@@ -1,6 +1,7 @@
 import Joi from 'joi'
 
 import getUserData from '../../utils/getUserData'
+import {genHL7} from '../../utils/HL7_caller'
 
 const createSharedCaseSchema = Joi.object().keys({
     case: Joi.string().required(),
@@ -57,6 +58,9 @@ async function createSharedCase(parent, args, {
       }
       patientId
       bloodGroup
+      principleLanguage
+      motherName
+      aadharNo
       religion
       maritalStatus
       primaryLanguage
@@ -91,6 +95,7 @@ async function createSharedCase(parent, args, {
         city
         contact
         email
+        cpPatientRelation
         pincode{
           pincode
           region
@@ -204,7 +209,8 @@ async function createSharedCase(parent, args, {
       createdAt
     }
   }`)
-
+    // Get HL7 all details stored in "patientCase" variable
+    const HL7 = await genHL7(JSON.stringify(patientCase))
     // Receiver MedicalPractitioner
     let receiverMedicalPractitioner = await prisma.query.medicalPractitioner({
         where: {
@@ -266,8 +272,6 @@ async function createSharedCase(parent, args, {
         throw new Error("Already Shared")
     }
 
-    // Get HL7 all details stored in "patientCase" variable
-    const HL7 = "Some data"
 
     const sharedCase = await prisma.mutation.createSharedCase({
         data: {

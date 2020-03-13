@@ -29,6 +29,7 @@
     "joi": "^14.3.1",
     "jsonwebtoken": "^8.5.1",
     "merge-graphql-schemas": "^1.7.0",
-    "prisma-binding": "^2.3.16"
+    "prisma-binding": "^2.3.16",
+    "python-shell": "^1.0.8"
   }
 }

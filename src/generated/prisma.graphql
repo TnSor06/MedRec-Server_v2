@@ -1,5 +1,5 @@
 # source: http://localhost:4466
-# timestamp: Mon Dec 23 2019 19:30:07 GMT+0530 (IST)
+# timestamp: Fri Mar 13 2020 12:31:10 GMT+0530 (India Standard Time)
 
 type AggregateCareProvider {
   count: Int!
@@ -76,6 +76,7 @@ type CareProvider implements Node {
   country: Country!
   contact: String!
   email: String!
+  cpPatientRelation: String!
 }
 
 """A connection to a list of items."""
@@ -95,6 +96,7 @@ input CareProviderCreateInput {
   city: String!
   contact: String!
   email: String!
+  cpPatientRelation: String!
   patient: PatientCreateOneWithoutCpIdInput!
   pincode: RegionCreateOneInput!
   country: CountryCreateOneInput!
@@ -112,6 +114,7 @@ input CareProviderCreateWithoutPatientInput {
   city: String!
   contact: String!
   email: String!
+  cpPatientRelation: String!
   pincode: RegionCreateOneInput!
   country: CountryCreateOneInput!
 }
@@ -138,6 +141,8 @@ enum CareProviderOrderByInput {
   contact_DESC
   email_ASC
   email_DESC
+  cpPatientRelation_ASC
+  cpPatientRelation_DESC
 }
 
 type CareProviderPreviousValues {
@@ -147,6 +152,7 @@ type CareProviderPreviousValues {
   city: String!
   contact: String!
   email: String!
+  cpPatientRelation: String!
 }
 
 type CareProviderSubscriptionPayload {
@@ -186,6 +192,7 @@ input CareProviderUpdateInput {
   city: String
   contact: String
   email: String
+  cpPatientRelation: String
   patient: PatientUpdateOneRequiredWithoutCpIdInput
   pincode: RegionUpdateOneRequiredInput
   country: CountryUpdateOneRequiredInput
@@ -197,6 +204,7 @@ input CareProviderUpdateManyMutationInput {
   city: String
   contact: String
   email: String
+  cpPatientRelation: String
 }
 
 input CareProviderUpdateOneWithoutPatientInput {
@@ -214,6 +222,7 @@ input CareProviderUpdateWithoutPatientDataInput {
   city: String
   contact: String
   email: String
+  cpPatientRelation: String
   pincode: RegionUpdateOneRequiredInput
   country: CountryUpdateOneRequiredInput
 }
@@ -466,6 +475,46 @@ input CareProviderWhereInput {
 
   """All values not ending with the given string."""
   email_not_ends_with: String
+  cpPatientRelation: String
+
+  """All values that are not equal to given value."""
+  cpPatientRelation_not: String
+
+  """All values that are contained in given list."""
+  cpPatientRelation_in: [String!]
+
+  """All values that are not contained in given list."""
+  cpPatientRelation_not_in: [String!]
+
+  """All values less than the given value."""
+  cpPatientRelation_lt: String
+
+  """All values less than or equal the given value."""
+  cpPatientRelation_lte: String
+
+  """All values greater than the given value."""
+  cpPatientRelation_gt: String
+
+  """All values greater than or equal the given value."""
+  cpPatientRelation_gte: String
+
+  """All values containing the given string."""
+  cpPatientRelation_contains: String
+
+  """All values not containing the given string."""
+  cpPatientRelation_not_contains: String
+
+  """All values starting with the given string."""
+  cpPatientRelation_starts_with: String
+
+  """All values not starting with the given string."""
+  cpPatientRelation_not_starts_with: String
+
+  """All values ending with the given string."""
+  cpPatientRelation_ends_with: String
+
+  """All values not ending with the given string."""
+  cpPatientRelation_not_ends_with: String
   patient: PatientWhereInput
   pincode: RegionWhereInput
   country: CountryWhereInput
@@ -2962,6 +3011,9 @@ type Patient implements Node {
   user: User!
   patientId: String!
   bloodGroup: String!
+  principleLanguage: String!
+  motherName: String!
+  aadharNo: String!
   religion: String!
   maritalStatus: MaritalStatus!
   primaryLanguage: String!
@@ -4065,6 +4117,9 @@ input PatientCreateInput {
   id: ID
   patientId: String!
   bloodGroup: String!
+  principleLanguage: String!
+  motherName: String!
+  aadharNo: String!
   religion: String!
   maritalStatus: MaritalStatus!
   primaryLanguage: String!
@@ -4117,6 +4172,9 @@ input PatientCreateWithoutCpIdInput {
   id: ID
   patientId: String!
   bloodGroup: String!
+  principleLanguage: String!
+  motherName: String!
+  aadharNo: String!
   religion: String!
   maritalStatus: MaritalStatus!
   primaryLanguage: String!
@@ -4148,6 +4206,9 @@ input PatientCreateWithoutInsuranceInput {
   id: ID
   patientId: String!
   bloodGroup: String!
+  principleLanguage: String!
+  motherName: String!
+  aadharNo: String!
   religion: String!
   maritalStatus: MaritalStatus!
   primaryLanguage: String!
@@ -4179,6 +4240,9 @@ input PatientCreateWithoutPatientCaseInput {
   id: ID
   patientId: String!
   bloodGroup: String!
+  principleLanguage: String!
+  motherName: String!
+  aadharNo: String!
   religion: String!
   maritalStatus: MaritalStatus!
   primaryLanguage: String!
@@ -4222,6 +4286,12 @@ enum PatientOrderByInput {
   patientId_DESC
   bloodGroup_ASC
   bloodGroup_DESC
+  principleLanguage_ASC
+  principleLanguage_DESC
+  motherName_ASC
+  motherName_DESC
+  aadharNo_ASC
+  aadharNo_DESC
   religion_ASC
   religion_DESC
   maritalStatus_ASC
@@ -4270,6 +4340,9 @@ type PatientPreviousValues {
   id: ID!
   patientId: String!
   bloodGroup: String!
+  principleLanguage: String!
+  motherName: String!
+  aadharNo: String!
   religion: String!
   maritalStatus: MaritalStatus!
   primaryLanguage: String!
@@ -5956,6 +6029,9 @@ input PatientSubscriptionWhereInput {
 input PatientUpdateDataInput {
   patientId: String
   bloodGroup: String
+  principleLanguage: String
+  motherName: String
+  aadharNo: String
   religion: String
   maritalStatus: MaritalStatus
   primaryLanguage: String
@@ -5987,6 +6063,9 @@ input PatientUpdateDataInput {
 input PatientUpdateInput {
   patientId: String
   bloodGroup: String
+  principleLanguage: String
+  motherName: String
+  aadharNo: String
   religion: String
   maritalStatus: MaritalStatus
   primaryLanguage: String
@@ -6018,6 +6097,9 @@ input PatientUpdateInput {
 input PatientUpdateManyMutationInput {
   patientId: String
   bloodGroup: String
+  principleLanguage: String
+  motherName: String
+  aadharNo: String
   religion: String
   maritalStatus: MaritalStatus
   primaryLanguage: String
@@ -6071,6 +6153,9 @@ input PatientUpdateOneRequiredWithoutPatientCaseInput {
 input PatientUpdateWithoutCpIdDataInput {
   patientId: String
   bloodGroup: String
+  principleLanguage: String
+  motherName: String
+  aadharNo: String
   religion: String
   maritalStatus: MaritalStatus
   primaryLanguage: String
@@ -6101,6 +6186,9 @@ input PatientUpdateWithoutCpIdDataInput {
 input PatientUpdateWithoutInsuranceDataInput {
   patientId: String
   bloodGroup: String
+  principleLanguage: String
+  motherName: String
+  aadharNo: String
   religion: String
   maritalStatus: MaritalStatus
   primaryLanguage: String
@@ -6131,6 +6219,9 @@ input PatientUpdateWithoutInsuranceDataInput {
 input PatientUpdateWithoutPatientCaseDataInput {
   patientId: String
   bloodGroup: String
+  principleLanguage: String
+  motherName: String
+  aadharNo: String
   religion: String
   maritalStatus: MaritalStatus
   primaryLanguage: String
@@ -6301,6 +6392,126 @@ input PatientWhereInput {
 
   """All values not ending with the given string."""
   bloodGroup_not_ends_with: String
+  principleLanguage: String
+
+  """All values that are not equal to given value."""
+  principleLanguage_not: String
+
+  """All values that are contained in given list."""
+  principleLanguage_in: [String!]
+
+  """All values that are not contained in given list."""
+  principleLanguage_not_in: [String!]
+
+  """All values less than the given value."""
+  principleLanguage_lt: String
+
+  """All values less than or equal the given value."""
+  principleLanguage_lte: String
+
+  """All values greater than the given value."""
+  principleLanguage_gt: String
+
+  """All values greater than or equal the given value."""
+  principleLanguage_gte: String
+
+  """All values containing the given string."""
+  principleLanguage_contains: String
+
+  """All values not containing the given string."""
+  principleLanguage_not_contains: String
+
+  """All values starting with the given string."""
+  principleLanguage_starts_with: String
+
+  """All values not starting with the given string."""
+  principleLanguage_not_starts_with: String
+
+  """All values ending with the given string."""
+  principleLanguage_ends_with: String
+
+  """All values not ending with the given string."""
+  principleLanguage_not_ends_with: String
+  motherName: String
+
+  """All values that are not equal to given value."""
+  motherName_not: String
+
+  """All values that are contained in given list."""
+  motherName_in: [String!]
+
+  """All values that are not contained in given list."""
+  motherName_not_in: [String!]
+
+  """All values less than the given value."""
+  motherName_lt: String
+
+  """All values less than or equal the given value."""
+  motherName_lte: String
+
+  """All values greater than the given value."""
+  motherName_gt: String
+
+  """All values greater than or equal the given value."""
+  motherName_gte: String
+
+  """All values containing the given string."""
+  motherName_contains: String
+
+  """All values not containing the given string."""
+  motherName_not_contains: String
+
+  """All values starting with the given string."""
+  motherName_starts_with: String
+
+  """All values not starting with the given string."""
+  motherName_not_starts_with: String
+
+  """All values ending with the given string."""
+  motherName_ends_with: String
+
+  """All values not ending with the given string."""
+  motherName_not_ends_with: String
+  aadharNo: String
+
+  """All values that are not equal to given value."""
+  aadharNo_not: String
+
+  """All values that are contained in given list."""
+  aadharNo_in: [String!]
+
+  """All values that are not contained in given list."""
+  aadharNo_not_in: [String!]
+
+  """All values less than the given value."""
+  aadharNo_lt: String
+
+  """All values less than or equal the given value."""
+  aadharNo_lte: String
+
+  """All values greater than the given value."""
+  aadharNo_gt: String
+
+  """All values greater than or equal the given value."""
+  aadharNo_gte: String
+
+  """All values containing the given string."""
+  aadharNo_contains: String
+
+  """All values not containing the given string."""
+  aadharNo_not_contains: String
+
+  """All values starting with the given string."""
+  aadharNo_starts_with: String
+
+  """All values not starting with the given string."""
+  aadharNo_not_starts_with: String
+
+  """All values ending with the given string."""
+  aadharNo_ends_with: String
+
+  """All values not ending with the given string."""
+  aadharNo_not_ends_with: String
   religion: String
 
   """All values that are not equal to given value."""
@@ -6816,6 +7027,7 @@ input PatientWhereInput {
 input PatientWhereUniqueInput {
   id: ID
   patientId: String
+  aadharNo: String
 }
 
 type Query {

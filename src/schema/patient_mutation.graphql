@@ -15,6 +15,7 @@ input CareProviderCreateInput {
   country: String!
   contact: String!
   email: String!
+  cpPatientRelation: String!
 }
 input CareProviderUpdateInput {
   cpaddress: String
@@ -23,6 +24,7 @@ input CareProviderUpdateInput {
   country: String
   contact: String
   email: String
+  cpPatientRelation: String
 }
 input InsuranceCreateInput {
   insuranceStatus: String!

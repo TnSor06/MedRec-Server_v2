@@ -19,6 +19,7 @@ type CareProvider {
   country: Country!
   contact: String!
   email: String!
+  cpPatientRelation: String!
 }
 type Insurance {
   id: ID!

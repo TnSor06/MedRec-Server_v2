@@ -9,6 +9,7 @@ import {
 const addCareProviderSchema = Joi.object().keys({
     cpaddress: Joi.string().required(),
     city: Joi.string().required(),
+    cpPatientRelation: Joi.string().required(),
     pincode: Joi.string().required(),
     country: Joi.string().required(),
     contact: Joi.string().required(),
@@ -17,6 +18,7 @@ const addCareProviderSchema = Joi.object().keys({
 const updateCareProviderSchema = Joi.object().keys({
     cpaddress: Joi.string(),
     city: Joi.string(),
+    cpPatientRelation: Joi.string(),
     pincode: Joi.string(),
     country: Joi.string(),
     contact: Joi.string(),
@@ -33,7 +35,8 @@ async function addCareProvider(parent, args, {
         pincode: args.data.pincode,
         country: args.data.country,
         contact: args.data.contact,
-        email: args.data.email
+        email: args.data.email,
+        cpPatientRelation: args.data.cpPatientRelation,
     }, addCareProviderSchema);
     if (result.error) {
         throw new Error("Invalid Data")
@@ -56,6 +59,7 @@ async function addCareProvider(parent, args, {
             data: {
                 cpId: `${patient[0].patientId}`,
                 cpaddress: args.data.cpaddress,
+                cpPatientRelation: args.data.cpPatientRelation,
                 city: args.data.city,
                 contact: args.data.contact,
                 email: args.data.email,
@@ -92,7 +96,8 @@ async function updateCareProvider(parent, args, {
         pincode: args.data.pincode,
         country: args.data.country,
         contact: args.data.contact,
-        email: args.data.email
+        email: args.data.email,
+        cpPatientRelation: args.data.cpPatientRelation,
     }, updateCareProviderSchema);
     if (result.error) {
         throw new Error("Invalid Data")

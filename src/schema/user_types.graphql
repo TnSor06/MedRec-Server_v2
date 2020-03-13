@@ -94,6 +94,9 @@ type AuthPayload{
 type Patient{
   id: ID!
   user:User!
+  principleLanguage:String!
+  motherName: String!
+  aadharNo: String!
   patientId: String!
   bloodGroup: String!
   religion: String!
