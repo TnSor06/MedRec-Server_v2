@@ -1,5 +1,5 @@
 # source: http://localhost:4466
-# timestamp: Fri Mar 13 2020 12:31:10 GMT+0530 (India Standard Time)
+# timestamp: Tue Mar 17 2020 13:19:47 GMT+0530 (IST)
 
 type AggregateCareProvider {
   count: Int!
@@ -69,13 +69,7 @@ type BatchPayload {
 type CareProvider implements Node {
   id: ID!
   patient: Patient!
-  cpId: String!
-  cpaddress: String!
-  city: String!
-  pincode: Region!
-  country: Country!
-  contact: String!
-  email: String!
+  cpPatientId: Patient!
   cpPatientRelation: String!
 }
 
@@ -91,32 +85,20 @@ type CareProviderConnection {
 
 input CareProviderCreateInput {
   id: ID
-  cpId: String!
-  cpaddress: String!
-  city: String!
-  contact: String!
-  email: String!
   cpPatientRelation: String!
-  patient: PatientCreateOneWithoutCpIdInput!
-  pincode: RegionCreateOneInput!
-  country: CountryCreateOneInput!
+  patient: PatientCreateOneInput!
+  cpPatientId: PatientCreateOneWithoutCpIdInput!
 }
 
-input CareProviderCreateOneWithoutPatientInput {
-  create: CareProviderCreateWithoutPatientInput
+input CareProviderCreateOneWithoutCpPatientIdInput {
+  create: CareProviderCreateWithoutCpPatientIdInput
   connect: CareProviderWhereUniqueInput
 }
 
-input CareProviderCreateWithoutPatientInput {
+input CareProviderCreateWithoutCpPatientIdInput {
   id: ID
-  cpId: String!
-  cpaddress: String!
-  city: String!
-  contact: String!
-  email: String!
   cpPatientRelation: String!
-  pincode: RegionCreateOneInput!
-  country: CountryCreateOneInput!
+  patient: PatientCreateOneInput!
 }
 
 """An edge in a connection."""
@@ -131,27 +113,12 @@ type CareProviderEdge {
 enum CareProviderOrderByInput {
   id_ASC
   id_DESC
-  cpId_ASC
-  cpId_DESC
-  cpaddress_ASC
-  cpaddress_DESC
-  city_ASC
-  city_DESC
-  contact_ASC
-  contact_DESC
-  email_ASC
-  email_DESC
   cpPatientRelation_ASC
   cpPatientRelation_DESC
 }
 
 type CareProviderPreviousValues {
   id: ID!
-  cpId: String!
-  cpaddress: String!
-  city: String!
-  contact: String!
-  email: String!
   cpPatientRelation: String!
 }
 
@@ -187,49 +154,32 @@ input CareProviderSubscriptionWhereInput {
 }
 
 input CareProviderUpdateInput {
-  cpId: String
-  cpaddress: String
-  city: String
-  contact: String
-  email: String
   cpPatientRelation: String
-  patient: PatientUpdateOneRequiredWithoutCpIdInput
-  pincode: RegionUpdateOneRequiredInput
-  country: CountryUpdateOneRequiredInput
+  patient: PatientUpdateOneRequiredInput
+  cpPatientId: PatientUpdateOneRequiredWithoutCpIdInput
 }
 
 input CareProviderUpdateManyMutationInput {
-  cpId: String
-  cpaddress: String
-  city: String
-  contact: String
-  email: String
   cpPatientRelation: String
 }
 
-input CareProviderUpdateOneWithoutPatientInput {
-  create: CareProviderCreateWithoutPatientInput
+input CareProviderUpdateOneWithoutCpPatientIdInput {
+  create: CareProviderCreateWithoutCpPatientIdInput
   connect: CareProviderWhereUniqueInput
   disconnect: Boolean
   delete: Boolean
-  update: CareProviderUpdateWithoutPatientDataInput
-  upsert: CareProviderUpsertWithoutPatientInput
+  update: CareProviderUpdateWithoutCpPatientIdDataInput
+  upsert: CareProviderUpsertWithoutCpPatientIdInput
 }
 
-input CareProviderUpdateWithoutPatientDataInput {
-  cpId: String
-  cpaddress: String
-  city: String
-  contact: String
-  email: String
+input CareProviderUpdateWithoutCpPatientIdDataInput {
   cpPatientRelation: String
-  pincode: RegionUpdateOneRequiredInput
-  country: CountryUpdateOneRequiredInput
+  patient: PatientUpdateOneRequiredInput
 }
 
-input CareProviderUpsertWithoutPatientInput {
-  update: CareProviderUpdateWithoutPatientDataInput!
-  create: CareProviderCreateWithoutPatientInput!
+input CareProviderUpsertWithoutCpPatientIdInput {
+  update: CareProviderUpdateWithoutCpPatientIdDataInput!
+  create: CareProviderCreateWithoutCpPatientIdInput!
 }
 
 input CareProviderWhereInput {
@@ -275,206 +225,6 @@ input CareProviderWhereInput {
 
   """All values not ending with the given string."""
   id_not_ends_with: ID
-  cpId: String
-
-  """All values that are not equal to given value."""
-  cpId_not: String
-
-  """All values that are contained in given list."""
-  cpId_in: [String!]
-
-  """All values that are not contained in given list."""
-  cpId_not_in: [String!]
-
-  """All values less than the given value."""
-  cpId_lt: String
-
-  """All values less than or equal the given value."""
-  cpId_lte: String
-
-  """All values greater than the given value."""
-  cpId_gt: String
-
-  """All values greater than or equal the given value."""
-  cpId_gte: String
-
-  """All values containing the given string."""
-  cpId_contains: String
-
-  """All values not containing the given string."""
-  cpId_not_contains: String
-
-  """All values starting with the given string."""
-  cpId_starts_with: String
-
-  """All values not starting with the given string."""
-  cpId_not_starts_with: String
-
-  """All values ending with the given string."""
-  cpId_ends_with: String
-
-  """All values not ending with the given string."""
-  cpId_not_ends_with: String
-  cpaddress: String
-
-  """All values that are not equal to given value."""
-  cpaddress_not: String
-
-  """All values that are contained in given list."""
-  cpaddress_in: [String!]
-
-  """All values that are not contained in given list."""
-  cpaddress_not_in: [String!]
-
-  """All values less than the given value."""
-  cpaddress_lt: String
-
-  """All values less than or equal the given value."""
-  cpaddress_lte: String
-
-  """All values greater than the given value."""
-  cpaddress_gt: String
-
-  """All values greater than or equal the given value."""
-  cpaddress_gte: String
-
-  """All values containing the given string."""
-  cpaddress_contains: String
-
-  """All values not containing the given string."""
-  cpaddress_not_contains: String
-
-  """All values starting with the given string."""
-  cpaddress_starts_with: String
-
-  """All values not starting with the given string."""
-  cpaddress_not_starts_with: String
-
-  """All values ending with the given string."""
-  cpaddress_ends_with: String
-
-  """All values not ending with the given string."""
-  cpaddress_not_ends_with: String
-  city: String
-
-  """All values that are not equal to given value."""
-  city_not: String
-
-  """All values that are contained in given list."""
-  city_in: [String!]
-
-  """All values that are not contained in given list."""
-  city_not_in: [String!]
-
-  """All values less than the given value."""
-  city_lt: String
-
-  """All values less than or equal the given value."""
-  city_lte: String
-
-  """All values greater than the given value."""
-  city_gt: String
-
-  """All values greater than or equal the given value."""
-  city_gte: String
-
-  """All values containing the given string."""
-  city_contains: String
-
-  """All values not containing the given string."""
-  city_not_contains: String
-
-  """All values starting with the given string."""
-  city_starts_with: String
-
-  """All values not starting with the given string."""
-  city_not_starts_with: String
-
-  """All values ending with the given string."""
-  city_ends_with: String
-
-  """All values not ending with the given string."""
-  city_not_ends_with: String
-  contact: String
-
-  """All values that are not equal to given value."""
-  contact_not: String
-
-  """All values that are contained in given list."""
-  contact_in: [String!]
-
-  """All values that are not contained in given list."""
-  contact_not_in: [String!]
-
-  """All values less than the given value."""
-  contact_lt: String
-
-  """All values less than or equal the given value."""
-  contact_lte: String
-
-  """All values greater than the given value."""
-  contact_gt: String
-
-  """All values greater than or equal the given value."""
-  contact_gte: String
-
-  """All values containing the given string."""
-  contact_contains: String
-
-  """All values not containing the given string."""
-  contact_not_contains: String
-
-  """All values starting with the given string."""
-  contact_starts_with: String
-
-  """All values not starting with the given string."""
-  contact_not_starts_with: String
-
-  """All values ending with the given string."""
-  contact_ends_with: String
-
-  """All values not ending with the given string."""
-  contact_not_ends_with: String
-  email: String
-
-  """All values that are not equal to given value."""
-  email_not: String
-
-  """All values that are contained in given list."""
-  email_in: [String!]
-
-  """All values that are not contained in given list."""
-  email_not_in: [String!]
-
-  """All values less than the given value."""
-  email_lt: String
-
-  """All values less than or equal the given value."""
-  email_lte: String
-
-  """All values greater than the given value."""
-  email_gt: String
-
-  """All values greater than or equal the given value."""
-  email_gte: String
-
-  """All values containing the given string."""
-  email_contains: String
-
-  """All values not containing the given string."""
-  email_not_contains: String
-
-  """All values starting with the given string."""
-  email_starts_with: String
-
-  """All values not starting with the given string."""
-  email_not_starts_with: String
-
-  """All values ending with the given string."""
-  email_ends_with: String
-
-  """All values not ending with the given string."""
-  email_not_ends_with: String
   cpPatientRelation: String
 
   """All values that are not equal to given value."""
@@ -516,14 +266,11 @@ input CareProviderWhereInput {
   """All values not ending with the given string."""
   cpPatientRelation_not_ends_with: String
   patient: PatientWhereInput
-  pincode: RegionWhereInput
-  country: CountryWhereInput
+  cpPatientId: PatientWhereInput
 }
 
 input CareProviderWhereUniqueInput {
   id: ID
-  cpId: String
-  email: String
 }
 
 type Country implements Node {
@@ -2897,8 +2644,8 @@ type Mutation {
   createPatient(data: PatientCreateInput!): Patient!
   createUser(data: UserCreateInput!): User!
   createCountry(data: CountryCreateInput!): Country!
-  createICDSubCode(data: ICDSubCodeCreateInput!): ICDSubCode!
   createRegion(data: RegionCreateInput!): Region!
+  createICDSubCode(data: ICDSubCodeCreateInput!): ICDSubCode!
   createMedicalPractitioner(data: MedicalPractitionerCreateInput!): MedicalPractitioner!
   createHospital(data: HospitalCreateInput!): Hospital!
   createICDCode(data: ICDCodeCreateInput!): ICDCode!
@@ -2912,8 +2659,8 @@ type Mutation {
   updatePatient(data: PatientUpdateInput!, where: PatientWhereUniqueInput!): Patient
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateCountry(data: CountryUpdateInput!, where: CountryWhereUniqueInput!): Country
-  updateICDSubCode(data: ICDSubCodeUpdateInput!, where: ICDSubCodeWhereUniqueInput!): ICDSubCode
   updateRegion(data: RegionUpdateInput!, where: RegionWhereUniqueInput!): Region
+  updateICDSubCode(data: ICDSubCodeUpdateInput!, where: ICDSubCodeWhereUniqueInput!): ICDSubCode
   updateMedicalPractitioner(data: MedicalPractitionerUpdateInput!, where: MedicalPractitionerWhereUniqueInput!): MedicalPractitioner
   updateHospital(data: HospitalUpdateInput!, where: HospitalWhereUniqueInput!): Hospital
   updateICDCode(data: ICDCodeUpdateInput!, where: ICDCodeWhereUniqueInput!): ICDCode
@@ -2927,8 +2674,8 @@ type Mutation {
   deletePatient(where: PatientWhereUniqueInput!): Patient
   deleteUser(where: UserWhereUniqueInput!): User
   deleteCountry(where: CountryWhereUniqueInput!): Country
-  deleteICDSubCode(where: ICDSubCodeWhereUniqueInput!): ICDSubCode
   deleteRegion(where: RegionWhereUniqueInput!): Region
+  deleteICDSubCode(where: ICDSubCodeWhereUniqueInput!): ICDSubCode
   deleteMedicalPractitioner(where: MedicalPractitionerWhereUniqueInput!): MedicalPractitioner
   deleteHospital(where: HospitalWhereUniqueInput!): Hospital
   deleteICDCode(where: ICDCodeWhereUniqueInput!): ICDCode
@@ -2942,8 +2689,8 @@ type Mutation {
   upsertPatient(where: PatientWhereUniqueInput!, create: PatientCreateInput!, update: PatientUpdateInput!): Patient!
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
   upsertCountry(where: CountryWhereUniqueInput!, create: CountryCreateInput!, update: CountryUpdateInput!): Country!
-  upsertICDSubCode(where: ICDSubCodeWhereUniqueInput!, create: ICDSubCodeCreateInput!, update: ICDSubCodeUpdateInput!): ICDSubCode!
   upsertRegion(where: RegionWhereUniqueInput!, create: RegionCreateInput!, update: RegionUpdateInput!): Region!
+  upsertICDSubCode(where: ICDSubCodeWhereUniqueInput!, create: ICDSubCodeCreateInput!, update: ICDSubCodeUpdateInput!): ICDSubCode!
   upsertMedicalPractitioner(where: MedicalPractitionerWhereUniqueInput!, create: MedicalPractitionerCreateInput!, update: MedicalPractitionerUpdateInput!): MedicalPractitioner!
   upsertHospital(where: HospitalWhereUniqueInput!, create: HospitalCreateInput!, update: HospitalUpdateInput!): Hospital!
   upsertICDCode(where: ICDCodeWhereUniqueInput!, create: ICDCodeCreateInput!, update: ICDCodeUpdateInput!): ICDCode!
@@ -2957,8 +2704,8 @@ type Mutation {
   updateManyPatients(data: PatientUpdateManyMutationInput!, where: PatientWhereInput): BatchPayload!
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
   updateManyCountries(data: CountryUpdateManyMutationInput!, where: CountryWhereInput): BatchPayload!
-  updateManyICDSubCodes(data: ICDSubCodeUpdateManyMutationInput!, where: ICDSubCodeWhereInput): BatchPayload!
   updateManyRegions(data: RegionUpdateManyMutationInput!, where: RegionWhereInput): BatchPayload!
+  updateManyICDSubCodes(data: ICDSubCodeUpdateManyMutationInput!, where: ICDSubCodeWhereInput): BatchPayload!
   updateManyMedicalPractitioners(data: MedicalPractitionerUpdateManyMutationInput!, where: MedicalPractitionerWhereInput): BatchPayload!
   updateManyHospitals(data: HospitalUpdateManyMutationInput!, where: HospitalWhereInput): BatchPayload!
   updateManyICDCodes(data: ICDCodeUpdateManyMutationInput!, where: ICDCodeWhereInput): BatchPayload!
@@ -2972,8 +2719,8 @@ type Mutation {
   deleteManyPatients(where: PatientWhereInput): BatchPayload!
   deleteManyUsers(where: UserWhereInput): BatchPayload!
   deleteManyCountries(where: CountryWhereInput): BatchPayload!
-  deleteManyICDSubCodes(where: ICDSubCodeWhereInput): BatchPayload!
   deleteManyRegions(where: RegionWhereInput): BatchPayload!
+  deleteManyICDSubCodes(where: ICDSubCodeWhereInput): BatchPayload!
   deleteManyMedicalPractitioners(where: MedicalPractitionerWhereInput): BatchPayload!
   deleteManyHospitals(where: HospitalWhereInput): BatchPayload!
   deleteManyICDCodes(where: ICDCodeWhereInput): BatchPayload!
@@ -3016,7 +2763,6 @@ type Patient implements Node {
   aadharNo: String!
   religion: String!
   maritalStatus: MaritalStatus!
-  primaryLanguage: String!
   birthPlace: String!
   address: String!
   pincode: Region!
@@ -4122,7 +3868,6 @@ input PatientCreateInput {
   aadharNo: String!
   religion: String!
   maritalStatus: MaritalStatus!
-  primaryLanguage: String!
   birthPlace: String!
   address: String!
   occupation: String!
@@ -4143,7 +3888,7 @@ input PatientCreateInput {
   user: UserCreateOneInput!
   pincode: RegionCreateOneInput!
   country: CountryCreateOneInput!
-  cpId: CareProviderCreateOneWithoutPatientInput
+  cpId: CareProviderCreateOneWithoutCpPatientIdInput
   insurance: InsuranceCreateOneWithoutPatientInput
   patientCase: PatientCaseCreateManyWithoutPatientInput
 }
@@ -4177,7 +3922,6 @@ input PatientCreateWithoutCpIdInput {
   aadharNo: String!
   religion: String!
   maritalStatus: MaritalStatus!
-  primaryLanguage: String!
   birthPlace: String!
   address: String!
   occupation: String!
@@ -4211,7 +3955,6 @@ input PatientCreateWithoutInsuranceInput {
   aadharNo: String!
   religion: String!
   maritalStatus: MaritalStatus!
-  primaryLanguage: String!
   birthPlace: String!
   address: String!
   occupation: String!
@@ -4232,7 +3975,7 @@ input PatientCreateWithoutInsuranceInput {
   user: UserCreateOneInput!
   pincode: RegionCreateOneInput!
   country: CountryCreateOneInput!
-  cpId: CareProviderCreateOneWithoutPatientInput
+  cpId: CareProviderCreateOneWithoutCpPatientIdInput
   patientCase: PatientCaseCreateManyWithoutPatientInput
 }
 
@@ -4245,7 +3988,6 @@ input PatientCreateWithoutPatientCaseInput {
   aadharNo: String!
   religion: String!
   maritalStatus: MaritalStatus!
-  primaryLanguage: String!
   birthPlace: String!
   address: String!
   occupation: String!
@@ -4266,7 +4008,7 @@ input PatientCreateWithoutPatientCaseInput {
   user: UserCreateOneInput!
   pincode: RegionCreateOneInput!
   country: CountryCreateOneInput!
-  cpId: CareProviderCreateOneWithoutPatientInput
+  cpId: CareProviderCreateOneWithoutCpPatientIdInput
   insurance: InsuranceCreateOneWithoutPatientInput
 }
 
@@ -4296,8 +4038,6 @@ enum PatientOrderByInput {
   religion_DESC
   maritalStatus_ASC
   maritalStatus_DESC
-  primaryLanguage_ASC
-  primaryLanguage_DESC
   birthPlace_ASC
   birthPlace_DESC
   address_ASC
@@ -4345,7 +4085,6 @@ type PatientPreviousValues {
   aadharNo: String!
   religion: String!
   maritalStatus: MaritalStatus!
-  primaryLanguage: String!
   birthPlace: String!
   address: String!
   occupation: String!
@@ -6034,7 +5773,6 @@ input PatientUpdateDataInput {
   aadharNo: String
   religion: String
   maritalStatus: MaritalStatus
-  primaryLanguage: String
   birthPlace: String
   address: String
   occupation: String
@@ -6055,7 +5793,7 @@ input PatientUpdateDataInput {
   user: UserUpdateOneRequiredInput
   pincode: RegionUpdateOneRequiredInput
   country: CountryUpdateOneRequiredInput
-  cpId: CareProviderUpdateOneWithoutPatientInput
+  cpId: CareProviderUpdateOneWithoutCpPatientIdInput
   insurance: InsuranceUpdateOneWithoutPatientInput
   patientCase: PatientCaseUpdateManyWithoutPatientInput
 }
@@ -6068,7 +5806,6 @@ input PatientUpdateInput {
   aadharNo: String
   religion: String
   maritalStatus: MaritalStatus
-  primaryLanguage: String
   birthPlace: String
   address: String
   occupation: String
@@ -6089,7 +5826,7 @@ input PatientUpdateInput {
   user: UserUpdateOneRequiredInput
   pincode: RegionUpdateOneRequiredInput
   country: CountryUpdateOneRequiredInput
-  cpId: CareProviderUpdateOneWithoutPatientInput
+  cpId: CareProviderUpdateOneWithoutCpPatientIdInput
   insurance: InsuranceUpdateOneWithoutPatientInput
   patientCase: PatientCaseUpdateManyWithoutPatientInput
 }
@@ -6102,7 +5839,6 @@ input PatientUpdateManyMutationInput {
   aadharNo: String
   religion: String
   maritalStatus: MaritalStatus
-  primaryLanguage: String
   birthPlace: String
   address: String
   occupation: String
@@ -6158,7 +5894,6 @@ input PatientUpdateWithoutCpIdDataInput {
   aadharNo: String
   religion: String
   maritalStatus: MaritalStatus
-  primaryLanguage: String
   birthPlace: String
   address: String
   occupation: String
@@ -6191,7 +5926,6 @@ input PatientUpdateWithoutInsuranceDataInput {
   aadharNo: String
   religion: String
   maritalStatus: MaritalStatus
-  primaryLanguage: String
   birthPlace: String
   address: String
   occupation: String
@@ -6212,7 +5946,7 @@ input PatientUpdateWithoutInsuranceDataInput {
   user: UserUpdateOneRequiredInput
   pincode: RegionUpdateOneRequiredInput
   country: CountryUpdateOneRequiredInput
-  cpId: CareProviderUpdateOneWithoutPatientInput
+  cpId: CareProviderUpdateOneWithoutCpPatientIdInput
   patientCase: PatientCaseUpdateManyWithoutPatientInput
 }
 
@@ -6224,7 +5958,6 @@ input PatientUpdateWithoutPatientCaseDataInput {
   aadharNo: String
   religion: String
   maritalStatus: MaritalStatus
-  primaryLanguage: String
   birthPlace: String
   address: String
   occupation: String
@@ -6245,7 +5978,7 @@ input PatientUpdateWithoutPatientCaseDataInput {
   user: UserUpdateOneRequiredInput
   pincode: RegionUpdateOneRequiredInput
   country: CountryUpdateOneRequiredInput
-  cpId: CareProviderUpdateOneWithoutPatientInput
+  cpId: CareProviderUpdateOneWithoutCpPatientIdInput
   insurance: InsuranceUpdateOneWithoutPatientInput
 }
 
@@ -6562,46 +6295,6 @@ input PatientWhereInput {
 
   """All values that are not contained in given list."""
   maritalStatus_not_in: [MaritalStatus!]
-  primaryLanguage: String
-
-  """All values that are not equal to given value."""
-  primaryLanguage_not: String
-
-  """All values that are contained in given list."""
-  primaryLanguage_in: [String!]
-
-  """All values that are not contained in given list."""
-  primaryLanguage_not_in: [String!]
-
-  """All values less than the given value."""
-  primaryLanguage_lt: String
-
-  """All values less than or equal the given value."""
-  primaryLanguage_lte: String
-
-  """All values greater than the given value."""
-  primaryLanguage_gt: String
-
-  """All values greater than or equal the given value."""
-  primaryLanguage_gte: String
-
-  """All values containing the given string."""
-  primaryLanguage_contains: String
-
-  """All values not containing the given string."""
-  primaryLanguage_not_contains: String
-
-  """All values starting with the given string."""
-  primaryLanguage_starts_with: String
-
-  """All values not starting with the given string."""
-  primaryLanguage_not_starts_with: String
-
-  """All values ending with the given string."""
-  primaryLanguage_ends_with: String
-
-  """All values not ending with the given string."""
-  primaryLanguage_not_ends_with: String
   birthPlace: String
 
   """All values that are not equal to given value."""
@@ -7041,8 +6734,8 @@ type Query {
   patients(where: PatientWhereInput, orderBy: PatientOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Patient]!
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   countries(where: CountryWhereInput, orderBy: CountryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Country]!
-  iCDSubCodes(where: ICDSubCodeWhereInput, orderBy: ICDSubCodeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ICDSubCode]!
   regions(where: RegionWhereInput, orderBy: RegionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Region]!
+  iCDSubCodes(where: ICDSubCodeWhereInput, orderBy: ICDSubCodeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ICDSubCode]!
   medicalPractitioners(where: MedicalPractitionerWhereInput, orderBy: MedicalPractitionerOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [MedicalPractitioner]!
   hospitals(where: HospitalWhereInput, orderBy: HospitalOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Hospital]!
   iCDCodes(where: ICDCodeWhereInput, orderBy: ICDCodeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ICDCode]!
@@ -7056,8 +6749,8 @@ type Query {
   patient(where: PatientWhereUniqueInput!): Patient
   user(where: UserWhereUniqueInput!): User
   country(where: CountryWhereUniqueInput!): Country
-  iCDSubCode(where: ICDSubCodeWhereUniqueInput!): ICDSubCode
   region(where: RegionWhereUniqueInput!): Region
+  iCDSubCode(where: ICDSubCodeWhereUniqueInput!): ICDSubCode
   medicalPractitioner(where: MedicalPractitionerWhereUniqueInput!): MedicalPractitioner
   hospital(where: HospitalWhereUniqueInput!): Hospital
   iCDCode(where: ICDCodeWhereUniqueInput!): ICDCode
@@ -7071,8 +6764,8 @@ type Query {
   patientsConnection(where: PatientWhereInput, orderBy: PatientOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PatientConnection!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
   countriesConnection(where: CountryWhereInput, orderBy: CountryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CountryConnection!
-  iCDSubCodesConnection(where: ICDSubCodeWhereInput, orderBy: ICDSubCodeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ICDSubCodeConnection!
   regionsConnection(where: RegionWhereInput, orderBy: RegionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): RegionConnection!
+  iCDSubCodesConnection(where: ICDSubCodeWhereInput, orderBy: ICDSubCodeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ICDSubCodeConnection!
   medicalPractitionersConnection(where: MedicalPractitionerWhereInput, orderBy: MedicalPractitionerOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): MedicalPractitionerConnection!
   hospitalsConnection(where: HospitalWhereInput, orderBy: HospitalOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): HospitalConnection!
   iCDCodesConnection(where: ICDCodeWhereInput, orderBy: ICDCodeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ICDCodeConnection!
@@ -8105,8 +7798,8 @@ type Subscription {
   patient(where: PatientSubscriptionWhereInput): PatientSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
   country(where: CountrySubscriptionWhereInput): CountrySubscriptionPayload
-  iCDSubCode(where: ICDSubCodeSubscriptionWhereInput): ICDSubCodeSubscriptionPayload
   region(where: RegionSubscriptionWhereInput): RegionSubscriptionPayload
+  iCDSubCode(where: ICDSubCodeSubscriptionWhereInput): ICDSubCodeSubscriptionPayload
   medicalPractitioner(where: MedicalPractitionerSubscriptionWhereInput): MedicalPractitionerSubscriptionPayload
   hospital(where: HospitalSubscriptionWhereInput): HospitalSubscriptionPayload
   iCDCode(where: ICDCodeSubscriptionWhereInput): ICDCodeSubscriptionPayload

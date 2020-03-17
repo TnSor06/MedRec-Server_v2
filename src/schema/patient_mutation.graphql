@@ -9,21 +9,11 @@ type Mutation{
     updateCareProvider(data:CareProviderUpdateInput!):CareProvider!
 }
 input CareProviderCreateInput {
-  cpaddress: String!
-  city: String!
-  pincode: String!
-  country: String!
-  contact: String!
-  email: String!
+  cpPatientId: String!
   cpPatientRelation: String!
 }
 input CareProviderUpdateInput {
-  cpaddress: String
-  city: String
-  pincode: String
-  country: String
-  contact: String
-  email: String
+  cpPatientId: String
   cpPatientRelation: String
 }
 input InsuranceCreateInput {

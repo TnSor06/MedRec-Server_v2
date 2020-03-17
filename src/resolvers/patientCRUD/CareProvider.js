@@ -7,22 +7,12 @@ import {
 } from '../../utils/misc';
 
 const addCareProviderSchema = Joi.object().keys({
-    cpaddress: Joi.string().required(),
-    city: Joi.string().required(),
+    cpPatientId: Joi.string().required(),
     cpPatientRelation: Joi.string().required(),
-    pincode: Joi.string().required(),
-    country: Joi.string().required(),
-    contact: Joi.string().required(),
-    email: Joi.string().lowercase().email().required()
 })
 const updateCareProviderSchema = Joi.object().keys({
-    cpaddress: Joi.string(),
-    city: Joi.string(),
+    cpPatientId: Joi.string(),
     cpPatientRelation: Joi.string(),
-    pincode: Joi.string(),
-    country: Joi.string(),
-    contact: Joi.string(),
-    email: Joi.string().lowercase().email()
 })
 
 async function addCareProvider(parent, args, {
@@ -30,12 +20,7 @@ async function addCareProvider(parent, args, {
     request
 }, info) {
     const result = await Joi.validate({
-        cpaddress: args.data.cpaddress,
-        city: args.data.city,
-        pincode: args.data.pincode,
-        country: args.data.country,
-        contact: args.data.contact,
-        email: args.data.email,
+        cpPatientId: args.data.cpPatientId,
         cpPatientRelation: args.data.cpPatientRelation,
     }, addCareProviderSchema);
     if (result.error) {
@@ -54,28 +39,34 @@ async function addCareProvider(parent, args, {
             }
         }
     }, `{id patientId}`)
+
+    // Check if patient exists for CP
+    const cpPatientDetail = await prisma.query.patients({
+        where: {
+            AND: [{
+                patientId: args.data.cpPatientId
+            }, {
+                user: {
+                    verified: true
+                }
+            }]
+        }
+    })
+    if (cpPatientDetail.length === 0) {
+        throw new Error("No patient exists for care provider")
+    }
     if (patient.length > 0) {
         const patCareProvider = await prisma.mutation.createCareProvider({
             data: {
-                cpId: `${patient[0].patientId}`,
-                cpaddress: args.data.cpaddress,
+                cpPatientId: {
+                    connect: {
+                        patientId: args.data.cpPatientId
+                    }
+                },
                 cpPatientRelation: args.data.cpPatientRelation,
-                city: args.data.city,
-                contact: args.data.contact,
-                email: args.data.email,
                 patient: {
                     connect: {
                         patientId: patient[0].patientId
-                    }
-                },
-                pincode: {
-                    connect: {
-                        pincode: parseInt(args.data.pincode, 10)
-                    }
-                },
-                country: {
-                    connect: {
-                        countryCode: parseInt(args.data.country, 10)
                     }
                 }
             }
@@ -91,12 +82,7 @@ async function updateCareProvider(parent, args, {
     request
 }, info) {
     const result = await Joi.validate({
-        cpaddress: args.data.cpaddress,
-        city: args.data.city,
-        pincode: args.data.pincode,
-        country: args.data.country,
-        contact: args.data.contact,
-        email: args.data.email,
+        cpPatientId: args.data.cpaddress,
         cpPatientRelation: args.data.cpPatientRelation,
     }, updateCareProviderSchema);
     if (result.error) {
@@ -115,31 +101,29 @@ async function updateCareProvider(parent, args, {
             }
         }
     }, `{id patientId}`)
+
     if (patient.length > 0) {
         const data = { ...args.data }
 
-        if (typeof args.data.country === 'string') {
-            const patCountry = await prisma.query.country({
+        if (typeof args.data.cpPatientId === 'string') {
+            // Check if patient exists for CP
+            const cpPatientDetail = await prisma.query.patients({
                 where: {
-                    countryCode: parseInt(args.data.country, 10)
+                    AND: [{
+                        patientId: args.data.cpPatientId
+                    }, {
+                        user: {
+                            verified: true
+                        }
+                    }]
                 }
-            }, `{ countryCode }`)
-            data["country"] = {
-                connect: {
-                    countryCode: patCountry.countryCode
-                }
+            })
+            if (cpPatientDetail.length === 0) {
+                throw new Error("No patient exists for care provider")
             }
-        }
-        if (typeof args.data.pincode === 'string') {
-            const patRegion = await prisma.query.region({
-                where: {
-                    pincode: parseInt(args.data.pincode, 10)
-                }
-            }, `{ pincode }`)
-
-            data.pincode = {
+            data.cpPatientId = {
                 connect: {
-                    pincode: patRegion.pincode
+                    patientId: args.data.cpPatientId
                 }
             }
         }

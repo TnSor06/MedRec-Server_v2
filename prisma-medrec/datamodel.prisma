@@ -74,7 +74,6 @@ type Patient{
   aadharNo: String! @unique
   religion: String!
   maritalStatus: MaritalStatus!
-  primaryLanguage: String!
   birthPlace: String!
   address: String!
   pincode: Region! @relation(link: INLINE,onDelete:SET_NULL)
@@ -95,20 +94,14 @@ type Patient{
   MI: Boolean! @default(value: false)
   AF: Boolean! @default(value: false)
   registeredAt: DateTime! @createdAt
-  cpId: CareProvider @relation(link: INLINE,onDelete:SET_NULL)
+  cpId: CareProvider @relation(name:"PersonalCPDetail",onDelete:SET_NULL)
   insurance: Insurance @relation(link: INLINE,onDelete:SET_NULL)
   patientCase: [PatientCase]! @relation(link: INLINE,onDelete:SET_NULL)
 }
 type CareProvider {
   id: ID! @id
-  patient: Patient!
-  cpId: String! @unique
-  cpaddress: String!
-  city: String!
-  pincode: Region! @relation(link: INLINE,onDelete:SET_NULL)
-  country: Country! @relation(link: INLINE,onDelete:SET_NULL)
-  contact: String!
-  email: String! @unique
+  patient: Patient! @relation(name:"PatientRelatedTo",link: INLINE,onDelete:SET_NULL)
+  cpPatientId: Patient! @relation(name:"PersonalCPDetail",link: INLINE,onDelete:SET_NULL)
   cpPatientRelation:String!
 }
 type Insurance {

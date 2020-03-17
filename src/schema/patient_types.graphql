@@ -12,13 +12,7 @@ enum DiagnosisType {
 type CareProvider {
   id: ID!
   patient: Patient!
-  cpId: String!
-  cpaddress: String!
-  city: String!
-  pincode: Region!
-  country: Country!
-  contact: String!
-  email: String!
+  cpPatientId: Patient!
   cpPatientRelation: String!
 }
 type Insurance {
