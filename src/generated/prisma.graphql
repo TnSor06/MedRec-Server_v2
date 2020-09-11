@@ -1,5 +1,5 @@
 # source: http://localhost:4466
-# timestamp: Tue Mar 17 2020 13:19:47 GMT+0530 (IST)
+# timestamp: Fri Sep 11 2020 15:29:37 GMT+0530 (India Standard Time)
 
 type AggregateCareProvider {
   count: Int!
@@ -2763,6 +2763,7 @@ type Patient implements Node {
   aadharNo: String!
   religion: String!
   maritalStatus: MaritalStatus!
+  primaryLanguage: String!
   birthPlace: String!
   address: String!
   pincode: Region!
@@ -3868,6 +3869,7 @@ input PatientCreateInput {
   aadharNo: String!
   religion: String!
   maritalStatus: MaritalStatus!
+  primaryLanguage: String!
   birthPlace: String!
   address: String!
   occupation: String!
@@ -3922,6 +3924,7 @@ input PatientCreateWithoutCpIdInput {
   aadharNo: String!
   religion: String!
   maritalStatus: MaritalStatus!
+  primaryLanguage: String!
   birthPlace: String!
   address: String!
   occupation: String!
@@ -3955,6 +3958,7 @@ input PatientCreateWithoutInsuranceInput {
   aadharNo: String!
   religion: String!
   maritalStatus: MaritalStatus!
+  primaryLanguage: String!
   birthPlace: String!
   address: String!
   occupation: String!
@@ -3988,6 +3992,7 @@ input PatientCreateWithoutPatientCaseInput {
   aadharNo: String!
   religion: String!
   maritalStatus: MaritalStatus!
+  primaryLanguage: String!
   birthPlace: String!
   address: String!
   occupation: String!
@@ -4038,6 +4043,8 @@ enum PatientOrderByInput {
   religion_DESC
   maritalStatus_ASC
   maritalStatus_DESC
+  primaryLanguage_ASC
+  primaryLanguage_DESC
   birthPlace_ASC
   birthPlace_DESC
   address_ASC
@@ -4085,6 +4092,7 @@ type PatientPreviousValues {
   aadharNo: String!
   religion: String!
   maritalStatus: MaritalStatus!
+  primaryLanguage: String!
   birthPlace: String!
   address: String!
   occupation: String!
@@ -5773,6 +5781,7 @@ input PatientUpdateDataInput {
   aadharNo: String
   religion: String
   maritalStatus: MaritalStatus
+  primaryLanguage: String
   birthPlace: String
   address: String
   occupation: String
@@ -5806,6 +5815,7 @@ input PatientUpdateInput {
   aadharNo: String
   religion: String
   maritalStatus: MaritalStatus
+  primaryLanguage: String
   birthPlace: String
   address: String
   occupation: String
@@ -5839,6 +5849,7 @@ input PatientUpdateManyMutationInput {
   aadharNo: String
   religion: String
   maritalStatus: MaritalStatus
+  primaryLanguage: String
   birthPlace: String
   address: String
   occupation: String
@@ -5894,6 +5905,7 @@ input PatientUpdateWithoutCpIdDataInput {
   aadharNo: String
   religion: String
   maritalStatus: MaritalStatus
+  primaryLanguage: String
   birthPlace: String
   address: String
   occupation: String
@@ -5926,6 +5938,7 @@ input PatientUpdateWithoutInsuranceDataInput {
   aadharNo: String
   religion: String
   maritalStatus: MaritalStatus
+  primaryLanguage: String
   birthPlace: String
   address: String
   occupation: String
@@ -5958,6 +5971,7 @@ input PatientUpdateWithoutPatientCaseDataInput {
   aadharNo: String
   religion: String
   maritalStatus: MaritalStatus
+  primaryLanguage: String
   birthPlace: String
   address: String
   occupation: String
@@ -6295,6 +6309,46 @@ input PatientWhereInput {
 
   """All values that are not contained in given list."""
   maritalStatus_not_in: [MaritalStatus!]
+  primaryLanguage: String
+
+  """All values that are not equal to given value."""
+  primaryLanguage_not: String
+
+  """All values that are contained in given list."""
+  primaryLanguage_in: [String!]
+
+  """All values that are not contained in given list."""
+  primaryLanguage_not_in: [String!]
+
+  """All values less than the given value."""
+  primaryLanguage_lt: String
+
+  """All values less than or equal the given value."""
+  primaryLanguage_lte: String
+
+  """All values greater than the given value."""
+  primaryLanguage_gt: String
+
+  """All values greater than or equal the given value."""
+  primaryLanguage_gte: String
+
+  """All values containing the given string."""
+  primaryLanguage_contains: String
+
+  """All values not containing the given string."""
+  primaryLanguage_not_contains: String
+
+  """All values starting with the given string."""
+  primaryLanguage_starts_with: String
+
+  """All values not starting with the given string."""
+  primaryLanguage_not_starts_with: String
+
+  """All values ending with the given string."""
+  primaryLanguage_ends_with: String
+
+  """All values not ending with the given string."""
+  primaryLanguage_not_ends_with: String
   birthPlace: String
 
   """All values that are not equal to given value."""

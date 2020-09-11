@@ -74,6 +74,7 @@ type Patient{
   aadharNo: String! @unique
   religion: String!
   maritalStatus: MaritalStatus!
+  primaryLanguage: String!
   birthPlace: String!
   address: String!
   pincode: Region! @relation(link: INLINE,onDelete:SET_NULL)
