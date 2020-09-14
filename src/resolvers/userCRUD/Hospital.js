@@ -7,13 +7,10 @@ const query = Joi.object().keys({
 });
 
 async function getHospital(parent, args, { prisma }, info) {
-  const result = await Joi.validate(
-    {
-      name: args.name,
-      skip: args.skip,
-    },
-    query
-  );
+  const result = await query.validate({
+    name: args.name,
+    skip: args.skip,
+  });
   if (result.error) {
     throw new Error("Invalid Data");
   }

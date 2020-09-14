@@ -23,14 +23,11 @@ async function searchUser(parent, args, { prisma, request }, info) {
   if (!userData.verified) {
     throw new Error("Access Denied");
   }
-  const result = await Joi.validate(
-    {
-      name: args.data.name,
-      email: args.data.email,
-      type: args.data.type,
-    },
-    searchUserSchema
-  );
+  const result = await searchUserSchema.validate({
+    name: args.data.name,
+    email: args.data.email,
+    type: args.data.type,
+  });
 
   if (result.error) {
     throw new Error("Invalid Data");

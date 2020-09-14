@@ -1,14 +1,14 @@
 type Query {
-  me:User
+  me: User
   mePatient: Patient!
-  meMedicalPractitioner:MedicalPractitioner!
+  meMedicalPractitioner: MedicalPractitioner!
   meDatabaseAdmin: DatabaseAdmin!
-  searchUser(data: SearchUserInput!):[User]!
-  viewPatient(id:String!):Patient!
-  viewMedicalPractitioner(id:String!):MedicalPractitioner!
-  getCountry(name:String!,skip:Int!):[Country!]
-  getRegion(name:String!,skip:Int!):[Region!]
-  getHospital(name:String!,skip:Int!):[Hospital!]
+  searchUser(data: SearchUserInput!): [User]!
+  viewPatient(id: String!): Patient!
+  viewMedicalPractitioner(id: String!): MedicalPractitioner!
+  getCountry(name: String!, skip: Int!): [Country!]
+  getRegion(name: String!, skip: Int!): [Region!]
+  getHospital(name: String!, skip: Int!): [Hospital!]
 }
 enum MaritalStatus {
   Single
@@ -30,36 +30,36 @@ enum Gender {
   Female
   Transgender
 }
-input SearchUserInput{
-  name:String,
-  email:String,
+input SearchUserInput {
+  name: String
+  email: String
   type: UserType_
 }
 type User {
   id: ID!
   firstName: String!
-  middleName:String!
-  lastName:String!
+  middleName: String!
+  lastName: String!
   dob: String!
-  email:String!
+  email: String!
   sex: Gender!
-  password:String!
+  password: String!
   role: UserType!
   isAdmin: Boolean!
   verified: Boolean!
 }
-type DatabaseAdmin{
+type DatabaseAdmin {
   id: ID!
-  user:User!
-  contact:String!
+  user: User!
+  contact: String!
   address: String!
   country: Country!
   hospital: Hospital!
   registeredAt: String!
 }
-type MedicalPractitioner{
+type MedicalPractitioner {
   id: ID!
-  user:User!
+  user: User!
   mpId: String!
   address: String!
   clinicAddress: String!
@@ -87,14 +87,14 @@ type Hospital {
   pincode: Region!
   country: Country!
 }
-type AuthPayload{
-  token:String!
-  user:User!
+type AuthPayload {
+  token: String!
+  user: User!
 }
-type Patient{
+type Patient {
   id: ID!
-  user:User!
-  principleLanguage:String!
+  user: User!
+  principleLanguage: String!
   motherName: String!
   aadharNo: String!
   patientId: String!
@@ -110,7 +110,7 @@ type Patient{
   contact1: String!
   contact2: String!
   socioEcoStatus: String!
-  immunizationHistory: String!  
+  immunizationHistory: String!
   allergyStatus: Boolean!
   organDonorStatus: Boolean!
   PMH: String!
