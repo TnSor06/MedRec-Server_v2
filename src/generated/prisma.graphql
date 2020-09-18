@@ -1,5 +1,5 @@
 # source: http://localhost:4466
-# timestamp: Fri Sep 11 2020 15:29:37 GMT+0530 (India Standard Time)
+# timestamp: Sat Sep 19 2020 02:11:15 GMT+0530 (India Standard Time)
 
 type AggregateCareProvider {
   count: Int!
@@ -86,19 +86,19 @@ type CareProviderConnection {
 input CareProviderCreateInput {
   id: ID
   cpPatientRelation: String!
-  patient: PatientCreateOneInput!
-  cpPatientId: PatientCreateOneWithoutCpIdInput!
+  patient: PatientCreateOneWithoutCpIdInput!
+  cpPatientId: PatientCreateOneInput!
 }
 
-input CareProviderCreateOneWithoutCpPatientIdInput {
-  create: CareProviderCreateWithoutCpPatientIdInput
+input CareProviderCreateOneWithoutPatientInput {
+  create: CareProviderCreateWithoutPatientInput
   connect: CareProviderWhereUniqueInput
 }
 
-input CareProviderCreateWithoutCpPatientIdInput {
+input CareProviderCreateWithoutPatientInput {
   id: ID
   cpPatientRelation: String!
-  patient: PatientCreateOneInput!
+  cpPatientId: PatientCreateOneInput!
 }
 
 """An edge in a connection."""
@@ -155,31 +155,31 @@ input CareProviderSubscriptionWhereInput {
 
 input CareProviderUpdateInput {
   cpPatientRelation: String
-  patient: PatientUpdateOneRequiredInput
-  cpPatientId: PatientUpdateOneRequiredWithoutCpIdInput
+  patient: PatientUpdateOneRequiredWithoutCpIdInput
+  cpPatientId: PatientUpdateOneRequiredInput
 }
 
 input CareProviderUpdateManyMutationInput {
   cpPatientRelation: String
 }
 
-input CareProviderUpdateOneWithoutCpPatientIdInput {
-  create: CareProviderCreateWithoutCpPatientIdInput
+input CareProviderUpdateOneWithoutPatientInput {
+  create: CareProviderCreateWithoutPatientInput
   connect: CareProviderWhereUniqueInput
   disconnect: Boolean
   delete: Boolean
-  update: CareProviderUpdateWithoutCpPatientIdDataInput
-  upsert: CareProviderUpsertWithoutCpPatientIdInput
+  update: CareProviderUpdateWithoutPatientDataInput
+  upsert: CareProviderUpsertWithoutPatientInput
 }
 
-input CareProviderUpdateWithoutCpPatientIdDataInput {
+input CareProviderUpdateWithoutPatientDataInput {
   cpPatientRelation: String
-  patient: PatientUpdateOneRequiredInput
+  cpPatientId: PatientUpdateOneRequiredInput
 }
 
-input CareProviderUpsertWithoutCpPatientIdInput {
-  update: CareProviderUpdateWithoutCpPatientIdDataInput!
-  create: CareProviderCreateWithoutCpPatientIdInput!
+input CareProviderUpsertWithoutPatientInput {
+  update: CareProviderUpdateWithoutPatientDataInput!
+  create: CareProviderCreateWithoutPatientInput!
 }
 
 input CareProviderWhereInput {
@@ -3890,7 +3890,7 @@ input PatientCreateInput {
   user: UserCreateOneInput!
   pincode: RegionCreateOneInput!
   country: CountryCreateOneInput!
-  cpId: CareProviderCreateOneWithoutCpPatientIdInput
+  cpId: CareProviderCreateOneWithoutPatientInput
   insurance: InsuranceCreateOneWithoutPatientInput
   patientCase: PatientCaseCreateManyWithoutPatientInput
 }
@@ -3979,7 +3979,7 @@ input PatientCreateWithoutInsuranceInput {
   user: UserCreateOneInput!
   pincode: RegionCreateOneInput!
   country: CountryCreateOneInput!
-  cpId: CareProviderCreateOneWithoutCpPatientIdInput
+  cpId: CareProviderCreateOneWithoutPatientInput
   patientCase: PatientCaseCreateManyWithoutPatientInput
 }
 
@@ -4013,7 +4013,7 @@ input PatientCreateWithoutPatientCaseInput {
   user: UserCreateOneInput!
   pincode: RegionCreateOneInput!
   country: CountryCreateOneInput!
-  cpId: CareProviderCreateOneWithoutCpPatientIdInput
+  cpId: CareProviderCreateOneWithoutPatientInput
   insurance: InsuranceCreateOneWithoutPatientInput
 }
 
@@ -5802,7 +5802,7 @@ input PatientUpdateDataInput {
   user: UserUpdateOneRequiredInput
   pincode: RegionUpdateOneRequiredInput
   country: CountryUpdateOneRequiredInput
-  cpId: CareProviderUpdateOneWithoutCpPatientIdInput
+  cpId: CareProviderUpdateOneWithoutPatientInput
   insurance: InsuranceUpdateOneWithoutPatientInput
   patientCase: PatientCaseUpdateManyWithoutPatientInput
 }
@@ -5836,7 +5836,7 @@ input PatientUpdateInput {
   user: UserUpdateOneRequiredInput
   pincode: RegionUpdateOneRequiredInput
   country: CountryUpdateOneRequiredInput
-  cpId: CareProviderUpdateOneWithoutCpPatientIdInput
+  cpId: CareProviderUpdateOneWithoutPatientInput
   insurance: InsuranceUpdateOneWithoutPatientInput
   patientCase: PatientCaseUpdateManyWithoutPatientInput
 }
@@ -5959,7 +5959,7 @@ input PatientUpdateWithoutInsuranceDataInput {
   user: UserUpdateOneRequiredInput
   pincode: RegionUpdateOneRequiredInput
   country: CountryUpdateOneRequiredInput
-  cpId: CareProviderUpdateOneWithoutCpPatientIdInput
+  cpId: CareProviderUpdateOneWithoutPatientInput
   patientCase: PatientCaseUpdateManyWithoutPatientInput
 }
 
@@ -5992,7 +5992,7 @@ input PatientUpdateWithoutPatientCaseDataInput {
   user: UserUpdateOneRequiredInput
   pincode: RegionUpdateOneRequiredInput
   country: CountryUpdateOneRequiredInput
-  cpId: CareProviderUpdateOneWithoutCpPatientIdInput
+  cpId: CareProviderUpdateOneWithoutPatientInput
   insurance: InsuranceUpdateOneWithoutPatientInput
 }
 

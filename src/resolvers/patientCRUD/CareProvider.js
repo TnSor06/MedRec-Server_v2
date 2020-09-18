@@ -103,7 +103,7 @@ async function updateCareProvider(parent, args, { prisma, request }, info) {
         },
       },
     },
-    `{id patientId}`
+    `{id patientId cpId{ id }}`
   );
 
   if (patient.length > 0) {
@@ -138,7 +138,7 @@ async function updateCareProvider(parent, args, { prisma, request }, info) {
       {
         data: data,
         where: {
-          cpId: patient[0].patientId,
+          id: patient[0].cpId.id,
         },
       },
       info

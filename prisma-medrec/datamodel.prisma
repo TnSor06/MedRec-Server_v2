@@ -101,8 +101,8 @@ type Patient{
 }
 type CareProvider {
   id: ID! @id
-  patient: Patient! @relation(name:"PatientRelatedTo",link: INLINE,onDelete:SET_NULL)
-  cpPatientId: Patient! @relation(name:"PersonalCPDetail",link: INLINE,onDelete:SET_NULL)
+  patient: Patient! @relation(name:"PersonalCPDetail",link: INLINE,onDelete:SET_NULL)
+  cpPatientId: Patient! @relation(name:"PatientRelatedTo",link: INLINE,onDelete:SET_NULL)
   cpPatientRelation:String!
 }
 type Insurance {
