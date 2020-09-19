@@ -322,6 +322,11 @@ async function viewSharedCase(parent, args, { prisma, request }, info) {
   }
   const patientId = args.patientId;
   if (userData.role === "Patient") {
+    const spread = {
+      ...(args.caseId && { case: { caseId: args.caseId } }),
+      ...(args.FromDate && { sharedAt_gte: args.FromDate }),
+      ...(args.ToDate && { sharedAt_lte: args.ToDate }),
+    };
     const where = {
       AND: [
         {
@@ -333,9 +338,7 @@ async function viewSharedCase(parent, args, { prisma, request }, info) {
             },
           },
         },
-        ...(args.caseId && { case: { caseId: args.caseId } }),
-        ...(args.FromDate && { sharedAt_gte: args.FromDate }),
-        ...(args.ToDate && { sharedAt_lte: args.ToDate }),
+        ...Object.keys(spread).map((k) => ({ [k]: spread[k] })),
       ],
     };
     const cases = await prisma.query.sharedCases(
@@ -358,6 +361,11 @@ async function viewSharedCase(parent, args, { prisma, request }, info) {
         id: patientId,
       };
     }
+    const spread = {
+      ...(args.caseId && { case: { caseId: args.caseId } }),
+      ...(args.FromDate && { sharedAt_gte: args.FromDate }),
+      ...(args.ToDate && { sharedAt_lte: args.ToDate }),
+    };
     const where = {
       AND: [
         {
@@ -365,9 +373,7 @@ async function viewSharedCase(parent, args, { prisma, request }, info) {
             patient: patient,
           },
         },
-        ...(args.caseId && { case: { caseId: args.caseId } }),
-        ...(args.FromDate && { sharedAt_gte: args.FromDate }),
-        ...(args.ToDate && { sharedAt_lte: args.ToDate }),
+        ...Object.keys(spread).map((k) => ({ [k]: spread[k] })),
       ],
     };
     const cases = await prisma.query.sharedCases(
@@ -425,7 +431,7 @@ async function viewSharedCase(parent, args, { prisma, request }, info) {
                 },
               },
             },
-            ...where,
+            ...Object.keys(where).map((k) => ({ [k]: where[k] })),
           ],
         },
         orderBy: "createdAt_DESC",
@@ -455,7 +461,7 @@ async function viewSharedCase(parent, args, { prisma, request }, info) {
                 mpId: mp.mpId,
               },
             },
-            ...where,
+            ...Object.keys(where).map((k) => ({ [k]: where[k] })),
           ],
         },
         orderBy: "createdAt_DESC",

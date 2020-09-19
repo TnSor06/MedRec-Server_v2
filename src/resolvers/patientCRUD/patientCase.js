@@ -183,7 +183,7 @@ async function viewPatientCase(parent, args, { prisma, request }, info) {
                 },
               },
             },
-            ...where,
+            ...Object.keys(where).map((k) => ({ [k]: where[k] })),
           ],
         },
         orderBy: "createdAt_DESC",
@@ -213,7 +213,10 @@ async function viewPatientCase(parent, args, { prisma, request }, info) {
     const cases = await prisma.query.patientCases(
       {
         where: {
-          AND: [{ patient: patient }, ...where],
+          AND: [
+            { patient: patient },
+            ...Object.keys(where).map((k) => ({ [k]: where[k] })),
+          ],
         },
         orderBy: "createdAt_DESC",
       },
@@ -265,7 +268,7 @@ async function viewPatientCase(parent, args, { prisma, request }, info) {
                 },
               },
             },
-            ...where,
+            ...Object.keys(where).map((k) => ({ [k]: where[k] })),
           ],
         },
         orderBy: "createdAt_DESC",
@@ -291,7 +294,7 @@ async function viewPatientCase(parent, args, { prisma, request }, info) {
                 id_not: userData.id,
               },
             },
-            ...where,
+            ...Object.keys(where).map((k) => ({ [k]: where[k] })),
           ],
         },
         orderBy: "createdAt_DESC",

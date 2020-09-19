@@ -334,6 +334,11 @@ async function viewSharedRecord(parent, args, { prisma, request }, info) {
   }
   const patientId = args.patientId;
   if (userData.role === "Patient") {
+    const spread = {
+      ...(args.recordId && { record: { recordId: args.recordId } }),
+      ...(args.FromDate && { sharedAt_gte: args.FromDate }),
+      ...(args.ToDate && { sharedAt_lte: args.ToDate }),
+    };
     const where = {
       AND: [
         {
@@ -350,9 +355,7 @@ async function viewSharedRecord(parent, args, { prisma, request }, info) {
             caseId: args.caseId,
           },
         },
-        ...(args.recordId && { record: { recordId: args.recordId } }),
-        ...(args.FromDate && { sharedAt_gte: args.FromDate }),
-        ...(args.ToDate && { sharedAt_lte: args.ToDate }),
+        ...Object.keys(spread).map((k) => ({ [k]: spread[k] })),
       ],
     };
     const records = await prisma.query.sharedRecords(
@@ -375,6 +378,11 @@ async function viewSharedRecord(parent, args, { prisma, request }, info) {
         id: patientId,
       };
     }
+    const spread = {
+      ...(args.recordId && { record: { recordId: args.recordId } }),
+      ...(args.FromDate && { sharedAt_gte: args.FromDate }),
+      ...(args.ToDate && { sharedAt_lte: args.ToDate }),
+    };
     const where = {
       AND: [
         {
@@ -387,9 +395,7 @@ async function viewSharedRecord(parent, args, { prisma, request }, info) {
             caseId: args.caseId,
           },
         },
-        ...(args.recordId && { record: { recordId: args.recordId } }),
-        ...(args.FromDate && { sharedAt_gte: args.FromDate }),
-        ...(args.ToDate && { sharedAt_lte: args.ToDate }),
+        ...Object.keys(spread).map((k) => ({ [k]: spread[k] })),
       ],
     };
     const records = await prisma.query.sharedRecords(
@@ -452,7 +458,7 @@ async function viewSharedRecord(parent, args, { prisma, request }, info) {
                 caseId: args.caseId,
               },
             },
-            ...where,
+            ...Object.keys(where).map((k) => ({ [k]: where[k] })),
           ],
         },
         orderBy: "createdAt_DESC",
@@ -487,7 +493,7 @@ async function viewSharedRecord(parent, args, { prisma, request }, info) {
                 mpId: mp.mpId,
               },
             },
-            ...where,
+            ...Object.keys(where).map((k) => ({ [k]: where[k] })),
           ],
         },
         orderBy: "createdAt_DESC",
