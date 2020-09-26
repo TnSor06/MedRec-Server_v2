@@ -1,8 +1,8 @@
 import { PythonShell } from "python-shell";
 
-const genHL7 = (jsonData) => {
+const genHL7 = (jsonData, type) => {
   const options = {
-    args: [jsonData],
+    args: [jsonData, type],
   };
   let python_file = `${__dirname}/hl7_gen.py`;
   return new Promise((resolve, reject) => {

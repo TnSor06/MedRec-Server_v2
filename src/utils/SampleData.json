@@ -1,5 +1,5 @@
 {
-  "caseId": "35673600000000030001",
+  "caseId": "35673600000000030002",
   "patient": {
     "user": {
       "firstName": "Rohit",
@@ -19,8 +19,14 @@
     "primaryLanguage": "Hindi",
     "birthPlace": "jodhpur",
     "address": "Chembur",
-    "pincode": { "pincode": 736, "region": "Adalaj, Gujarat" },
-    "country": { "countryCode": 356, "countryName": "India" },
+    "pincode": {
+      "pincode": 736,
+      "region": "Adalaj, Gujarat"
+    },
+    "country": {
+      "countryCode": 356,
+      "countryName": "India"
+    },
     "occupation": "Student",
     "contact1": "+91-7506550511",
     "contact2": "+91-9988625345",
@@ -40,6 +46,19 @@
       "id": "5f66805724aa9a00070c7d25",
       "cpPatientId": {
         "patientId": "3567360000000004",
+        "motherName": "Asha",
+        "aadharNo": "122436280",
+        "religion": "Hindu",
+        "maritalStatus": "Single",
+        "primaryLanguage": "Hindi",
+        "address": "Chembur",
+        "contact1": "+91-7506550511",
+        "contact2": "+91-9988625345",
+        "socioEcoStatus": "Student",
+        "country": {
+          "countryCode": 356,
+          "countryName": "India"
+        },
         "user": {
           "firstName": "Ashutosh",
           "middleName": "Ashok",
@@ -79,23 +98,131 @@
       "name": "CHIRANJEEV HOSPITAL",
       "address": "ASHIRWAD COMPLEX OPP ZILHA PARISHAD NEAR TRIMBAK NAKA NASIK-422001",
       "district": "Nasik",
-      "pincode": { "pincode": 422, "region": "Saran, Bihar" },
-      "country": { "countryCode": 356, "countryName": "India" }
+      "pincode": {
+        "pincode": 422,
+        "region": "Saran, Bihar"
+      },
+      "country": {
+        "countryCode": 356,
+        "countryName": "India"
+      }
     }
   },
-  "icdCode": { "icdCode": "A012", "commonName": "Paratyphoid fever B" },
-  "icdSubCode": {
-    "icdSubCode": "A012",
-    "scientificName": "Paratyphoid fever B"
+  "icdCode": {
+    "icdCode": "A00",
+    "commonName": "Cholera"
   },
-  "HPC": "ABC",
-  "MoI": "ABC",
+  "icdSubCode": {
+    "icdSubCode": "A001",
+    "scientificName": "Cholera due to Vibrio cholerae 01, biovar eltor"
+  },
+  "HPC": "AB",
+  "MoI": "AB",
   "DandV": "ABC",
   "clinicalNote": "ABC",
-  "noOfVisits": 0,
+  "noOfVisits": 2,
   "diagnosisType": "Provisional",
   "currentClinicalStatus": true,
-  "createdAt": "2020-09-19T19:25:42.345Z",
-  "updatedAt": "2020-09-19T19:25:42.345Z",
-  "patientRecord": []
+  "createdAt": "2020-09-19T19:26:52.493Z",
+  "updatedAt": "2020-09-26T19:24:13.461Z",
+  "patientRecord": [
+    {
+      "recordId": "356736000000000300020001",
+      "medicalPractitioner": {
+        "user": {
+          "firstName": "Manoj",
+          "middleName": "Anish",
+          "lastName": "Ochaney",
+          "sex": "Male",
+          "dob": "1998-05-06T00:00:00.000Z",
+          "email": "manojo@gmail.com"
+        },
+        "mpId": "356422000001",
+        "address": "Chembur",
+        "clinicAddress": "Kurla",
+        "degree": "MBBS",
+        "field": "Cardiologist",
+        "hospital": {
+          "hospitalId": "422002005",
+          "name": "CHIRANJEEV HOSPITAL",
+          "address": "ASHIRWAD COMPLEX OPP ZILHA PARISHAD NEAR TRIMBAK NAKA NASIK-422001",
+          "district": "Nasik",
+          "pincode": {
+            "pincode": 422,
+            "region": "Saran, Bihar"
+          },
+          "country": {
+            "countryCode": 356,
+            "countryName": "India"
+          }
+        }
+      },
+      "visitNo": 1,
+      "onArrival": "ABC",
+      "diagnosis": "ABC",
+      "Tx": "ABC",
+      "reportSuggestions": "ACB",
+      "cevsSp": 2,
+      "cevsDp": 3,
+      "ceRr": 2,
+      "cePr": 4,
+      "ceWeight": 2,
+      "ceHeight": 2,
+      "diagnosisAfterReport": "AC",
+      "medication": "AB",
+      "advice": "AB",
+      "query": "AB",
+      "followUpObservations": "AB",
+      "createdAt": "2020-09-24T21:14:05.502Z"
+    },
+    {
+      "recordId": "356736000000000300020002",
+      "medicalPractitioner": {
+        "user": {
+          "firstName": "Manoj",
+          "middleName": "Anish",
+          "lastName": "Ochaney",
+          "sex": "Male",
+          "dob": "1998-05-06T00:00:00.000Z",
+          "email": "manojo@gmail.com"
+        },
+        "mpId": "356422000001",
+        "address": "Chembur",
+        "clinicAddress": "Kurla",
+        "degree": "MBBS",
+        "field": "Cardiologist",
+        "hospital": {
+          "hospitalId": "422002005",
+          "name": "CHIRANJEEV HOSPITAL",
+          "address": "ASHIRWAD COMPLEX OPP ZILHA PARISHAD NEAR TRIMBAK NAKA NASIK-422001",
+          "district": "Nasik",
+          "pincode": {
+            "pincode": 422,
+            "region": "Saran, Bihar"
+          },
+          "country": {
+            "countryCode": 356,
+            "countryName": "India"
+          }
+        }
+      },
+      "visitNo": 2,
+      "onArrival": "ABC",
+      "diagnosis": "AAAAAAAA",
+      "Tx": "AA",
+      "reportSuggestions": "AA",
+      "cevsSp": 5,
+      "cevsDp": 23,
+      "ceRr": 2,
+      "cePr": 12,
+      "ceWeight": 33,
+      "ceHeight": 23,
+      "diagnosisAfterReport": "AA",
+      "medication": "AA",
+      "advice": "AA",
+      "query": "AA",
+      "followUpObservations": "AA",
+      "createdAt": "2020-09-26T19:24:13.754Z"
+    }
+  ]
 }

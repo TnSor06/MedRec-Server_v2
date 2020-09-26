@@ -91,10 +91,10 @@ async function createSharedCase(parent, args, { prisma, request }, info) {
           pincode
           region
         }
-        country{
-          countryCode
-          countryName
-        }
+      country{
+        countryCode
+        countryName
+      }
       occupation
       contact1
       contact2
@@ -114,6 +114,19 @@ async function createSharedCase(parent, args, { prisma, request }, info) {
         id
         cpPatientId {
           patientId
+          motherName
+          aadharNo
+          religion
+          maritalStatus
+          primaryLanguage
+          address
+          contact1
+          contact2
+          socioEcoStatus
+          country{
+            countryCode
+            countryName
+          }
           user {
             firstName
             middleName
@@ -232,7 +245,7 @@ async function createSharedCase(parent, args, { prisma, request }, info) {
   }`
   );
   // Get HL7 all details stored in "patientCase" variable
-  const HL7 = await genHL7(JSON.stringify(patientCase));
+  const HL7 = await genHL7(JSON.stringify(patientCase), "case");
 
   // Check if sender has access
   const senderCheck = await prisma.query.sharedCases(

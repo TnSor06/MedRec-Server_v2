@@ -3,6 +3,7 @@ from datetime import datetime
 from sys import argv
 import json
 data = json.loads(argv[1])
+data_type = argv[2]
 
 country_code = str(data['patient']['country']['countryCode'])
 principal_lang = data['patient']['principleLanguage']
@@ -10,41 +11,48 @@ last_name = data['patient']['user']['lastName']
 first_name = data['patient']['user']['firstName']
 middle_name = data['patient']['user']['middleName']
 mother_name = data['patient']['motherName']
-kin_last_name = 'Relekar'
-kin_first_name = 'Ashok'
-kin_middle_name = 'Ramchandra'
-kin_marital_status = 'Married'
-relationship = 'Father'
-kin_address = 'Kandivali East, Mumbai'
-kin_phone_no = '9004763330'
-kin_biz_phone_no = '02228966295'
+kin_patient_id = data['patient']['cpId']['cpPatientId']['patientId'] if data['patient']['cpId'] else ""
+kin_last_name = data['patient']['cpId']['cpPatientId']['user']['lastName'] if data['patient']['cpId'] else ""
+kin_first_name = data['patient']['cpId']['cpPatientId']['user']['firstName'] if data['patient']['cpId'] else ""
+kin_middle_name = data['patient']['cpId']['cpPatientId']['user']['middleName'] if data['patient']['cpId'] else ""
+kin_marital_status = data['patient']['cpId']['cpPatientId']['maritalStatus'] if data['patient']['cpId'] else ""
+relationship = data['patient']['cpId']['cpPatientRelation'] if data['patient']['cpId'] else ""
+kin_address = data['patient']['cpId']['cpPatientId']['address'] if data['patient']['cpId'] else ""
+kin_phone_no = data['patient']['cpId']['cpPatientId']['contact1'] if data['patient']['cpId'] else ""
+kin_biz_phone_no = data['patient']['cpId']['cpPatientId']['contact2'] if data['patient']['cpId'] else ""
 # kin_job_title = 'AGM Finance'
 # kin_organization = 'MSETCL'
-kin_sex = 'male'
-kin_religion = 'Hindu'
-kin_citizenship = '356'
-kin_mother_name = 'Mangala'
-kin_job_status = 'Employed' # CP -> socioEcoStatus
-kin_aadhaar_no = '123456789101'
-kin_primary_lang = 'Marathi'
-kin_dob = '19710228'
-event_code = 'ADT'
-event_reason = 'Admit'
-danger_code = "{}-{}".format(data['icdCode']
-                             ['icdCode'], data['icdSubCode']['icdSubCode'])
+kin_sex = data['patient']['cpId']['cpPatientId']['user']['sex'] if data['patient']['cpId'] else ""
+kin_religion = data['patient']['cpId']['cpPatientId']['religion'] if data['patient']['cpId'] else ""
+kin_citizenship = str(data['patient']['cpId']['cpPatientId']['country']['countryCode']) if data['patient']['cpId'] else ""
+kin_mother_name = data['patient']['cpId']['cpPatientId']['motherName'] if data['patient']['cpId'] else ""
+kin_job_status = data['patient']['cpId']['cpPatientId']['socioEcoStatus'] if data['patient']['cpId'] else "" # CP -> socioEcoStatus
+kin_aadhaar_no = data['patient']['cpId']['cpPatientId']['aadharNo'] if data['patient']['cpId'] else ""
+kin_primary_lang = data['patient']['cpId']['cpPatientId']['primaryLanguage'] if data['patient']['cpId'] else ""
+kin_dob = data['patient']['cpId']['cpPatientId']['user']['dob'] if data['patient']['cpId'] else ""
 dob = data['patient']['user']['dob']
 sex = data['patient']['user']['sex']
 contact_no_1 = data['patient']['contact1']
 contact_no_2 = data['patient']['contact2']
 marital_status = data['patient']['maritalStatus']
 religion = data['patient']['religion']
-timestamp = data['createdAt']
-obx_ts = data['updatedAt']
+practitioner_id = data['medicalPractitioner']['mpId']
+
+event_code = 'ADT'
+event_reason = 'Admit'
+case_id = data['caseId'] if data_type == 'case' else data['case']['caseId']
+danger_code = "{}-{}".format(data['icdCode']
+                             ['icdCode'], data['icdSubCode']['icdSubCode']) if data_type == 'case' else "{}-{}".format(data['case']['icdCode']
+                             ['icdCode'], data['case']['icdSubCode']['icdSubCode'])
+
+
+record_id = '356736000000000300020002'
+timestamp = data['createdAt'] # Record ts
 obx_codes = ['1', '2', '3', '4', '5']
 obx_test= ['120', '80', '80', '16', '170', '60']
 obx_units = ['mm of HG', 'mm of HG', 'beats per minute', 'breaths per minute', 'cm', 'kg']
-case_id = data['caseId']
-practitioner_id = data['medicalPractitioner']['mpId']
+
+
 
 class HL7_Generator:
     def __init__(self):
@@ -125,7 +133,7 @@ class HL7_Generator:
 
         for i in range(len(obx_codes)):
             obx = Segment('OBX')
-            obx.obx_1 = '35600000000000102003'
+            obx.obx_1 = record_id
             obx.obx_3 = obx_codes[i]
             obx.obx_5 = obx_test[i]
             obx.obx_6 = obx_units[i]
@@ -134,7 +142,7 @@ class HL7_Generator:
 
 
     def generate_NK1(self):
-        self.m.nk1.nk1_1 = '356000000000002'
+        self.m.nk1.nk1_1 = kin_patient_id
         self.m.nk1.nk1_2.nk1_2_1 = kin_last_name
         self.m.nk1.nk1_2.nk1_2_2 = kin_first_name
         self.m.nk1.nk1_2.nk1_2_3 = kin_middle_name
@@ -162,7 +170,7 @@ class HL7_Generator:
         self.m.dg1.dg1_16 = practitioner_id
 
     def to_hl7(self):
-        f = open('er7.txt','w')
+        # f = open('er7.txt','w')
         self.generate_MSH()
         self.generate_EVN()
         self.generate_PID()

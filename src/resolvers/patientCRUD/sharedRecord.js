@@ -106,6 +106,9 @@ async function createSharedRecord(parent, args, { prisma, request }, info) {
       }
       patientId
       bloodGroup
+      principleLanguage
+      motherName
+      aadharNo
       religion
       maritalStatus
       primaryLanguage
@@ -115,10 +118,10 @@ async function createSharedRecord(parent, args, { prisma, request }, info) {
           pincode
           region
         }
-        country{
-          countryCode
-          countryName
-        }
+      country{
+        countryCode
+        countryName
+      }
       occupation
       contact1
       contact2
@@ -138,6 +141,19 @@ async function createSharedRecord(parent, args, { prisma, request }, info) {
         id
         cpPatientId {
           patientId
+          motherName
+          aadharNo
+          religion
+          maritalStatus
+          primaryLanguage
+          address
+          contact1
+          contact2
+          socioEcoStatus
+          country{
+            countryCode
+            countryName
+          }
           user {
             firstName
             middleName
@@ -297,7 +313,7 @@ async function createSharedRecord(parent, args, { prisma, request }, info) {
   }
 
   // Get HL7 all details stored in "patientRecord" variable
-  const HL7 = await genHL7(JSON.stringify(patientRecord));
+  const HL7 = await genHL7(JSON.stringify(patientRecord), "record");
 
   const sharedRecord = await prisma.mutation.createSharedRecord(
     {
@@ -363,23 +379,13 @@ async function viewSharedRecord(parent, args, { prisma, request }, info) {
     const records = await prisma.query.sharedRecords(
       {
         where: where,
-        orderBy: "createdAt_DESC",
+        orderBy: "sharedAt_DESC",
       },
       info
     );
     return records;
   }
   if (userData.role === "DatabaseAdmin") {
-    let patient = {};
-    if (args.patientId.length === 16) {
-      patient = {
-        patientId,
-      };
-    } else {
-      patient = {
-        id: patientId,
-      };
-    }
     const spread = {
       ...(args.recordId && { record: { recordId: args.recordId } }),
       ...(args.FromDate && { sharedAt_gte: args.FromDate }),
@@ -387,11 +393,6 @@ async function viewSharedRecord(parent, args, { prisma, request }, info) {
     };
     const where = {
       AND: [
-        {
-          case: {
-            patient: patient,
-          },
-        },
         {
           case: {
             caseId: args.caseId,
@@ -403,7 +404,7 @@ async function viewSharedRecord(parent, args, { prisma, request }, info) {
     const records = await prisma.query.sharedRecords(
       {
         where: where,
-        orderBy: "createdAt_DESC",
+        orderBy: "sharedAt_DESC",
       },
       info
     );
@@ -422,16 +423,6 @@ async function viewSharedRecord(parent, args, { prisma, request }, info) {
       },
       `{mpId hospital {hospitalId}}`
     );
-    let patient = {};
-    if (args.patientId.length === 16) {
-      patient = {
-        patientId,
-      };
-    } else {
-      patient = {
-        id: patientId,
-      };
-    }
     const where = {
       ...(args.recordId && { record: { recordId: args.recordId } }),
       ...(args.FromDate && { sharedAt_gte: args.FromDate }),
@@ -441,11 +432,6 @@ async function viewSharedRecord(parent, args, { prisma, request }, info) {
       {
         where: {
           AND: [
-            {
-              case: {
-                patient: patient,
-              },
-            },
             {
               case: {
                 medicalPractitioner: {
@@ -463,7 +449,7 @@ async function viewSharedRecord(parent, args, { prisma, request }, info) {
             ...Object.keys(where).map((k) => ({ [k]: where[k] })),
           ],
         },
-        orderBy: "createdAt_DESC",
+        orderBy: "sharedAt_DESC",
       },
       info
     );
@@ -471,11 +457,6 @@ async function viewSharedRecord(parent, args, { prisma, request }, info) {
       {
         where: {
           AND: [
-            {
-              case: {
-                patient: patient,
-              },
-            },
             {
               case: {
                 medicalPractitioner: {
@@ -498,11 +479,11 @@ async function viewSharedRecord(parent, args, { prisma, request }, info) {
             ...Object.keys(where).map((k) => ({ [k]: where[k] })),
           ],
         },
-        orderBy: "createdAt_DESC",
+        orderBy: "sharedAt_DESC",
       },
       info
     );
-    records.push(...recordsOwn);
+    records.push(...recordsOwn, ...recordsRecieve);
     return records;
   }
 }

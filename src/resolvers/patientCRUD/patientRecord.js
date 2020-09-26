@@ -286,7 +286,7 @@ async function viewPatientRecord(parent, args, { prisma, request }, info) {
       };
     }
     const where = {
-      ...(args.caseId && { caseId: args.caseId }),
+      ...(args.recordId && { recordId: args.recordId }),
       ...(args.FromDate && { createdAt_gte: args.FromDate }),
       ...(args.ToDate && { createdAt_lte: args.ToDate }),
     };
@@ -427,7 +427,7 @@ async function viewPatientRecord(parent, args, { prisma, request }, info) {
     );
     const records = [];
     records.push(
-      ...caseOwn,
+      ...casesOwn,
       ...recordsOwn,
       ...sameHospital,
       ...casesRecordsOwn
