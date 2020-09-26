@@ -190,7 +190,7 @@ async function viewPatientRecord(parent, args, { prisma, request }, info) {
   }
 
   if (userData.role === "Patient") {
-    let caseId = null;
+    let caseId = {};
     if (args.caseId.length === 20) {
       caseId = {
         caseId: args.caseId,
@@ -231,7 +231,7 @@ async function viewPatientRecord(parent, args, { prisma, request }, info) {
     return records;
   }
   if (userData.role === "DatabaseAdmin") {
-    let caseId = null;
+    let caseId = {};
     if (args.caseId.length === 20) {
       caseId = {
         caseId: args.caseId,
@@ -295,7 +295,9 @@ async function viewPatientRecord(parent, args, { prisma, request }, info) {
         where: {
           AND: [
             {
-              case: caseId,
+              case: {
+                ...caseId,
+              },
             },
             {
               case: {
@@ -325,7 +327,9 @@ async function viewPatientRecord(parent, args, { prisma, request }, info) {
         where: {
           AND: [
             {
-              case: caseId,
+              case: {
+                ...caseId,
+              },
             },
             {
               case: {
@@ -355,7 +359,9 @@ async function viewPatientRecord(parent, args, { prisma, request }, info) {
         where: {
           AND: [
             {
-              case: caseId,
+              case: {
+                ...caseId,
+              },
             },
             {
               case: {
@@ -385,7 +391,9 @@ async function viewPatientRecord(parent, args, { prisma, request }, info) {
         where: {
           AND: [
             {
-              case: caseId,
+              case: {
+                ...caseId,
+              },
             },
             {
               medicalPractitioner: {

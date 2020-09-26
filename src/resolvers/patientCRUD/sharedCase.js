@@ -39,6 +39,25 @@ async function createSharedCase(parent, args, { prisma, request }, info) {
   } else {
     throw new Error("Invalid Request");
   }
+  // Receiver MedicalPractitioner
+  let receiverMedicalPractitioner = await prisma.query.medicalPractitioner(
+    {
+      where: {
+        mpId: args.data.receiver,
+      },
+    },
+    `{ mpId user { verified } }`
+  );
+
+  if (!receiverMedicalPractitioner) {
+    throw new Error("Medical Practitioner Not Found");
+  } else {
+    if (receiverMedicalPractitioner.user.verified === true) {
+      if (receiverMedicalPractitioner.mpId === medicalPractitioner.mpId) {
+        throw new Error("Invalid Request");
+      }
+    }
+  }
 
   // Case Id
   const patientCase = await prisma.query.patientCase(
@@ -92,20 +111,20 @@ async function createSharedCase(parent, args, { prisma, request }, info) {
       MI
       AF
       cpId{
-        cpId
-        cpaddress
-        city
-        contact
-        email
+        id
+        cpPatientId {
+          patientId
+          user {
+            firstName
+            middleName
+            lastName
+            sex
+            dob
+            email
+            verified
+          }
+        }
         cpPatientRelation
-        pincode{
-          pincode
-          region
-        }
-        country{
-          countryCode
-          countryName
-        }
       }
       insurance{
         insuranceId
@@ -214,23 +233,6 @@ async function createSharedCase(parent, args, { prisma, request }, info) {
   );
   // Get HL7 all details stored in "patientCase" variable
   const HL7 = await genHL7(JSON.stringify(patientCase));
-  console.log("HL7", HL7);
-  // Receiver MedicalPractitioner
-  let receiverMedicalPractitioner = await prisma.query.medicalPractitioner(
-    {
-      where: {
-        mpId: args.data.receiver,
-      },
-    },
-    `{ mpId user { verified } }`
-  );
-  if (receiverMedicalPractitioner.user.verified === true) {
-    if (receiverMedicalPractitioner.mpId === medicalPractitioner.mpId) {
-      throw new Error("Invalid Request");
-    }
-  } else {
-    throw new Error("Medical Practitioner Not Found");
-  }
 
   // Check if sender has access
   const senderCheck = await prisma.query.sharedCases(
@@ -344,7 +346,7 @@ async function viewSharedCase(parent, args, { prisma, request }, info) {
     const cases = await prisma.query.sharedCases(
       {
         where: where,
-        orderBy: "createdAt_DESC",
+        orderBy: "sharedAt_DESC",
       },
       info
     );
@@ -379,7 +381,7 @@ async function viewSharedCase(parent, args, { prisma, request }, info) {
     const cases = await prisma.query.sharedCases(
       {
         where: where,
-        orderBy: "createdAt_DESC",
+        orderBy: "sharedAt_DESC",
       },
       info
     );
@@ -434,7 +436,7 @@ async function viewSharedCase(parent, args, { prisma, request }, info) {
             ...Object.keys(where).map((k) => ({ [k]: where[k] })),
           ],
         },
-        orderBy: "createdAt_DESC",
+        orderBy: "sharedAt_DESC",
       },
       info
     );
@@ -464,7 +466,7 @@ async function viewSharedCase(parent, args, { prisma, request }, info) {
             ...Object.keys(where).map((k) => ({ [k]: where[k] })),
           ],
         },
-        orderBy: "createdAt_DESC",
+        orderBy: "sharedAt_DESC",
       },
       info
     );

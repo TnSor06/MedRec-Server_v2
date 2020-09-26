@@ -1,0 +1,101 @@
+{
+  "caseId": "35673600000000030001",
+  "patient": {
+    "user": {
+      "firstName": "Rohit",
+      "middleName": "Ashok",
+      "lastName": "Bhagtani",
+      "sex": "Male",
+      "dob": "1998-06-08T00:00:00.000Z",
+      "email": "rohitb@gmail.com"
+    },
+    "patientId": "3567360000000003",
+    "bloodGroup": "O+",
+    "principleLanguage": "Hindi",
+    "motherName": "Asha",
+    "aadharNo": "122436780",
+    "religion": "Hindu",
+    "maritalStatus": "Single",
+    "primaryLanguage": "Hindi",
+    "birthPlace": "jodhpur",
+    "address": "Chembur",
+    "pincode": { "pincode": 736, "region": "Adalaj, Gujarat" },
+    "country": { "countryCode": 356, "countryName": "India" },
+    "occupation": "Student",
+    "contact1": "+91-7506550511",
+    "contact2": "+91-9988625345",
+    "socioEcoStatus": "Student",
+    "immunizationHistory": "None",
+    "allergyStatus": false,
+    "organDonorStatus": false,
+    "PMH": "No",
+    "DHx": "No",
+    "Ca": false,
+    "IDDM": false,
+    "NIDDM": false,
+    "COPD": false,
+    "MI": false,
+    "AF": false,
+    "cpId": {
+      "id": "5f66805724aa9a00070c7d25",
+      "cpPatientId": {
+        "patientId": "3567360000000004",
+        "user": {
+          "firstName": "Ashutosh",
+          "middleName": "Ashok",
+          "lastName": "Matai",
+          "sex": "Male",
+          "dob": "1998-06-08T00:00:00.000Z",
+          "email": "ashum@gmail.com",
+          "verified": true
+        }
+      },
+      "cpPatientRelation": "ABC"
+    },
+    "insurance": {
+      "insuranceId": "3567360000000003",
+      "insuranceStatus": "ABC",
+      "insuranceCompany1": "ANCD",
+      "insuranceCompany2": "ABC",
+      "sponsorerDetails": "ABC"
+    }
+  },
+  "medicalPractitioner": {
+    "user": {
+      "firstName": "Manoj",
+      "middleName": "Anish",
+      "lastName": "Ochaney",
+      "sex": "Male",
+      "dob": "1998-05-06T00:00:00.000Z",
+      "email": "manojo@gmail.com"
+    },
+    "mpId": "356422000001",
+    "address": "Chembur",
+    "clinicAddress": "Kurla",
+    "degree": "MBBS",
+    "field": "Cardiologist",
+    "hospital": {
+      "hospitalId": "422002005",
+      "name": "CHIRANJEEV HOSPITAL",
+      "address": "ASHIRWAD COMPLEX OPP ZILHA PARISHAD NEAR TRIMBAK NAKA NASIK-422001",
+      "district": "Nasik",
+      "pincode": { "pincode": 422, "region": "Saran, Bihar" },
+      "country": { "countryCode": 356, "countryName": "India" }
+    }
+  },
+  "icdCode": { "icdCode": "A012", "commonName": "Paratyphoid fever B" },
+  "icdSubCode": {
+    "icdSubCode": "A012",
+    "scientificName": "Paratyphoid fever B"
+  },
+  "HPC": "ABC",
+  "MoI": "ABC",
+  "DandV": "ABC",
+  "clinicalNote": "ABC",
+  "noOfVisits": 0,
+  "diagnosisType": "Provisional",
+  "currentClinicalStatus": true,
+  "createdAt": "2020-09-19T19:25:42.345Z",
+  "updatedAt": "2020-09-19T19:25:42.345Z",
+  "patientRecord": []
+}

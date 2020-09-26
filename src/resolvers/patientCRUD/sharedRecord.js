@@ -1,6 +1,7 @@
 import Joi from "joi";
 
 import getUserData from "../../utils/getUserData";
+import { genHL7 } from "../../utils/HL7_caller";
 
 const createSharedRecordSchema = Joi.object().keys({
   record: Joi.string().required(),
@@ -134,19 +135,20 @@ async function createSharedRecord(parent, args, { prisma, request }, info) {
       MI
       AF
       cpId{
-        cpId
-        cpaddress
-        city
-        contact
-        email
-        pincode{
-          pincode
-          region
+        id
+        cpPatientId {
+          patientId
+          user {
+            firstName
+            middleName
+            lastName
+            sex
+            dob
+            email
+            verified
+          }
         }
-        country{
-          countryCode
-          countryName
-        }
+        cpPatientRelation
       }
       insurance{
         insuranceId
@@ -295,7 +297,7 @@ async function createSharedRecord(parent, args, { prisma, request }, info) {
   }
 
   // Get HL7 all details stored in "patientRecord" variable
-  const HL7 = "Some data";
+  const HL7 = await genHL7(JSON.stringify(patientRecord));
 
   const sharedRecord = await prisma.mutation.createSharedRecord(
     {
