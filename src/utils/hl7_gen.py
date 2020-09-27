@@ -45,12 +45,24 @@ danger_code = "{}-{}".format(data['icdCode']
                              ['icdCode'], data['icdSubCode']['icdSubCode']) if data_type == 'case' else "{}-{}".format(data['case']['icdCode']
                              ['icdCode'], data['case']['icdSubCode']['icdSubCode'])
 
-
-record_id = '356736000000000300020002'
-timestamp = data['createdAt'] # Record ts
 obx_codes = ['1', '2', '3', '4', '5']
-obx_test= ['120', '80', '80', '16', '170', '60']
 obx_units = ['mm of HG', 'mm of HG', 'beats per minute', 'breaths per minute', 'cm', 'kg']
+
+records = []
+if data_type == 'case':
+    for each in data['patientRecord']:
+        record = {}
+        record['record_id'] = each['recordId']
+        record['timestamp'] = each['createdAt']
+        record['obx_test']= [each['cevsSp'], each['cevsDp'], each['cePr'], each['ceRr'], each['ceHeight'], each['ceWeight']]
+        records.append(record)
+else:
+    record = {}
+    record['record_id'] = data['recordId']
+    record['timestamp'] = data['createdAt']
+    record['obx_test']= [data['cevsSp'], data['cevsDp'], data['cePr'], data['ceRr'], data['ceHeight'], data['ceWeight']]
+    records.append(record)
+    
 
 
 
@@ -129,16 +141,16 @@ class HL7_Generator:
 
         # date_time = datetime.fromtimestamp(timestamp)
         # d = date_time.strftime("\'%Y-%m-%d %H:%M:%S\' UTC")
-        d = timestamp
 
-        for i in range(len(obx_codes)):
-            obx = Segment('OBX')
-            obx.obx_1 = record_id
-            obx.obx_3 = obx_codes[i]
-            obx.obx_5 = obx_test[i]
-            obx.obx_6 = obx_units[i]
-            obx.obx_14 = d
-            self.m.add(obx)
+        for each in records:
+            for i in range(len(obx_codes)):
+                obx = Segment('OBX')
+                obx.obx_1 = each['record_id']
+                obx.obx_3 = obx_codes[i]
+                obx.obx_5 = str(each['obx_test'][i])
+                obx.obx_6 = obx_units[i]
+                obx.obx_14 = each['timestamp']
+                self.m.add(obx)
 
 
     def generate_NK1(self):
