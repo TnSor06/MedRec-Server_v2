@@ -7,10 +7,10 @@ Medrec server using graphql
 3. Python3.x
 
 ## Pre-Setup
-a. Go to prisma folder ("prisma-medrec") in command line
-b. Type "docker-compose up -d" command in terminal to push images(Prisma and Mongo Database Image) for the project
-c. Deploy Prisma Model using "prisma deploy" command.
-d. Install python package hl7apy using "pip3 install hl7apy"
+1. Go to prisma folder ("prisma-medrec") in command line
+2. Type "docker-compose up -d" command in terminal to push images(Prisma and Mongo Database Image) for the project
+3. Deploy Prisma Model using "prisma deploy" command.
+4. Install python package hl7apy using "pip3 install hl7apy"
 
 ## Setup
 1. Install all packages using command in root folder of project: npm install --unsafe-perm --allow-root
