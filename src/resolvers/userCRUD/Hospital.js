@@ -18,9 +18,9 @@ async function getHospital(parent, args, { prisma }, info) {
   const hospital = await prisma.query.hospitals(
     {
       where: {
-        name_contains: name,
+        searchName_contains: name.toLowerCase().replace(" ", "-"),
       },
-      orderBy: "name_ASC",
+      orderBy: "searchName_ASC",
       first: 20,
       skip: args.skip,
     },

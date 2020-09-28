@@ -191,6 +191,7 @@ async function registerMedicalPractitioner(
         firstName: capitalizeFirstLetter(args.data.firstName),
         middleName: capitalizeFirstLetter(args.data.middleName),
         lastName: capitalizeFirstLetter(args.data.lastName),
+        searchName: `${args.data.firstName.toLowerCase()}-${args.data.middleName.toLowerCase()}-${args.data.lastName.toLowerCase()}`,
         dob: args.data.dob,
         sex: args.data.sex,
         email: args.data.email.toLowerCase(),

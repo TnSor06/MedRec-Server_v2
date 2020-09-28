@@ -4,11 +4,15 @@ async function icdsubcodes(parent, args, { request, prisma }, info) {
       where: {
         AND: [
           {
-            scientificName_contains: args.scientificName,
+            searchScientificName_contains: args.scientificName
+              .toLowerCase()
+              .replace(" ", "-"),
           },
           {
             icdCode: {
-              commonName_contains: args.commonName,
+              searchCommonName_contains: args.commonName
+                .toLowerCase()
+                .replace(" ", "-"),
             },
           },
         ],

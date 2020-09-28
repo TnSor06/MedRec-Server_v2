@@ -40,6 +40,7 @@ type User {
   firstName: String!
   middleName: String!
   lastName: String!
+  searchName: String!
   dob: String!
   email: String!
   sex: Gender!
@@ -81,6 +82,7 @@ type Region {
 type Hospital {
   id: ID!
   hospitalId: String!
+  searchName: String!
   name: String!
   address: String!
   district: String!

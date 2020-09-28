@@ -1,5 +1,5 @@
 # source: http://localhost:4466
-# timestamp: Sat Sep 19 2020 02:11:15 GMT+0530 (India Standard Time)
+# timestamp: Mon Sep 28 2020 15:26:11 GMT+0530 (India Standard Time)
 
 type AggregateCareProvider {
   count: Int!
@@ -766,6 +766,7 @@ type Hospital implements Node {
   id: ID!
   hospitalId: String!
   name: String!
+  searchName: String!
   address: String!
   district: String!
   pincode: Region!
@@ -786,6 +787,7 @@ input HospitalCreateInput {
   id: ID
   hospitalId: String!
   name: String!
+  searchName: String!
   address: String!
   district: String!
   pincode: RegionCreateOneInput!
@@ -813,6 +815,8 @@ enum HospitalOrderByInput {
   hospitalId_DESC
   name_ASC
   name_DESC
+  searchName_ASC
+  searchName_DESC
   address_ASC
   address_DESC
   district_ASC
@@ -823,6 +827,7 @@ type HospitalPreviousValues {
   id: ID!
   hospitalId: String!
   name: String!
+  searchName: String!
   address: String!
   district: String!
 }
@@ -861,6 +866,7 @@ input HospitalSubscriptionWhereInput {
 input HospitalUpdateDataInput {
   hospitalId: String
   name: String
+  searchName: String
   address: String
   district: String
   pincode: RegionUpdateOneRequiredInput
@@ -870,6 +876,7 @@ input HospitalUpdateDataInput {
 input HospitalUpdateInput {
   hospitalId: String
   name: String
+  searchName: String
   address: String
   district: String
   pincode: RegionUpdateOneRequiredInput
@@ -879,6 +886,7 @@ input HospitalUpdateInput {
 input HospitalUpdateManyMutationInput {
   hospitalId: String
   name: String
+  searchName: String
   address: String
   district: String
 }
@@ -1018,6 +1026,46 @@ input HospitalWhereInput {
 
   """All values not ending with the given string."""
   name_not_ends_with: String
+  searchName: String
+
+  """All values that are not equal to given value."""
+  searchName_not: String
+
+  """All values that are contained in given list."""
+  searchName_in: [String!]
+
+  """All values that are not contained in given list."""
+  searchName_not_in: [String!]
+
+  """All values less than the given value."""
+  searchName_lt: String
+
+  """All values less than or equal the given value."""
+  searchName_lte: String
+
+  """All values greater than the given value."""
+  searchName_gt: String
+
+  """All values greater than or equal the given value."""
+  searchName_gte: String
+
+  """All values containing the given string."""
+  searchName_contains: String
+
+  """All values not containing the given string."""
+  searchName_not_contains: String
+
+  """All values starting with the given string."""
+  searchName_starts_with: String
+
+  """All values not starting with the given string."""
+  searchName_not_starts_with: String
+
+  """All values ending with the given string."""
+  searchName_ends_with: String
+
+  """All values not ending with the given string."""
+  searchName_not_ends_with: String
   address: String
 
   """All values that are not equal to given value."""
@@ -1110,6 +1158,7 @@ input HospitalWhereUniqueInput {
 type ICDCode implements Node {
   id: ID!
   icdCode: String!
+  searchCommonName: String!
   commonName: String!
   icdSubCodes(where: ICDSubCodeWhereInput, orderBy: ICDSubCodeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ICDSubCode!]
 }
@@ -1127,6 +1176,7 @@ type ICDCodeConnection {
 input ICDCodeCreateInput {
   id: ID
   icdCode: String!
+  searchCommonName: String!
   commonName: String!
   icdSubCodes: ICDSubCodeCreateManyWithoutIcdCodeInput
 }
@@ -1144,6 +1194,7 @@ input ICDCodeCreateOneWithoutIcdSubCodesInput {
 input ICDCodeCreateWithoutIcdSubCodesInput {
   id: ID
   icdCode: String!
+  searchCommonName: String!
   commonName: String!
 }
 
@@ -1161,6 +1212,8 @@ enum ICDCodeOrderByInput {
   id_DESC
   icdCode_ASC
   icdCode_DESC
+  searchCommonName_ASC
+  searchCommonName_DESC
   commonName_ASC
   commonName_DESC
 }
@@ -1168,6 +1221,7 @@ enum ICDCodeOrderByInput {
 type ICDCodePreviousValues {
   id: ID!
   icdCode: String!
+  searchCommonName: String!
   commonName: String!
 }
 
@@ -1204,18 +1258,21 @@ input ICDCodeSubscriptionWhereInput {
 
 input ICDCodeUpdateDataInput {
   icdCode: String
+  searchCommonName: String
   commonName: String
   icdSubCodes: ICDSubCodeUpdateManyWithoutIcdCodeInput
 }
 
 input ICDCodeUpdateInput {
   icdCode: String
+  searchCommonName: String
   commonName: String
   icdSubCodes: ICDSubCodeUpdateManyWithoutIcdCodeInput
 }
 
 input ICDCodeUpdateManyMutationInput {
   icdCode: String
+  searchCommonName: String
   commonName: String
 }
 
@@ -1235,6 +1292,7 @@ input ICDCodeUpdateOneRequiredWithoutIcdSubCodesInput {
 
 input ICDCodeUpdateWithoutIcdSubCodesDataInput {
   icdCode: String
+  searchCommonName: String
   commonName: String
 }
 
@@ -1331,6 +1389,46 @@ input ICDCodeWhereInput {
 
   """All values not ending with the given string."""
   icdCode_not_ends_with: String
+  searchCommonName: String
+
+  """All values that are not equal to given value."""
+  searchCommonName_not: String
+
+  """All values that are contained in given list."""
+  searchCommonName_in: [String!]
+
+  """All values that are not contained in given list."""
+  searchCommonName_not_in: [String!]
+
+  """All values less than the given value."""
+  searchCommonName_lt: String
+
+  """All values less than or equal the given value."""
+  searchCommonName_lte: String
+
+  """All values greater than the given value."""
+  searchCommonName_gt: String
+
+  """All values greater than or equal the given value."""
+  searchCommonName_gte: String
+
+  """All values containing the given string."""
+  searchCommonName_contains: String
+
+  """All values not containing the given string."""
+  searchCommonName_not_contains: String
+
+  """All values starting with the given string."""
+  searchCommonName_starts_with: String
+
+  """All values not starting with the given string."""
+  searchCommonName_not_starts_with: String
+
+  """All values ending with the given string."""
+  searchCommonName_ends_with: String
+
+  """All values not ending with the given string."""
+  searchCommonName_not_ends_with: String
   commonName: String
 
   """All values that are not equal to given value."""
@@ -1382,6 +1480,7 @@ input ICDCodeWhereUniqueInput {
 type ICDSubCode implements Node {
   id: ID!
   icdSubCode: String!
+  searchScientificName: String!
   scientificName: String!
   icdCode: ICDCode!
 }
@@ -1399,6 +1498,7 @@ type ICDSubCodeConnection {
 input ICDSubCodeCreateInput {
   id: ID
   icdSubCode: String!
+  searchScientificName: String!
   scientificName: String!
   icdCode: ICDCodeCreateOneWithoutIcdSubCodesInput!
 }
@@ -1416,6 +1516,7 @@ input ICDSubCodeCreateOneInput {
 input ICDSubCodeCreateWithoutIcdCodeInput {
   id: ID
   icdSubCode: String!
+  searchScientificName: String!
   scientificName: String!
 }
 
@@ -1433,6 +1534,8 @@ enum ICDSubCodeOrderByInput {
   id_DESC
   icdSubCode_ASC
   icdSubCode_DESC
+  searchScientificName_ASC
+  searchScientificName_DESC
   scientificName_ASC
   scientificName_DESC
 }
@@ -1440,6 +1543,7 @@ enum ICDSubCodeOrderByInput {
 type ICDSubCodePreviousValues {
   id: ID!
   icdSubCode: String!
+  searchScientificName: String!
   scientificName: String!
 }
 
@@ -1532,6 +1636,46 @@ input ICDSubCodeScalarWhereInput {
 
   """All values not ending with the given string."""
   icdSubCode_not_ends_with: String
+  searchScientificName: String
+
+  """All values that are not equal to given value."""
+  searchScientificName_not: String
+
+  """All values that are contained in given list."""
+  searchScientificName_in: [String!]
+
+  """All values that are not contained in given list."""
+  searchScientificName_not_in: [String!]
+
+  """All values less than the given value."""
+  searchScientificName_lt: String
+
+  """All values less than or equal the given value."""
+  searchScientificName_lte: String
+
+  """All values greater than the given value."""
+  searchScientificName_gt: String
+
+  """All values greater than or equal the given value."""
+  searchScientificName_gte: String
+
+  """All values containing the given string."""
+  searchScientificName_contains: String
+
+  """All values not containing the given string."""
+  searchScientificName_not_contains: String
+
+  """All values starting with the given string."""
+  searchScientificName_starts_with: String
+
+  """All values not starting with the given string."""
+  searchScientificName_not_starts_with: String
+
+  """All values ending with the given string."""
+  searchScientificName_ends_with: String
+
+  """All values not ending with the given string."""
+  searchScientificName_not_ends_with: String
   scientificName: String
 
   """All values that are not equal to given value."""
@@ -1607,23 +1751,27 @@ input ICDSubCodeSubscriptionWhereInput {
 
 input ICDSubCodeUpdateDataInput {
   icdSubCode: String
+  searchScientificName: String
   scientificName: String
   icdCode: ICDCodeUpdateOneRequiredWithoutIcdSubCodesInput
 }
 
 input ICDSubCodeUpdateInput {
   icdSubCode: String
+  searchScientificName: String
   scientificName: String
   icdCode: ICDCodeUpdateOneRequiredWithoutIcdSubCodesInput
 }
 
 input ICDSubCodeUpdateManyDataInput {
   icdSubCode: String
+  searchScientificName: String
   scientificName: String
 }
 
 input ICDSubCodeUpdateManyMutationInput {
   icdSubCode: String
+  searchScientificName: String
   scientificName: String
 }
 
@@ -1653,6 +1801,7 @@ input ICDSubCodeUpdateOneRequiredInput {
 
 input ICDSubCodeUpdateWithoutIcdCodeDataInput {
   icdSubCode: String
+  searchScientificName: String
   scientificName: String
 }
 
@@ -1755,6 +1904,46 @@ input ICDSubCodeWhereInput {
 
   """All values not ending with the given string."""
   icdSubCode_not_ends_with: String
+  searchScientificName: String
+
+  """All values that are not equal to given value."""
+  searchScientificName_not: String
+
+  """All values that are contained in given list."""
+  searchScientificName_in: [String!]
+
+  """All values that are not contained in given list."""
+  searchScientificName_not_in: [String!]
+
+  """All values less than the given value."""
+  searchScientificName_lt: String
+
+  """All values less than or equal the given value."""
+  searchScientificName_lte: String
+
+  """All values greater than the given value."""
+  searchScientificName_gt: String
+
+  """All values greater than or equal the given value."""
+  searchScientificName_gte: String
+
+  """All values containing the given string."""
+  searchScientificName_contains: String
+
+  """All values not containing the given string."""
+  searchScientificName_not_contains: String
+
+  """All values starting with the given string."""
+  searchScientificName_starts_with: String
+
+  """All values not starting with the given string."""
+  searchScientificName_not_starts_with: String
+
+  """All values ending with the given string."""
+  searchScientificName_ends_with: String
+
+  """All values not ending with the given string."""
+  searchScientificName_not_ends_with: String
   scientificName: String
 
   """All values that are not equal to given value."""
@@ -7864,6 +8053,7 @@ type User implements Node {
   firstName: String!
   middleName: String!
   lastName: String!
+  searchName: String!
   dob: DateTime!
   email: String!
   sex: Gender!
@@ -7888,6 +8078,7 @@ input UserCreateInput {
   firstName: String!
   middleName: String!
   lastName: String!
+  searchName: String!
   dob: DateTime!
   email: String!
   sex: Gender!
@@ -7920,6 +8111,8 @@ enum UserOrderByInput {
   middleName_DESC
   lastName_ASC
   lastName_DESC
+  searchName_ASC
+  searchName_DESC
   dob_ASC
   dob_DESC
   email_ASC
@@ -7941,6 +8134,7 @@ type UserPreviousValues {
   firstName: String!
   middleName: String!
   lastName: String!
+  searchName: String!
   dob: DateTime!
   email: String!
   sex: Gender!
@@ -7991,6 +8185,7 @@ input UserUpdateDataInput {
   firstName: String
   middleName: String
   lastName: String
+  searchName: String
   dob: DateTime
   email: String
   sex: Gender
@@ -8004,6 +8199,7 @@ input UserUpdateInput {
   firstName: String
   middleName: String
   lastName: String
+  searchName: String
   dob: DateTime
   email: String
   sex: Gender
@@ -8017,6 +8213,7 @@ input UserUpdateManyMutationInput {
   firstName: String
   middleName: String
   lastName: String
+  searchName: String
   dob: DateTime
   email: String
   sex: Gender
@@ -8201,6 +8398,46 @@ input UserWhereInput {
 
   """All values not ending with the given string."""
   lastName_not_ends_with: String
+  searchName: String
+
+  """All values that are not equal to given value."""
+  searchName_not: String
+
+  """All values that are contained in given list."""
+  searchName_in: [String!]
+
+  """All values that are not contained in given list."""
+  searchName_not_in: [String!]
+
+  """All values less than the given value."""
+  searchName_lt: String
+
+  """All values less than or equal the given value."""
+  searchName_lte: String
+
+  """All values greater than the given value."""
+  searchName_gt: String
+
+  """All values greater than or equal the given value."""
+  searchName_gte: String
+
+  """All values containing the given string."""
+  searchName_contains: String
+
+  """All values not containing the given string."""
+  searchName_not_contains: String
+
+  """All values starting with the given string."""
+  searchName_starts_with: String
+
+  """All values not starting with the given string."""
+  searchName_not_starts_with: String
+
+  """All values ending with the given string."""
+  searchName_ends_with: String
+
+  """All values not ending with the given string."""
+  searchName_not_ends_with: String
   dob: DateTime
 
   """All values that are not equal to given value."""

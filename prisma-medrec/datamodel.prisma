@@ -1,12 +1,14 @@
 type ICDCode {
   id: ID! @id
   icdCode: String! @unique
+  searchCommonName: String!
   commonName: String!
   icdSubCodes: [ICDSubCode]!
 }
 type ICDSubCode {
   id: ID! @id
   icdSubCode: String! @unique
+  searchScientificName: String!
   scientificName: String!
   icdCode: ICDCode! @relation(link:INLINE,onDelete:SET_NULL)
 }
@@ -36,6 +38,7 @@ type User {
   firstName: String!
   middleName:String!
   lastName:String!
+  searchName: String!
   dob: DateTime!
   email:String! @unique
   sex: Gender!
@@ -190,6 +193,7 @@ type Hospital {
   id: ID! @id
   hospitalId: String! @unique
   name: String!
+  searchName: String!
   address: String!
   district: String!
   pincode: Region! @relation(link: INLINE,onDelete:SET_NULL)

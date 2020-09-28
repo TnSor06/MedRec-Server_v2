@@ -83,12 +83,14 @@ async function searchUser(parent, args, { prisma, request }, info) {
   } else if (typeof args.data.name === "string") {
     const type = args.data.type ? args.data.type : null;
     if (type) {
-      const users1 = await prisma.query.users(
+      const users = await prisma.query.users(
         {
           where: {
             AND: [
               {
-                firstName_starts_with: capitalizeFirstLetter(args.data.name),
+                searchName_contains: args.data.name
+                  .toLowerCase()
+                  .replace(" ", "-"),
               },
               {
                 role: args.data.type,
@@ -98,40 +100,21 @@ async function searchUser(parent, args, { prisma, request }, info) {
               },
             ],
           },
-          orderBy: "firstName_ASC",
+          orderBy: "searchName_ASC",
           first: 10,
         },
         info
       );
-      const users2 = await prisma.query.users(
-        {
-          where: {
-            AND: [
-              {
-                lastName_starts_with: capitalizeFirstLetter(args.data.name),
-              },
-              {
-                role: args.data.type,
-              },
-              {
-                ...(userData.role !== "DatabaseAdmin" && { verified: true }),
-              },
-            ],
-          },
-          orderBy: "firstName_ASC",
-          first: 10,
-        },
-        info
-      );
-      const users = [...users1, ...users2];
       return users;
     } else {
-      const users1 = await prisma.query.users(
+      const users = await prisma.query.users(
         {
           where: {
             AND: [
               {
-                firstName_starts_with: capitalizeFirstLetter(args.data.name),
+                searchName_contains: args.data.name
+                  .toLowerCase()
+                  .replace(" ", "-"),
               },
               {
                 role_not: "DatabaseAdmin",
@@ -141,32 +124,11 @@ async function searchUser(parent, args, { prisma, request }, info) {
               },
             ],
           },
-          orderBy: "firstName_ASC",
+          orderBy: "searchName_ASC",
           first: 10,
         },
         info
       );
-      const users2 = await prisma.query.users(
-        {
-          where: {
-            AND: [
-              {
-                lastName_starts_with: capitalizeFirstLetter(args.data.name),
-              },
-              {
-                role_not: "DatabaseAdmin",
-              },
-              {
-                ...(userData.role !== "DatabaseAdmin" && { verified: true }),
-              },
-            ],
-          },
-          orderBy: "firstName_ASC",
-          first: 10,
-        },
-        info
-      );
-      const users = [...users1, ...users2];
       return users;
     }
   } else {
