@@ -20,10 +20,10 @@ Medrec server using graphql
 
 Note: 
 1. After resgistering the user it is to be verified. (SuperUser Privileges)
-    a. Type "prisma token" in terminal in prisma folder of the project -> Copy token
-    b. Go to localhost:4466/_admin and put token in top left setting icon wherein token field is specified
-    c. Approve user by searching the user and setting verified to true
-    d. these changes are to be saved by clicking "Save Changes to Database" 
+    1. Type "prisma token" in terminal in prisma folder of the project -> Copy token
+    2. Go to localhost:4466/_admin and put token in top left setting icon wherein token field is specified
+    3. Approve user by searching the user and setting verified to true
+    4. these changes are to be saved by clicking "Save Changes to Database" 
 
 2. Some field requires HTTP HEADERS to be passed when executing the query. HEADERS requires token to be generated with the login query given in sampleQuery with respective email and password.
     -> Format of header is given in login query
