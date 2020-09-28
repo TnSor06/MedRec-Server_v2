@@ -24,6 +24,7 @@
     "bcrypt": "^3.0.6",
     "config": "^3.2.3",
     "debug": "^4.1.1",
+    "express": "^4.17.1",
     "graphql-cli": "^3.0.14",
     "graphql-yoga": "^1.18.3",
     "joi": "^17.2.1",
