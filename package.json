@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "start": "export DEBUG=app:startup;node src/index.js --ext js, graphql --exec babel-node",
     "test": "echo \"Error: no test specified\" && exit 1",
