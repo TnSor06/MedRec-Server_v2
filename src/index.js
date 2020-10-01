@@ -1,3 +1,4 @@
+import "@babel/polyfill";
 import { GraphQLServer } from "graphql-yoga";
 import express from "express";
 import { resolvers, fragmentReplacements } from "./resolvers/index";
@@ -49,8 +50,6 @@ const options = {
   subscriptions: "/subscriptions",
   playground: "/playground",
 };
-
-console.log(process.env.PUBLIC_URL);
 
 server.start(options, (server_meta) => {
   startup_debug("Server is Up\n", server_meta);

@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "type": "module",
   "scripts": {
-    "start": "export DEBUG=app:startup;node src/index.js --ext js, graphql --exec babel-node --experimental-modules",
+    "start": "export DEBUG=app:startup;env-cmd -f ./config/production.env node dist/index.js",
+    "heroku-postbuild": "babel src --out-dir dist --copy-files",
+    "dev": "export DEBUG=app:startup;env-cmd -f ./config/development.env nodemon src/index.js --ext js, graphql --exec babel-node",
     "test": "echo \"Error: no test specified\" && exit 1",
     "get-schema": "graphql get-schema -p prisma"
   },
@@ -19,12 +20,14 @@
     "nodemon": "^1.19.3"
   },
   "dependencies": {
+    "@babel/polyfill": "^7.11.5",
     "babel-cli": "^6.26.0",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.7.0",
     "bcrypt": "^3.0.6",
     "config": "^3.2.3",
     "debug": "^4.1.1",
+    "env-cmd": "^10.1.0",
     "express": "^4.17.1",
     "graphql-cli": "^3.0.14",
     "graphql-yoga": "^1.18.3",
