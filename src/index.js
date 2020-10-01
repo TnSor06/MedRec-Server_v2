@@ -24,8 +24,6 @@ const server = new GraphQLServer({
 
 server.express.use(express.static("build"));
 
-server.express.get("/", express.static("build"));
-
 server.express.get("*", (req, res, next) => {
   // small logic ..
   const routes = ["/graphql", "/subscriptions", "/playground"];
@@ -33,6 +31,7 @@ server.express.get("*", (req, res, next) => {
   if (routes.includes(req.url)) {
     return next();
   }
+
   // here you can use your way to get the path dir ..
   res.redirect(
     url.format({
@@ -43,6 +42,8 @@ server.express.get("*", (req, res, next) => {
     })
   );
 });
+
+server.express.get("/", express.static("build"));
 
 const options = {
   port: port,
