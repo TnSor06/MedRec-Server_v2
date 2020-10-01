@@ -3,21 +3,21 @@ import json
 import csv
 
 # Analyzing and sending request
-HOST = 'http://localhost:4466'
-api_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InNlcnZpY2UiOiJkZWZhdWx0QGRlZmF1bHQiLCJyb2xlcyI6WyJhZG1pbiJdfSwiaWF0IjoxNjAxMjg2ODk5LCJleHAiOjE2MDE4OTE2OTl9.URT9wgs_r6rFV9Ro60KKAYqEdvRe5Ftp4D0gOUHPu_U"
+HOST = 'https://medrec-ehr-a9866b93bf.herokuapp.com/prisma-medrec/prod/'
+api_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InNlcnZpY2UiOiJwcmlzbWEtbWVkcmVjQHByb2QiLCJyb2xlcyI6WyJhZG1pbiJdfSwiaWF0IjoxNjAxNTM2NjQ5LCJleHAiOjE2MDIxNDE0NDl9.mgXtwTNTN_ZLpJm7_-7HAtdS96ZZwf7wHY5p2l5EIgQ"
 headers = {'Authorization': 'Bearer %s' % api_token}
 line_count = 0
-#Add country
-with open('./data/country.csv', mode='r') as csv_file:
-    csvReader = csv.reader(csv_file)
-    line_count = 0
-    for row in csvReader:
-        mutation = 'mutation { createCountry(data:{ countryCode:%d countryName:"%s"}){ id }}'%(int(row[0]),row[1])
-        json = { 'query' :  mutation}
-        ourRequest = req.post(url=HOST, json=json, headers=headers)
-        print(line_count,ourRequest.status_code)
-        line_count = line_count + 1
-print("Done")
+# #Add country
+# with open('./data/country.csv', mode='r') as csv_file:
+#     csvReader = csv.reader(csv_file)
+#     line_count = 0
+#     for row in csvReader:
+#         mutation = 'mutation { createCountry(data:{ countryCode:%d countryName:"%s"}){ id }}'%(int(row[0]),row[1])
+#         json = { 'query' :  mutation}
+#         ourRequest = req.post(url=HOST, json=json, headers=headers)
+#         print(line_count,ourRequest.status_code)
+#         line_count = line_count + 1
+# print("Done")
 
 # Add region
 with open('./data/region.csv', mode='r') as csv_file:
@@ -32,7 +32,7 @@ with open('./data/region.csv', mode='r') as csv_file:
 print("Done")
 
 # Add hospital
-count = 500
+count = 1000
 with open('./data/hospital.csv', mode='r') as csv_file:
     csvReader = csv.reader(csv_file)
     line_count = 0
@@ -48,7 +48,7 @@ with open('./data/hospital.csv', mode='r') as csv_file:
 print("Done")
 
 # Add icdCode
-count = 500
+count = 1500
 with open('./data/icd_codes.csv', mode='r') as csv_file:
     csvReader = csv.reader(csv_file)
     for row in csvReader:
@@ -62,7 +62,7 @@ with open('./data/icd_codes.csv', mode='r') as csv_file:
 print("Done")
 
 # Add icdSubCode
-count = 1000
+count = 3000
 with open('./data/icd_sub_codes.csv', mode='r') as csv_file:
     csvReader = csv.reader(csv_file)
     for row in csvReader:

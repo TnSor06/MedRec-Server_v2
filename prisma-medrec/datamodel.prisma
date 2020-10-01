@@ -100,7 +100,7 @@ type Patient{
   registeredAt: DateTime! @createdAt
   cpId: CareProvider @relation(name:"PersonalCPDetail",onDelete:SET_NULL)
   insurance: Insurance @relation(link: INLINE,onDelete:SET_NULL)
-  patientCase: [PatientCase]! @relation(link: INLINE,onDelete:SET_NULL)
+  patientCase: [PatientCase]!
 }
 type CareProvider {
   id: ID! @id
@@ -119,7 +119,7 @@ type Insurance {
 }
 type PatientCase {
   id: ID! @id
-  patient: Patient!
+  patient: Patient! @relation(link: INLINE,onDelete:SET_NULL)
   caseId: String! @unique
   medicalPractitioner: MedicalPractitioner! @relation(link: INLINE,onDelete:SET_NULL)
   icdCode: ICDCode! @relation(link: INLINE,onDelete:SET_NULL)
@@ -133,14 +133,14 @@ type PatientCase {
   currentClinicalStatus: Boolean!
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
-  patientRecord: [PatientRecord]! @relation(link: INLINE,onDelete:SET_NULL)
-  sharedCase: [SharedCase]! @relation(link: INLINE,onDelete:SET_NULL)
-  sharedRecord: [SharedRecord]! @relation(link: INLINE,onDelete:SET_NULL)
+  patientRecord: [PatientRecord]! 
+  sharedCase: [SharedCase]! 
+  sharedRecord: [SharedRecord]! 
 }
 type PatientRecord {
   id: ID! @id
   patient: Patient! @relation(link: INLINE,onDelete:SET_NULL)
-  case: PatientCase!
+  case: PatientCase! @relation(link: INLINE,onDelete:SET_NULL)
   recordId: String! @unique
   medicalPractitioner: MedicalPractitioner! @relation(link: INLINE,onDelete:SET_NULL)
   visitNo: Int!
@@ -160,11 +160,11 @@ type PatientRecord {
   query:String!
   followUpObservations:String!
   createdAt: DateTime! @createdAt
-  sharedRecord: [SharedRecord]! @relation(link: INLINE,onDelete:SET_NULL)
+  sharedRecord: [SharedRecord]! 
 }
 type SharedCase {
   sharedCaseId: ID! @id
-  case: PatientCase!
+  case: PatientCase! @relation(link: INLINE,onDelete:SET_NULL)
   sender: MedicalPractitioner! @relation(name:"SendCaseRelation",link: INLINE,onDelete:SET_NULL)
   receiver: MedicalPractitioner! @relation(name:"ReceiveCaseRelation",link: INLINE,onDelete:SET_NULL)
   HL7: String!
@@ -172,8 +172,8 @@ type SharedCase {
 }
 type SharedRecord {
   sharedRecordId: ID! @id
-  record: PatientRecord!
-  case: PatientCase!
+  record: PatientRecord! @relation(link: INLINE,onDelete:SET_NULL)
+  case: PatientCase! @relation(link: INLINE,onDelete:SET_NULL)
   sender: MedicalPractitioner! @relation(name:"SendRecordRelation",link: INLINE,onDelete:SET_NULL)
   receiver: MedicalPractitioner! @relation(name:"ReceiveRecordRelation",link: INLINE,onDelete:SET_NULL)
   HL7: String!
