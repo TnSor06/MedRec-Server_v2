@@ -8,6 +8,9 @@
 # testing
 /coverage
 
+# testing
+/__pycache__
+
 /config
 /dist
 

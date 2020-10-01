@@ -5,7 +5,6 @@
   "main": "index.js",
   "scripts": {
     "start": "node dist/index.js",
-    "heroku-prebuild": "pip3 install -r requirements.txt",
     "heroku-postbuild": "babel src --out-dir dist --copy-files",
     "dev": "export DEBUG=app:startup;env-cmd -f ./config/development.env nodemon src/index.js --ext js, graphql --exec babel-node",
     "prod": "export DEBUG=app:startup;env-cmd -f ./config/production.env nodemon src/index.js --ext js, graphql --exec babel-node",
