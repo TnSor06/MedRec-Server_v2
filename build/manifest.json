@@ -1,0 +1,25 @@
+{
+  "short_name": "Medrec App",
+  "name": "Medrec App for Client Side",
+  "icons": [
+    {
+      "src": "medrec.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "medrec-64.png",
+      "type": "image/png",
+      "sizes": "64x64"
+    },
+    {
+      "src": "medrec-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#edebeb",
+  "background_color": "#ffffff"
+}
