@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "export DEBUG=app:startup;env-cmd -f ./config/production.env node dist/index.js",
+    "start": "node dist/index.js",
     "heroku-postbuild": "babel src --out-dir dist --copy-files",
     "dev": "export DEBUG=app:startup;env-cmd -f ./config/development.env nodemon src/index.js --ext js, graphql --exec babel-node",
     "test": "echo \"Error: no test specified\" && exit 1",
