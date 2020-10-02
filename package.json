@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node dist/index.js",
-    "heroku-postbuild": "babel src --out-dir dist --copy-files;python3 -m pip install hl7apy==1.3.3",
+    "heroku-postbuild": "babel src --out-dir dist --copy-files",
     "dev": "export DEBUG=app:startup;env-cmd -f ./config/development.env nodemon src/index.js --ext js, graphql --exec babel-node",
     "prod": "export DEBUG=app:startup;env-cmd -f ./config/production.env nodemon src/index.js --ext js, graphql --exec babel-node",
     "test": "echo \"Error: no test specified\" && exit 1",
