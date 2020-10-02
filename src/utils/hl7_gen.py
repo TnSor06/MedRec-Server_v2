@@ -45,7 +45,7 @@ danger_code = "{}-{}".format(data['icdCode']
                              ['icdCode'], data['icdSubCode']['icdSubCode']) if data_type == 'case' else "{}-{}".format(data['case']['icdCode']
                              ['icdCode'], data['case']['icdSubCode']['icdSubCode'])
 
-obx_codes = ['1', '2', '3', '4', '5']
+obx_codes = ['1', '2', '3', '4', '5', '6']
 obx_units = ['mm of HG', 'mm of HG', 'beats per minute', 'breaths per minute', 'cm', 'kg']
 
 records = []
