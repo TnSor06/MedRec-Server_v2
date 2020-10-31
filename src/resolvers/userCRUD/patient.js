@@ -231,7 +231,7 @@ async function viewPatient(parent, args, { prisma, request }, info) {
   }
   let patient = null;
   if (userData.verified && userData.role === "MedicalPractitioner") {
-    if (args.id.length === 16) {
+    if (args.id.length !== 25) {
       patient = await prisma.query.patients(
         {
           where: {
@@ -270,7 +270,7 @@ async function viewPatient(parent, args, { prisma, request }, info) {
     }
   }
   if (userData.verified && userData.role === "DatabaseAdmin") {
-    if (args.id.length === 16) {
+    if (args.id.length !== 25) {
       patient = await prisma.query.patients(
         {
           where: {

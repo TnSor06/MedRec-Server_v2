@@ -88,7 +88,7 @@ async function viewMedicalPractitioner(
   }
   let medicalPractitioner = null;
   if (userData.verified && userData.role === "MedicalPractitioner") {
-    if (args.id.length === 12) {
+    if (args.id.length !== 25) {
       medicalPractitioner = await prisma.query.medicalPractitioners(
         {
           where: {
@@ -127,7 +127,7 @@ async function viewMedicalPractitioner(
     }
   }
   if (userData.verified && userData.role === "DatabaseAdmin") {
-    if (args.id.length === 12) {
+    if (args.id.length !== 25) {
       medicalPractitioner = await prisma.query.medicalPractitioners(
         {
           where: {

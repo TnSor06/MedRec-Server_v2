@@ -367,7 +367,7 @@ async function viewSharedCase(parent, args, { prisma, request }, info) {
   }
   if (userData.role === "DatabaseAdmin") {
     let patient = {};
-    if (args.patientId.length === 16) {
+    if (args.patientId.length !== 25) {
       patient = {
         patientId,
       };
@@ -414,7 +414,7 @@ async function viewSharedCase(parent, args, { prisma, request }, info) {
       `{mpId hospital {hospitalId}}`
     );
     let patient = {};
-    if (args.patientId.length === 16) {
+    if (args.patientId.length !== 25) {
       patient = {
         patientId,
       };

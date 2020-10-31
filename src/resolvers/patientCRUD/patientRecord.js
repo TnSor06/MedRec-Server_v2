@@ -191,7 +191,7 @@ async function viewPatientRecord(parent, args, { prisma, request }, info) {
 
   if (userData.role === "Patient") {
     let caseId = {};
-    if (args.caseId.length === 20) {
+    if (args.caseId.length !== 25) {
       caseId = {
         caseId: args.caseId,
       };
@@ -232,7 +232,7 @@ async function viewPatientRecord(parent, args, { prisma, request }, info) {
   }
   if (userData.role === "DatabaseAdmin") {
     let caseId = {};
-    if (args.caseId.length === 20) {
+    if (args.caseId.length !== 25) {
       caseId = {
         caseId: args.caseId,
       };
@@ -276,7 +276,7 @@ async function viewPatientRecord(parent, args, { prisma, request }, info) {
       `{mpId hospital {hospitalId}}`
     );
     let caseId = {};
-    if (args.caseId.length === 20) {
+    if (args.caseId.length !== 25) {
       caseId = {
         caseId: args.caseId,
       };
