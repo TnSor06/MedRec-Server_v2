@@ -2,8 +2,14 @@ from hl7apy.core import Message, Segment, Field
 from datetime import datetime
 from sys import argv
 import json
-data = json.loads(argv[1])
-data_type = argv[2]
+
+if argv[1] !="sample":
+    data = json.loads(argv[1])
+    data_type = argv[2]
+else:
+    with open('sample_data.json') as f:
+        data = json.load(f)
+        data_type="case"
 
 country_code = str(data['patient']['country']['countryCode'])
 principal_lang = data['patient']['principleLanguage']
